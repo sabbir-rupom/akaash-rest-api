@@ -10,7 +10,7 @@ class UserItemUpdate extends BaseClass {
     /**
      * User Login required or not
      */
-    const LOGIN_REQUIRED = TRUE;
+    const LOGIN_REQUIRED = TRUE; 
 
     protected $item_name;
     protected $item_id;
@@ -37,6 +37,9 @@ class UserItemUpdate extends BaseClass {
             throw new Exception_ApiException(ResultCode::NOT_FOUND_404, 'Item not found in database!');
         }
         
+        /*
+         * Update item information
+         */
         $userItemObj->item_name = $this->item_name;
         $userItemObj->update($this->pdo);
 
