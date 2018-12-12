@@ -1,0 +1,3 @@
+.htaccess
+app/config/config_app.ini
+*.dat
