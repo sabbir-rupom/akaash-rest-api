@@ -27,11 +27,13 @@ class ResultCode {
 
     const USER_NOT_FOUND = 6;     // User is not registerd to the system.
 
-    const USER_ALREADY_EXISTS = 7;    // Already registered (at the time of user registration).
+    const DATA_ALREADY_EXISTS = 7;    // Data already exist in table
     
     const DATA_NOT_ALLOWED = 8;    // Provided data not allowed in server
     
     const FILE_UPLOAD_ERROR = 10;    // File upload error
+    
+    const DATABASE_ERROR = 11;    // File upload error
  
     const JSON_OUTPUT_ERROR = 20;     //Another user connected to google play
 
@@ -56,12 +58,13 @@ class ResultCode {
         self::INVALID_REQUEST_TOKEN => "Invalid token requested",
         self::INVALID_REQUEST_PARAMETER => "Invalid request parameter",
         self::USER_NOT_FOUND => "User not found",
-        self::USER_ALREADY_EXISTS => "User already exists",
+        self::DATA_ALREADY_EXISTS => "Data already exist in table",
         self::NOT_FOUND_404 => "404 not fount",
         self::OWNER_NOT_FOUND => "Owner not found",
         self::LOGIN_BLACKLIST => "Blacklisted user",
         self::ACCESS_FORBIDDEN => "Direct access forbidden",
         self::DATA_NOT_ALLOWED => "Data not allowed",
+        self::DATABASE_ERROR => "Database error occcured",
         self::FILE_UPLOAD_ERROR => "File upload failed",
         self::JSON_OUTPUT_ERROR => "Failed to convert result to JSON"
     );

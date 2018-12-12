@@ -117,16 +117,21 @@ class UserLogin extends BaseClass {
             $this->pdo->rollback();
             throw $e;
         }
+        
+        /*
+         * Encode session data for client
+         */
         $encodeUserSession = base64_encode(serialize(array(
             'session_id' => $sessionId,
             'user_id' => $user->id
         )));
+        
         return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_Util_DateUtil::getToday(),
             'data' => array(
                 'session_id' => $encodeUserSession,
-                'user_info' => $user->toJsonHash($this->pdo),
+                'user_info' => $user->toJsonHash(),
             ),
             'error' => []
         );

@@ -114,7 +114,7 @@ class Model_User extends Model_BaseModel {
             $this->create($pdo);
 
         } else {
-            throw new Exception_ApiException(ResultCode::USER_ALREADY_EXISTS);
+            throw new Exception_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
         }
         return $user;
     }
