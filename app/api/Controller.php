@@ -35,7 +35,7 @@ class Controller {
                 $data = file_get_contents('php://input');
 
                 self::$json = json_decode($data);
-                
+
                 /*
                  * Check if requested parameters are in json format or not 
                  */
@@ -63,17 +63,25 @@ class Controller {
              * Handle all exception messages
              */
 
-            header("HTTP/1.0 404 Not Found");
             if ($e instanceof Exception_ApiException) {
+                header("HTTP/1.0 " . ResultCode::getHTTPstatusCode($e->getCode()) . " " . ResultCode::getTitle($e->getCode()));
                 $result = array(
                     'result_code' => $e->getCode(),
-                    'time' => date("Ymd His"),
-                    'message' => empty($e->getMessage()) ? ResultCode::getMessage($e->getCode()) : $e->getMessage()
+                    'time' => Common_Util_DateUtil::getToday(),
+                    'error' => array(
+                        'title' => ResultCode::getTitle($e->getCode()),
+                        'msg' => empty($e->getMessage()) ? ResultCode::getMessage($e->getCode()) : $e->getMessage()
+                    )
                 );
             } else {
+                header("HTTP/1.0 " . ResultCode::getHTTPstatusCode(ResultCode::UNKNOWN_ERROR) . " " . ResultCode::getTitle(ResultCode::UNKNOWN_ERROR));
                 $result = array(
                     'result_code' => ResultCode::UNKNOWN_ERROR,
-                    'time' => date("Ymd His")
+                    'time' => Common_Util_DateUtil::getToday(),
+                    'error' => array(
+                        'title' => ResultCode::getTitle(ResultCode::UNKNOWN_ERROR),
+                        'msg' => ResultCode::getMessage(ResultCode::UNKNOWN_ERROR)
+                    )
                 );
             }
             if (Common_Util_ConfigUtil::getInstance()->isErrorDump()) {

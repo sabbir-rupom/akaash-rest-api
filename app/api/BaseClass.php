@@ -170,12 +170,17 @@ class BaseClass {
          */
         $this->_filter();
 
-        if ($this->userId) {
-            /*
-             * Save session user information
-             */
+        if (static::LOGIN_REQUIRED) {
             $this->cache_user = Model_User::cache_or_find($this->userId, $this->pdo);
+
+            if (empty($this->cache_user)) {
+                throw new Api_Exception(Result_code::USER_NOT_FOUND, 'Session user not found');
+            }
+
             $this->cache_user->last_api_time = Common_Util_DateUtil::getToday();
+            /*
+             * Update user's active time without updating cache
+             */
             $this->cache_user->update($this->pdo, FALSE);
         }
 
@@ -556,7 +561,7 @@ class BaseClass {
         } else {
             throw new Exception_ApiException(ResultCode::FILE_UPLOAD_ERROR, 'An error occured in system! Upload failed!');
         }
-        
+
         return $image_name;
     }
 

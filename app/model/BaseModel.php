@@ -211,8 +211,11 @@ abstract class Model_BaseModel {
         }
         $sql .= ' WHERE id = ?';
         $stmt = $pdo->prepare($sql);
-        $result = $stmt->execute(array_merge($values, array($this->id)));
-        return $result;
+        $stmt->execute(array_merge($values, array($this->id)));
+        /*
+         * Return updated record count
+         */
+        return $stmt->rowCount();
     }
 
     /**

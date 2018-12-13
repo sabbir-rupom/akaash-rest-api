@@ -23,7 +23,7 @@ class UserItemUpdate extends BaseClass {
 
         // Acquiring item information from json request
         $this->item_name = $this->getValueFromJSON('item_name', 'string', TRUE);
-        $this->item_id = $this->getValueFromJSON('item_id', 'string', TRUE);
+        $this->item_id = $this->getValueFromJSON('item_id', 'int', TRUE);
     }
 
     /**
@@ -31,10 +31,10 @@ class UserItemUpdate extends BaseClass {
      */
     public function action() {
         
-        $userItemObj = self::findBy(array('user_id' => $this->userId, 'id' => $this->item_id), $pdo, TRUE);
+        $userItemObj = Model_UserItem::findBy(array('user_id' => $this->userId, 'id' => $this->item_id), $this->pdo, TRUE);
         
         if(empty($userItemObj)) {
-            throw new Exception_ApiException(ResultCode::NOT_FOUND_404, 'Item not found in database!');
+            throw new Exception_ApiException(ResultCode::NOT_FOUND, 'User item not found in database!');
         }
         
         /*

@@ -14,7 +14,7 @@ class Model_User extends Model_BaseModel {
     protected static $columnDefs = array(
         'id' => array(
             'type' => 'int',
-            'json' => false
+            'json' => true
         ),
         'user_name' => array(
             'type' => 'string',
@@ -187,7 +187,7 @@ class Model_User extends Model_BaseModel {
      */
     public function toJsonHash($additionalData = array()) {
         $userId = intval($this->id);
-        $hash = array_merge(array('id' => $userId), parent::toJsonHash());
+        $hash = parent::toJsonHash();
 
         if ($hash['profile_image'] != '') {
             $hash['profile_image'] = SERVER_HOST . '/image/user-profile/' . $userId . '?ref=' . md5($hash['profile_image']);

@@ -58,7 +58,7 @@ if (!isset($argv)) {
                 'title' => 'Data Not Found',
                 'message' => 'Requested data not found',
             ),
-            'result_code' => ResultCode::NOT_FOUND_404
+            'result_code' => ResultCode::NOT_FOUND
         ));
     });
 }

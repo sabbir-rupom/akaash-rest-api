@@ -1,5 +1,7 @@
 <?php
 
+header_remove('X-Powered-By'); 
+
 define('APP_NAME', 'RESTful API Template (Flight PHP)');
 
 define('ROOT_DIR', realpath(__DIR__));
