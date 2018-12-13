@@ -1,34 +1,28 @@
 <?php
+
 /**
- * 配列に関する処理をまとめたユーティリティクラス.
+ * A utility class that summarizes processing related to arrays
  *
  */
-class Common_Util_ArrayUtil
-{
+class Common_Util_ArrayUtil {
+
     /**
-     * 配列の要素を指定し、データを取得する。
+     * Specify elements of the array and acquire data
      *
-     * 取得できる場合はkeyの中に含まれるデータを取得する。
+     * If it is possible to acquire the data contained in the key.
      *
      * @param string $key
      * @param array $array
      * @param unknown_type $defaultValue
      */
-    public static function getArrayValue($key, $array, $defaultValue = null)
-    {
+    public static function getArrayValue($key, $array, $defaultValue = null) {
         if (!array_key_exists($key, $array)) {
-
-            if (!is_null($defaultValue)) {
-                return $defaultValue;
-            }
-
-            return null;
+            return $defaultValue;
         }
         return $array[$key];
     }
 
-    public static function searchPrefixValue($prefix, array $array)
-    {
+    public static function searchPrefixValue($prefix, array $array) {
         foreach ($array as $key => $value) {
             if (strpos($value, $prefix) !== false) {
                 return $key;
@@ -38,15 +32,14 @@ class Common_Util_ArrayUtil
     }
 
     /**
-     * 配列のインデックスを0から振りなおす。
-     * value値にnullがセットされている場合、配列から削除される。
+     * Rewind array index from 0
+     * If the value value is set to null, it is removed from the array
      *
      * @access public
-     * @param array $arrayData 対象配列
+     * @param array $arrayData Target sequence
      */
-    public static function trimArray($arrayData)
-    {
-        // 対象配列が空かnullだったらそのまま返す
+    public static function trimArray($arrayData) {
+        // If the target array is empty or null, return it as it is
         if (empty($arrayData)) {
             return $arrayData;
         }
@@ -65,15 +58,14 @@ class Common_Util_ArrayUtil
     }
 
     /**
-     * ベースとなる配列の指定されたインデックスに要素を追加する.
+     * Add an element to the specified index of the base array
      *
      * @param array $array
      * @param array $element
      * @param int $index
      * @return array
      */
-    public static function add(array &$array, array $element, $index = null)
-    {
+    public static function add(array &$array, array $element, $index = null) {
 
         if ($index === null) {
             $index = count($array);

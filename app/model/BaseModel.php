@@ -13,17 +13,15 @@ abstract class Model_BaseModel {
     const HAS_UPDATED_AT = TRUE;
     // Created_at whether the column exists. Be overridden by the implementation class, if necessary.
     const HAS_CREATED_AT = TRUE;
-    // Created_on whether the column exists. Be overridden by the implementation class, if necessary.
-    const HAS_CREATED_ON = FALSE;
 
     // Cache the column name list on the db
     private static $columnsOnDB = null;
 
     /**
-     * ID Specify to retrieve records from the database.
-     * @param mixed $id ID
+     * Retrieve records by table ID from the database.
+     * @param mixed $id Table row ID
      * @param PDO $pdo Database connection object
-     * @param boolean $forUpdate Whether to update the query.
+     * @param boolean $forUpdate Whether to update the query result
      * @return Model_User Object
      */
     public static function find($id, $pdo = null, $forUpdate = FALSE) {
@@ -46,7 +44,7 @@ abstract class Model_BaseModel {
      * Based on the specified conditions, return to get only one record from the database.
      * @param array $params Column name the key, associative array whose value is the value to use for the search.
      * @param PDO $pdo Database connection object
-     * @param boolean $forUpdate Whether to update the query.
+     * @param boolean $forUpdate Whether to update the query result
      * @return Search result object.
      */
     public static function findBy($params, $pdo = null, $forUpdate = FALSE) {
@@ -55,7 +53,6 @@ abstract class Model_BaseModel {
         }
         list($conditionSql, $values) = self::constructQuery($params, null, null, $forUpdate);
         $sql = "SELECT * FROM " . static::TABLE_NAME . $conditionSql;
-        //Common_Util_LogUtil::getApplicationLogger()->debug($sql, Zend_Log::DEBUG);
         
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
@@ -72,7 +69,7 @@ abstract class Model_BaseModel {
      * @param string $order SQL ORDER BY column, associative array whose value is Direction and key is Column
      * @param array $limitArgs SQL LIMIT value
      * @param PDO $pdo Database connection object
-     * @param boolean $forUpdate Whether to update the query.
+     * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
     public static function findAllBy($params, $order = null, $limitArgs = null, $pdo = null, $forUpdate = FALSE) {
@@ -90,10 +87,11 @@ abstract class Model_BaseModel {
     }
 
     /**
-     * 指定した条件にマッチするレコード数を返す.
-     * @param array $params カラム名をキー、検索に使う値を値とする連想配列.
-     * @param PDO $pdo トランザクション内で実行するときは、PDOオブジェクトを指定すること.
-     * @return レコード数.
+     * Returns the number of records matching the specified condition
+     * @param array $params Associative array with column name as key, value as search value.
+     * @param PDO $pdo When executing within a transaction, specify the PDO object.
+     * @param bool $highPerformanceFlag to count the number of records in table
+     * @return Number of records
      */
     public static function countBy($params = array(), $pdo = null, $highPerformanceFlag = false) {
         if ($pdo == null) {
@@ -171,22 +169,18 @@ abstract class Model_BaseModel {
         if (is_null($pdo)) {
             $pdo = Flight::pdo();
         }
-        // SQL Building.
+        // Prepare SQL
         list($columns, $values) = $this->getValues();
 
-        $now = Common_Util_Utils::timeToStr(time());
-        // Common_Util_LogUtil::getApplicationLogger()->log("columns = " . count($columns) , Zend_Log::DEBUG);
+        $now = Common_Util_DateUtil::getToday();
         $sql = 'INSERT INTO ' . static::TABLE_NAME . ' (' . join(',', $columns);
-        $sql .= (static::HAS_CREATED_ON === TRUE ? ',created_on' : '');
         $sql .= (static::HAS_CREATED_AT === TRUE ? ',created_at' : '');
         $sql .= (static::HAS_UPDATED_AT === TRUE ? ',updated_at' : '');
         $sql .= ') VALUES (' . str_repeat('?,', count($columns) - 1) . '?';
-        $sql .= (static::HAS_CREATED_ON === TRUE ? ',CURRENT_DATE()' : '');
         $sql .= (static::HAS_CREATED_AT === TRUE ? ",'" . $now . "'" : '');
         $sql .= (static::HAS_UPDATED_AT === TRUE ? ",'" . $now . "'" : '');
         $sql .= ')';
         // INSERT data
-        //$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $pdo->prepare($sql);
         $result = $stmt->execute($values);
         $this->id = $pdo->lastInsertId();
@@ -204,8 +198,8 @@ abstract class Model_BaseModel {
         if (is_null($pdo)) {
             $pdo = Flight::pdo();
         }
-        // SQLを構築.
-        list($columns, $values) = $this->getValuesForUpdate();
+        // Preparing SQL
+        list($columns, $values) = $this->getValues();
         $sql = 'UPDATE ' . static::TABLE_NAME . ' SET ';
         $setStmts = array();
         foreach ($columns as $column) {
@@ -217,22 +211,22 @@ abstract class Model_BaseModel {
         }
         $sql .= ' WHERE id = ?';
         $stmt = $pdo->prepare($sql);
-        //echo $sql;
         $result = $stmt->execute(array_merge($values, array($this->id)));
         return $result;
     }
 
     /**
-     * オブジェクトを削除する.
+     * Delete the object of specific row ID from table
      * @param PDO $pdo
      */
     public function delete($pdo = null) {
         if (!isset($this->id)) {
-            throw new Exception('The ' . get_called_class() . ' is not saved yet.');
+            throw new Exception('The ' . get_called_class() . ' is not initiated properly.');
         }
         if (is_null($pdo)) {
-            $pdo = Common_Util_DatabaseUtil::getConnectionForWrite();
+            $pdo = Flight::pdo();
         }
+        
         $stmt = $pdo->prepare('DELETE FROM ' . static::TABLE_NAME . ' WHERE id = ?');
         $stmt->bindParam(1, $this->id);
         $result = $stmt->execute();
@@ -240,9 +234,10 @@ abstract class Model_BaseModel {
     }
 
     /**
-     * $columns に対応する値の配列を返す.
-     * インスタンスにセットされていない属性は含めない(デフォルト値を使用する場合のため).
-     * @return array カラムの配列、値の配列からなる配列.
+     * $columns Return an array of values corresponding to
+     * Do not include attributes that are not set in the instance 
+     * [ id model class does not include attributes in the DB column definition, they will not be executed, only default values will be ]
+     * @return array An array consisting of an array of columns, an array of values
      */
     protected function getValues() {
         $values = array();
@@ -252,20 +247,6 @@ abstract class Model_BaseModel {
                 $columns[] = $column;
                 $values[] = $this->$column;
             }
-        }
-        return array($columns, $values);
-    }
-
-    /**
-     * $columns に対応する値の配列を返す.
-     * @return array カラムの配列、値の配列からなる配列.
-     */
-    protected function getValuesForUpdate() {
-        $values = array();
-        $columns = array();
-        foreach (static::getColumns() as $column) {
-            $columns[] = $column;
-            $values[] = $this->$column;
         }
         return array($columns, $values);
     }
@@ -282,7 +263,7 @@ abstract class Model_BaseModel {
     }
 
     /**
-     * To get the column list of the table of the db
+     * To get the column list of the database table
      */
     protected static function getColumnsOnDB($pdo = null) {
         if (self::$columnsOnDB == null) {
@@ -298,7 +279,7 @@ abstract class Model_BaseModel {
     }
 
     /**
-     * To check whether there is a column name
+     * To check whether there is a column name both in database and model class definition
      * */
     public static function hasColumn($name) {
 
@@ -306,14 +287,17 @@ abstract class Model_BaseModel {
                 in_array($name, static::getColumns()));
     }
 
-    public static function hasColumn2($name) {
+    /**
+     * To check whether there is a column in model class column definition
+     * */
+    public static function hasColumnDefined($name) {
 
         return (in_array($name, static::getColumns()));
     }
 
     /**
      * Returns the type of column.
-     * @param String $ column target column name.
+     * @param String $ column target column name defined in model class
      */
     protected static function getColumnType($column) {
         return static::$columnDefs[$column]['type'];
@@ -380,7 +364,6 @@ abstract class Model_BaseModel {
     public static function deleteCache($cacheKey) {
         $memcache = Common_Util_KeyValueStoreUtil::getMemcachedClient();
         $value = $memcache->delete($cacheKey);
-        //Common_Util_LogUtil::getApplicationLogger()->debug("delete cache " . $cacheKey, Zend_Log::DEBUG);
         return $value;
     }
 
@@ -391,18 +374,30 @@ abstract class Model_BaseModel {
         return Common_Util_ConfigUtil::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
     }
 
-    public static function generateRandomString($length = 5) {
-        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+     /**
+     * Based on specified criteria, returns specific items of the records from the database.
+     * @param array $columns Column names are values which will be returned in result only 
+     * @param array $params Column name the key, associative array whose value is the value to use for the search.
+     * @param string $order SQL ORDER BY column, associative array whose value is Direction and key is Column
+     * @param array $limitArgs SQL LIMIT value
+     * @param PDO $pdo Database connection object
+     * @param boolean $forUpdate Whether to update the query result
+     * @return PDO PDO fetch class object
+     */
+    public static function getColumnSpecificData($columns, $params, $order = null, $limitArgs = null, $pdo = null) {
+        if ($pdo == null) {
+            $pdo = Flight::pdo();
         }
-        return $randomString;
-    }
-
-    public static function getColumnSpecificData($table, $column, $pdo = null) {
         
+        list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);     
+        
+        $sql = "SELECT ". implode(',', $columns)." FROM " . static::TABLE_NAME . $conditionSql;
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute($values);
+        $objs = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        return $objs;
     }
 
 }
