@@ -169,12 +169,12 @@ class BaseClass {
          * Check and verify client request call / User session
          */
         $this->_filter();
-
+        
         if (static::LOGIN_REQUIRED) {
             $this->cache_user = Model_User::cache_or_find($this->userId, $this->pdo);
 
             if (empty($this->cache_user)) {
-                throw new Api_Exception(Result_code::USER_NOT_FOUND, 'Session user not found');
+                throw new Exception_ApiException(ResultCode::USER_NOT_FOUND, 'Session user not found');
             }
 
             $this->cache_user->last_api_time = Common_Util_DateUtil::getToday();
@@ -183,7 +183,6 @@ class BaseClass {
              */
             $this->cache_user->update($this->pdo, FALSE);
         }
-
         /*
          * Fetch and check GET query strings
          */

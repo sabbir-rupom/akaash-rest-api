@@ -66,5 +66,29 @@ class Model_UserItem extends Model_BaseModel {
 
         return $userItemObj;
     }
+    
+    /**
+     * Get all item list available in database
+     * @param string $itemName Item name to be searched
+     * @param obj $pdo
+     * @return array $result Array of item list
+     */
+    public static function getAllItems($itemName = '', $pdo = null) {
+        if (null === $pdo) {
+            $pdo = Flight::pdo();
+        }
+        
+        $sql = "SELECT item_name, count(item_name) AS count FROM " . self::TABLE_NAME
+                . ($itemName != '' ? " WHERE item_name like '%?%' " : " ") 
+                ."GROUP BY item_name ORDER BY item_name ASC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(1, $itemName);
+        $stmt->setFetchMode(PDO::FETCH_OBJ);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        
+        return $result;
+    }
 
 }

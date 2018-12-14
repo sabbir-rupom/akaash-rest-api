@@ -149,8 +149,8 @@ class Model_User extends Model_BaseModel {
     public static function retrieveSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
         $memcache = Common_Util_KeyValueStoreUtil::getUserSessionMemcachedClient();
-        $userId = $memcache->get($sessionKey);
-        return $userId;
+        $sessionId = $memcache->get($sessionKey);
+        return $sessionId;
     }
 
     /**
@@ -208,7 +208,7 @@ class Model_User extends Model_BaseModel {
      * @return Model_User
      */
     public static function cache_or_find($userId, $pdo = null) {
-        $user = parent::getCache($userId);
+        $user = parent::getCache(Model_CacheKey::getUserKey($userId));
         
         if ($user == FALSE) {
             //user not in cache, refreshing cache
@@ -225,7 +225,7 @@ class Model_User extends Model_BaseModel {
      */
     public static function refreshCache($userId, $pdo = null) {
         $user = self::find($userId, $pdo, TRUE);
-        parent::setCache($userId, $user);
+        parent::setCache(Model_CacheKey::getUserKey($userId), $user);
         return $user;
     }
 

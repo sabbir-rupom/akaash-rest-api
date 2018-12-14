@@ -40,7 +40,7 @@ class GetUserInfo extends BaseClass {
         }
 
         if (empty($user)) {
-            throw new Api_Exception(Result_code::USER_NOT_FOUND, 'Session user not found');
+            throw new Exception_ApiException(ResultCode::USER_NOT_FOUND, 'Session user not found');
         }
 
         return array(
