@@ -62,6 +62,7 @@ class BaseClass {
 
         /*
          * Get Configuration Parameters
+         * template_api_user_ses_2 template_api_users_2
          */
         $this->config = Flight::get('app_config');
 

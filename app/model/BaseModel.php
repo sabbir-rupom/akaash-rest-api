@@ -366,8 +366,7 @@ abstract class Model_BaseModel {
      */
     public static function deleteCache($cacheKey) {
         $memcache = Common_Util_KeyValueStoreUtil::getMemcachedClient();
-        $value = $memcache->delete($cacheKey);
-        return $value;
+        $memcache->delete($cacheKey);
     }
 
     /**
