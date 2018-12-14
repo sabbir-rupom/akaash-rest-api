@@ -4,7 +4,7 @@
  * A utility class that summarizes processing related to arrays
  *
  */
-class Common_Util_ArrayUtil {
+class Common_ArrayUtil {
 
     /**
      * Specify elements of the array and acquire data

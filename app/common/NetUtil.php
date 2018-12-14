@@ -6,7 +6,7 @@
  * A utility class that summarizes the processing on the network
  *
  */
-class Common_Util_NetUtil {
+class Common_NetUtil {
 
     /**
      * Return the requested OS type

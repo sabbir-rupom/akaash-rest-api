@@ -24,7 +24,7 @@ class Controller {
     public static function init($name, $method) {
         $data = null;
         try {
-            self::$apiName = Common_Util_Utils::camelize($name); // prepare api controller from request url call
+            self::$apiName = Common_Utils::camelize($name); // prepare api controller from request url call
             self::$getParams = $_GET;
             self::$headers = getallheaders();
 
@@ -67,7 +67,7 @@ class Controller {
                 header("HTTP/1.0 " . ResultCode::getHTTPstatusCode($e->getCode()) . " " . ResultCode::getTitle($e->getCode()));
                 $result = array(
                     'result_code' => $e->getCode(),
-                    'time' => Common_Util_DateUtil::getToday(),
+                    'time' => Common_DateUtil::getToday(),
                     'error' => array(
                         'title' => ResultCode::getTitle($e->getCode()),
                         'msg' => empty($e->getMessage()) ? ResultCode::getMessage($e->getCode()) : $e->getMessage()
@@ -77,7 +77,7 @@ class Controller {
                 header("HTTP/1.0 " . ResultCode::getHTTPstatusCode(ResultCode::UNKNOWN_ERROR) . " " . ResultCode::getTitle(ResultCode::UNKNOWN_ERROR));
                 $result = array(
                     'result_code' => ResultCode::UNKNOWN_ERROR,
-                    'time' => Common_Util_DateUtil::getToday(),
+                    'time' => Common_DateUtil::getToday(),
                     'error' => array(
                         'title' => ResultCode::getTitle(ResultCode::UNKNOWN_ERROR),
                         'msg' => ResultCode::getMessage(ResultCode::UNKNOWN_ERROR)

@@ -6,7 +6,7 @@
  * A utility class that summarizes the processing related to Date..
  *
  */
-class Common_Util_DateUtil {
+class Common_DateUtil {
 
     /**
      * Insert the current time with DateTime type when storing it in MySQL.。

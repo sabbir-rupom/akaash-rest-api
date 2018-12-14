@@ -4,149 +4,51 @@
 
 class Config_Config {
 
-    protected static $_configClassName = "Config_Config";
-    protected static $_singleton = null;
-    // config file
+    // store config parameters
     protected $_config = null;
+    private static $_memcachedClient = null;
 
     /**
      * constructor
      */
-    public function __construct($platformType = null) {
-        // Automatically load when no platform type is specified
-        if (null === $platformType) {
-            $this->_autoSelectConfig();
-            return true;
-        }
-
-        $this->_selectConfig($platformType);
-    }
-
-    /**
-     * Change the setting file to be read automatically
-     */
-    protected function _autoSelectConfig() {
-        $platformType = Common_Util_NetUtil::getHttpRequestPlatformType();
-        return $this->_selectConfig($platformType);
-    }
-
-    /**
-     * Read the configuration file of the platform passed as an argument
-     *
-     * @param string $platformType
-     * @throws Exception_ApiException
-     */
-    protected function _selectConfig($platformType = null) {
-        $this->_config = $this->_loadConfig('config_app.ini');
-
-        switch ($platformType) {
-            case Const_Application::PLATFORM_TYPE_ANDROID:
-                $this->_getLoadAnroidConfig();
-                break;
-            case Const_Application::PLATFORM_TYPE_IOS:
-                $this->_getLoadIosConfig();
-                break;
-            default:
-                $this->_getLoadAnroidConfig();
-                break;
-        }
-    }
-
-    /**
-     * Load Android configuration file
-     */
-    private function _getLoadAnroidConfig() {
-        /*
-         * Load any configuration file specifically for Android
-         */
-    }
-
-    /**
-     * Read iOS configuration file
-     */
-    private function _getLoadIosConfig() {
-        /*
-         * Load any configuration file specifically for iOS
-         */
-    }
-
-    /**
-     * Application Config
-     */
-    private function _loadConfig($fileName) {
-        if (defined('CONFIG_DIR') && file_exists(CONFIG_DIR . "/" . $fileName)) {
-            return parse_ini_file(CONFIG_DIR . "/" . $fileName);
-        }
-
-        return array();
-    }
-
-    public static function setConfigClassName($configClassName) {
-        self::$_configClassName = $configClassName;
-    }
-
-    /**
-     * Load prescribed config
-     *
-     * @param unknown $platform
-     */
-    public static function setDefaultConfig($platform) {
-        self::$_singleton = self::getInstance($platform);
-    }
-
-    /**
-     *
-     * @param string $platform
-     * @return Config_Config
-     */
-    public static function getInstance($platform = null) {
-        if ($platform !== null) {
-
-            return new self::$_configClassName($platform);
-        }
-
-        if (self::$_singleton !== null) {
-            return self::$_singleton;
-        }
-
-        self::$_singleton = new self::$_configClassName();
-
-        return self::$_singleton;
+    public function __construct() {
+        // Load application config file
+        $this->_config = Flight::get('app_config');
     }
 
     /**
      * Read Database Host Name
      */
     public function getDatabaseHostName() {
-        return $this->_config['MYSQL_READ_CONNECTION'];
+        return $this->_config['DB_HOST'];
     }
 
     /**
      * Read Database Access Name
      */
     public function getDatabaseName() {
-        return $this->_config['MYSQL_DB_NAME'];
+        return $this->_config['DB_NAME'];
     }
 
     /**
      * Read Database User Name
      */
     public function getDatabaseUser() {
-        return $this->_config['MYSQL_USER'];
+        return $this->_config['DB_USER'];
     }
 
     /**
      * Read Database Access Password
      */
     public function getDatabasePassword() {
-        return $this->_config['MYSQL_PASSWORD'];
+        return $this->_config['DB_PASSWORD'];
     }
 
     /**
      * Read Database Access Port
      */
     public function getDatabasePort() {
-        return $this->_config['MYSQL_PORT'];
+        return $this->_config['DB_PORT'];
     }
 
     /**
@@ -157,34 +59,13 @@ class Config_Config {
     }
 
     /**
-     * Client Support Version
+     * Request Token secret Key
      */
-//    public function isSupportClientVersion($clientVersion) {
-//        if (null === $clientVersion) {
-//            return false;
-//        }
-//
-//        $key = 'REQUEST_TOKEN_SECRET_' . $clientVersion;
-//
-//        if (array_key_exists($key, $this->_game)) {
-//            return true;
-//        }
-//
-//        return false;
-//    }
-
-    /**
-     * Request hash's secret Key
-     */
-    public function getRequestTokenSecret($clientVersion = null) {
-        if (null === $clientVersion) {
-            return null;
-        }
-
-//        $key = 'REQUEST_TOKEN_SECRET_' . $clientVersion;
+    public function getRequestTokenSecret() {
+//     $key = 'REQUEST_TOKEN_SECRET_' . $clientVersion;
         $key = 'REQUEST_TOKEN_SECRET';
 
-        if (array_key_exists($key, $this->_game)) {
+        if (array_key_exists($key, $this->_config)) {
             return $this->_config[$key];
         }
 
@@ -192,20 +73,20 @@ class Config_Config {
     }
 
     /**
-     * Whether the virtual KVS mode or not
+     * Whether the Local Cache mode ON or OFF
      */
-    public function isLocalKvs() {
-        if (array_key_exists("LOCAL_KVS_FLAG", $this->_config) && $this->_config["LOCAL_KVS_FLAG"] === '1') {
+    public function isLocalCache() {
+        if (array_key_exists("LOCAL_CACHE_FLAG", $this->_config) && $this->_config["LOCAL_CACHE_FLAG"] === '1') {
             return true;
         }
         return false;
     }
 
     /**
-     * Virtual KVS file path
+     * Local Cache file path
      */
-    public function getLocalKvsPath() {
-        return $this->_config["LOCAL_KVS_PATH"];
+    public function getLocalCachePath() {
+        return $this->_config["LOCAL_CACHE_PATH"];
     }
 
     public function checkProductionEnvironment() {
@@ -217,13 +98,13 @@ class Config_Config {
     /**
      * Load Memcache configuration
      */
-    public function getMemcachedServerDto() {
+    public function getMemcachedServer() {
         // If it exists, return it as is.
         if (!is_null($this->_memcachedServerInstance)) {
             return $this->_memcachedServerInstance;
         }
 
-        $memcachedServerDto = new Common_Kvs_MemcachedServerDto();
+        $memcachedServerDto = new Common_MemcachedServer();
         if (isset($this->_config['MEMCACHED_HOST'])) {
             $memcachedServerDto->host = $this->_config['MEMCACHED_HOST'];
         }
@@ -232,6 +113,30 @@ class Config_Config {
         }
         $this->_memcachedServerInstance = $memcachedServerDto;
         return $this->_memcachedServerInstance;
+    }
+
+    public static function getMemcachedClient() {
+
+        if (null !== self::$_memcachedClient) {
+            return self::$_memcachedClient;
+        }
+
+        $config = New Config_Config();
+
+        if (true == $config->isLocalCache()) {
+
+            $localFileClient = new Common_Kvs_KvsLocalFileClient($config->getLocalCachePath());
+
+            self::$_memcachedClient = $localFileClient;
+            return $localFileClient;
+        }
+
+        $memCachedClient = $config->getMemcachedServer();
+        $memCachedClient->addServer();
+
+        self::$_memcachedClient = $memCachedClient;
+
+        return $memCachedClient;
     }
 
     /**
@@ -326,6 +231,10 @@ class Config_Config {
             return true;
         }
         return false;
+    }
+    
+    public static function getClassInstance() {
+        return new Config_Config;
     }
 
 }

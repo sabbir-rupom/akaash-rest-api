@@ -172,7 +172,7 @@ abstract class Model_BaseModel {
         // Prepare SQL
         list($columns, $values) = $this->getValues();
 
-        $now = Common_Util_DateUtil::getToday();
+        $now = Common_DateUtil::getToday();
         $sql = 'INSERT INTO ' . static::TABLE_NAME . ' (' . join(',', $columns);
         $sql .= (static::HAS_CREATED_AT === TRUE ? ',created_at' : '');
         $sql .= (static::HAS_UPDATED_AT === TRUE ? ',updated_at' : '');

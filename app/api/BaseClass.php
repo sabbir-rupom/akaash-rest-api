@@ -178,7 +178,7 @@ class BaseClass {
                 throw new Exception_ApiException(ResultCode::USER_NOT_FOUND, 'Session user not found');
             }
 
-            $this->cache_user->last_api_time = Common_Util_DateUtil::getToday();
+            $this->cache_user->last_api_time = Common_DateUtil::getToday();
             /*
              * Update user's active time without updating cache
              */

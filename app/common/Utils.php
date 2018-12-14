@@ -5,7 +5,7 @@
 /**
  * Utility class
  */
-class Common_Util_Utils {
+class Common_Utils {
 
     /**
      * Convert a string to CamelCase
