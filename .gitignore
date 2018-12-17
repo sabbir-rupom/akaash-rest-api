@@ -1,3 +1,5 @@
 .htaccess
 app/config/config_app.ini
 *.dat
+*.cache.php
+nbproject/

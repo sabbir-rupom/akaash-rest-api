@@ -125,7 +125,7 @@ class Config_Config {
 
         if (true == $config->isLocalCache()) {
 
-            $localFileClient = new Common_Kvs_KvsLocalFileClient($config->getLocalCachePath());
+            $localFileClient = new Common_FileCacheClient($config->getLocalCachePath());
 
             self::$_memcachedClient = $localFileClient;
             return $localFileClient;

@@ -22,14 +22,10 @@ class Common_MemcachedServer {
     }
 
     public function get($key) {
-        $this->_checkKey($key);
-
         return $this->connection->get($key);
     }
 
     public function put($key, $value, $limit = 0) {
-        $this->_checkKey($key);
-
         $this->connection->set($key, $value, false, $limit);
     }
 
@@ -43,8 +39,6 @@ class Common_MemcachedServer {
     }
 
     public function remove($key) {
-        $this->_checkKey($key);
-
         $this->connection->delete($key, 0);
     }
 
@@ -61,14 +55,4 @@ class Common_MemcachedServer {
         return $this->connection->flush();
     }
 
-
-    public function getPrefixKeyArray($prefix, $limit) {
-        
-    }
-
-
-    private function _checkKey($key) {
-
-
-    }
 }
