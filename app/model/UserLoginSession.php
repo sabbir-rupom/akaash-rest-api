@@ -59,7 +59,7 @@ class Model_UserLoginSession extends Model_BaseModel {
             $pdo = Flight::pdo();
         }
 
-        $userSession = self::findBy(array('user_id' => $userId, 'DATE(created_at)' => Common_Util_DateUtil::getToday('Y-m-d')), $pdo, TRUE);
+        $userSession = self::findBy(array('user_id' => $userId, 'DATE(created_at)' => Common_DateUtil::getToday('Y-m-d')), $pdo, TRUE);
 
         if (empty($userSession)) {
             $userSession = new Model_UserLoginSession();

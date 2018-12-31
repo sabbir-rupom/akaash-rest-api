@@ -14,7 +14,7 @@ class Model_CacheKey {
      * @return Cache key
      */
     public static function getUserSessionKey($userId) {
-        return Common_Util_ConfigUtil::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
+        return Config_Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
     }
 
     /**
@@ -24,7 +24,7 @@ class Model_CacheKey {
      * @return Cache key
      */
 //    public static function getSessionResolveKey($sessionId) {
-//        return Common_Util_ConfigUtil::getInstance()->getMemcachePrefix() . 'user_ses_resolv_' . $sessionId;
+//        return Config_Config::getInstance()->getMemcachePrefix() . 'user_ses_resolv_' . $sessionId;
 //    }
 
     /**
@@ -34,7 +34,7 @@ class Model_CacheKey {
      * @return Cache key
      */
     public static function getUserKey($userId) {
-        return Common_Util_ConfigUtil::getInstance()->getMemcachePrefix() . 'users_' . $userId;
+        return Config_Config::getInstance()->getMemcachePrefix() . 'users_' . $userId;
     }
 
 }

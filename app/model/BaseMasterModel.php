@@ -21,7 +21,7 @@ abstract class Model_BaseMasterModel extends Model_BaseModel {
     public static function getAll() {
         $key = static::getAllKey();
         // To connect to Memcached, to get the value.
-        $memcache = Common_Util_KeyValueStoreUtil::getMemcachedClient();
+        $memcache = Config_Config::getMemcachedClient();
         $value = $memcache->get($key);
         if (FALSE === $value) {
             // If the value has been set to Memcached, it is set to Memcached to retrieve from the database.

@@ -41,7 +41,7 @@ class UserLogout extends BaseClass {
 
         return array(
             'result_code' => ResultCode::SUCCESS,
-            'time' => Common_Util_DateUtil::getToday(),
+            'time' => Common_DateUtil::getToday(),
             'data' => [
                 'msg' => 'User is logged out'
             ],

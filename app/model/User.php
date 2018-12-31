@@ -106,7 +106,7 @@ class Model_User extends Model_BaseModel {
             $this->longitude = $dataArray['long'];
             $this->gender = $dataArray['gender'];
 
-            $this->last_api_time = Common_Util_DateUtil::getToday();
+            $this->last_api_time = Common_DateUtil::getToday();
 
             $this->device_token = $dataArray['d_token'];
             $this->device_model = $dataArray['d_model'];
@@ -128,7 +128,7 @@ class Model_User extends Model_BaseModel {
             if (null === $pdo) {
                 $pdo = Flight::pdo();
             }
-            $this->last_api_time = Common_Util_DateUtil::getToday();
+            $this->last_api_time = Common_DateUtil::getToday();
             $this->update($pdo);
         }
     }
@@ -138,7 +138,7 @@ class Model_User extends Model_BaseModel {
      */
 //    public static function retrieveUserIdFromSession($sessionId) {
 //        $sessionKey = Model_CacheKey::getUserSessionKey($sessionId);
-//        $memcache = Common_Util_KeyValueStoreUtil::getUserSessionMemcachedClient();
+//        $memcache = Config_Config::getMemcachedClient();
 //        $userId = $memcache->get($sessionKey);
 //        return $userId;
 //    }
@@ -148,7 +148,7 @@ class Model_User extends Model_BaseModel {
      */
     public static function retrieveSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $memcache = Common_Util_KeyValueStoreUtil::getUserSessionMemcachedClient();
+        $memcache = Config_Config::getMemcachedClient();
         $sessionId = $memcache->get($sessionKey);
         return $sessionId;
     }
@@ -169,7 +169,7 @@ class Model_User extends Model_BaseModel {
      */
     public function removeSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $session = Common_Util_KeyValueStoreUtil::getUserSessionMemcachedClient();
+        $session = Config_Config::getMemcachedClient();
         $session->remove($sessionKey);
     }
 
@@ -178,7 +178,7 @@ class Model_User extends Model_BaseModel {
      */
     public static function cacheSession($sessionId, $userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $memcache = Common_Util_KeyValueStoreUtil::getUserSessionMemcachedClient();
+        $memcache = Config_Config::getMemcachedClient();
         $memcache->set($sessionKey, $sessionId, 0, self::SESSION_DURATION_SEC);
     }
 

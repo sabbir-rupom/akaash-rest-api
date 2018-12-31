@@ -68,7 +68,7 @@ class GetOtherUsers extends BaseClass {
 
         return array(
             'result_code' => ResultCode::SUCCESS,
-            'time' => Common_Util_DateUtil::getToday(),
+            'time' => Common_DateUtil::getToday(),
             'data' => array(
                 'other_users' => $userArray,
                 'user_info' => $this->cache_user->toJsonHash()

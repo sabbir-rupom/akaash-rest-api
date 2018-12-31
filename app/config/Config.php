@@ -233,7 +233,7 @@ class Config_Config {
         return false;
     }
     
-    public static function getClassInstance() {
+    public static function getInstance() {
         return new Config_Config;
     }
 

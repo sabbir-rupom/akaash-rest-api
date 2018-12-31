@@ -17,9 +17,10 @@ class Test extends BaseClass {
      */
     public function action() {
 
-        $key = 'halaku_kha';
+        $key = 'app_test';
         $memcache = Config_Config::getMemcachedClient();
-        $memcache->set($key, 'Checking Data ' . time(), MEMCACHE_COMPRESSED, 120);
+        $memcache->flush();  // clear all cache data
+        $memcache->set($key, 'Checking Data from Memcache', MEMCACHE_COMPRESSED, 120);  // set sample cache data
 
         return array(
             'result_code' => ResultCode::SUCCESS,

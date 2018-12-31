@@ -131,7 +131,7 @@ class SaveUserInfo extends BaseClass {
 
         return array(
             'result_code' => ResultCode::SUCCESS,
-            'time' => Common_Util_DateUtil::getToday(),
+            'time' => Common_DateUtil::getToday(),
             'data' => array(
                 'user_info' => $this->user->toJsonHash()
             ),

@@ -2,12 +2,6 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of BaseClass
  *
@@ -19,7 +13,6 @@ class BaseClass {
      * User Authentication variable defined
      */
     const LOGIN_REQUIRED = FALSE;
-    const USER_DATA_REQUIRED = FALSE;
 
     protected $headers;
     protected $getParams;
@@ -138,26 +131,29 @@ class BaseClass {
      */
     protected function _checkRequestToken() {
 
-        $result = Lib_JwtToken::verify_token($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
+        if (Config_Config::getInstance()->getRequestTokenCheckFlag()) {
 
-        if ($result['error'] > 0) {
-            switch ($result['error']) {
-                case Const_Application::HASH_SIGNATURE_VERIFICATION_FAILED:
-                    throw new Exception_ApiException(ResultCode::INVALID_REQUEST_TOKEN, 'Signature Verification Error');
-                    break;
-                case Const_Application::EMPTY_TOKEN:
-                    throw new Exception_ApiException(ResultCode::INVALID_REQUEST_TOKEN, 'Token is empty');
-                    break;
-                default :
-                    throw new Exception_ApiException(ResultCode::UNKNOWN_ERROR, 'Unexpected token error has been found');
-                    break;
-            }
-        } else {
-            /*
-             * Retrieve session ID from payload if exist
-             */
-            if (!empty($result['data']->session_id)) {
-                $this->sessionId = $result['data']->session_id;
+            $result = Lib_JwtToken::verify_token($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
+            
+            if ($result['error'] > 0) {
+                switch ($result['error']) {
+                    case Const_Application::HASH_SIGNATURE_VERIFICATION_FAILED:
+                        throw new Exception_ApiException(ResultCode::INVALID_REQUEST_TOKEN, 'Signature Verification Error');
+                        break;
+                    case Const_Application::EMPTY_TOKEN:
+                        throw new Exception_ApiException(ResultCode::INVALID_REQUEST_TOKEN, 'Token is empty');
+                        break;
+                    default :
+                        throw new Exception_ApiException(ResultCode::UNKNOWN_ERROR, 'Unexpected token error has been found');
+                        break;
+                }
+            } else {
+                /*
+                 * Retrieve session ID from payload if exist
+                 */
+                if (!empty($result['data']->session_id)) {
+                    $this->sessionId = $result['data']->session_id;
+                }
             }
         }
     }
@@ -170,7 +166,7 @@ class BaseClass {
          * Check and verify client request call / User session
          */
         $this->_filter();
-        
+
         if (static::LOGIN_REQUIRED) {
             $this->cache_user = Model_User::cache_or_find($this->userId, $this->pdo);
 
@@ -299,7 +295,7 @@ class BaseClass {
         } else {
             switch ($type) {
                 case 'int':
-                    $result = Common_Util_Utils::isInt($value);
+                    $result = Common_Utils::isInt($value);
                     break;
                 case 'bool':
                     $result = is_bool($value);

@@ -84,7 +84,7 @@ class Controller {
                     )
                 );
             }
-            if (Common_Util_ConfigUtil::getInstance()->isErrorDump()) {
+            if (Config_Config::getInstance()->isErrorDump()) {
                 /*
                  * Additional error messages 
                  * For developers debug purpose

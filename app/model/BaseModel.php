@@ -207,7 +207,7 @@ abstract class Model_BaseModel {
         }
         $sql .= join(',', $setStmts);
         if (static::HAS_UPDATED_AT === TRUE) {
-            $sql .= ",updated_at='" . Common_Util_Utils::timeToStr(time()) . "'";
+            $sql .= ",updated_at='" . Common_DateUtil::getToday() . "'";
         }
         $sql .= ' WHERE id = ?';
         $stmt = $pdo->prepare($sql);
@@ -344,7 +344,7 @@ abstract class Model_BaseModel {
      * @param unknown_type $key
      */
     public static function getCache($cacheKey) {
-        $memcache = Common_Util_KeyValueStoreUtil::getMemcachedClient();
+        $memcache = Config_Config::getMemcachedClient();
         return $memcache->get($cacheKey);
     }
 
@@ -354,7 +354,7 @@ abstract class Model_BaseModel {
      * @param unknown_type $value
      */
     public static function setCache($cacheKey, $value) {
-        $memcache = Common_Util_KeyValueStoreUtil::getMemcachedClient();
+        $memcache = Config_Config::getMemcachedClient();
         $call_class = get_called_class();
         $ret_value = $memcache->set($cacheKey, $value, MEMCACHE_COMPRESSED, $call_class::MEMCACHED_EXPIRE);
         return $ret_value;
@@ -365,7 +365,7 @@ abstract class Model_BaseModel {
      * @param unknown_type $key
      */
     public static function deleteCache($cacheKey) {
-        $memcache = Common_Util_KeyValueStoreUtil::getMemcachedClient();
+        $memcache = Config_Config::getMemcachedClient();
         $memcache->delete($cacheKey);
     }
 

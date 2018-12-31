@@ -12,7 +12,7 @@ define('CONFIG_DIR', APP_DIR . '/config');
 /*
  * Server Host URL
  */
-define('SERVER_HOST', (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . '/flight');
+define('SERVER_HOST', (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST']);
 
 require 'flight/Flight.php';
 
