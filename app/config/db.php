@@ -16,9 +16,10 @@ Flight::register('pdo', 'PDO', array("mysql:host={$db_host};dbname={$db_name};ch
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if (DB_SET_TIMEZONE == 1) {
-        $db_timezone = DB_TIMEZONE;
+        $db_timezone = (new DateTime('now', new DateTimeZone(DB_TIMEZONE)))->format('P'); // 
     } else {
         $db_timezone = (new DateTime('now', new DateTimeZone(date_default_timezone_get())))->format('P'); // 
     }
+    
     $pdo->exec("SET time_zone='{$db_timezone}';");
 });

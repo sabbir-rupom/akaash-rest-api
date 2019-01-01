@@ -23,7 +23,10 @@ class Test extends BaseClass {
          */
         $key = 'app_test';
         $memcache = Config_Config::getMemcachedClient();
-        $memcache->flush();  // clear all cache data
+        /*
+         * clear all existing cache data
+         */
+        $memcache->flush();  
         $memcache->set($key, 'Checking Data from Memcache', MEMCACHE_COMPRESSED, 120);  // set sample cache data
         
         /*
