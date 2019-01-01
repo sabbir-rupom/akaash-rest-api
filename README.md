@@ -1,33 +1,48 @@
-# rest-api-flight
-RESTful API template based on flight-PHP framework 
+# REST-API (flight-PHP)
+A RESTful API template based on flight-PHP framework 
+
+**NOTE:** This template is based on my recent API development experiences. I will not boast that its a very good template, 
+this project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
+along with some help with third party PHP libraries so that young developers may find this project helpful to their Rest-API development and learning curve. 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+This project includes both file cache system and memcache system, along with JWT authentication process.
 
-### Prerequisites
+For testing purposes, I have added some database sample in `/resource` folder; 
+and added some custom API along with a `/console` webform to communicate those API.
 
-What things you need to install the software and how to install them
+### System Requirements
 
+`PHP 5.6` or greater. Some prerequisite modules are:
 ```
-Give examples
+pdo memcache pdo_mysql gd gmp
 ```
+
+`MySQL 5.6` or greater.
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+For windows (version 10), if you have xampp installed, steps are as follows
 
-Say what the step will be
-
+* Clone the repository or download zip then extract in a folder [e.g rest-api] under htdocs 
+* Create a virtual host. Go to `xampp\apache\conf\extra\` and open file `httpd-vhosts.conf`. Then write a similar configuration as follows:
 ```
-Give the example
+<VirtualHost *:80>
+	DocumentRoot "C:/Xampp/htdocs/rest-api"
+	ServerName rest-api.test
+	<Directory "C:/Xampp/htdocs/rest-api">
+		Order allow,deny
+		Allow from all
+	</Directory>
+</VirtualHost>
 ```
-
-And repeat
-
+* Add your vhost information and point to the localhost IP. Go to `Windows\System32\drivers\etc` and open file `hosts` with admin permission. Then append a similar line as follows:
 ```
-until finished
+127.0.0.1	rest-api.test
 ```
+* Restart your apache server [Note: change your php.ini file if any module is missing. Check the apache logs if you get any unknown error]
+* Go to the `app\config` directory inside your project folder. 
 
 End with an example of getting some data out of the system or using it for a little demo
 
