@@ -55,7 +55,7 @@ class Config_Config {
      * Read Server Log File path
      */
     public function getLogFile() {
-        return $this->_config['LOG_FILE'];
+        return $this->_config['LOG_FILE_PATH'];
     }
 
     /**
@@ -77,6 +77,16 @@ class Config_Config {
      */
     public function isLocalCache() {
         if (array_key_exists("LOCAL_CACHE_FLAG", $this->_config) && $this->_config["LOCAL_CACHE_FLAG"] === '1') {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Whether the Local Cache mode ON or OFF
+     */
+    public function isLogEnable() {
+        if (array_key_exists("APPLICATION_LOG", $this->_config) && $this->_config["APPLICATION_LOG"] === '1') {
             return true;
         }
         return false;
@@ -218,7 +228,7 @@ class Config_Config {
      *
      * @return boolean
      */
-    public function getRequestTokenCheckFlag() {
+    public function checkRequestTokenCheckFlag() {
         if (array_key_exists("CHECK_REQUEST_TOKEN", $this->_config) && $this->_config["CHECK_REQUEST_TOKEN"] === '1') {
             return true;
         }
