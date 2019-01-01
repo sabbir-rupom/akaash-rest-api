@@ -33,7 +33,7 @@ class UserItemDelete extends BaseClass {
         
         
         if(empty($userItemObj)) {
-            throw new Exception_ApiException(ResultCode::NOT_FOUND, 'User item not found in database!');
+            throw new Exception_ApiException(ResultCode::NOT_FOUND, 'User does not have this item!');
         }
         
         /*
@@ -44,7 +44,7 @@ class UserItemDelete extends BaseClass {
         return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => [],
+            'data' => ['msg' => 'Item ID ' . $this->item_id  . ' has been deleted'],
             'error' => []
         );
     }

@@ -115,6 +115,10 @@ class Config_Config {
         return $this->_memcachedServerInstance;
     }
 
+    /**
+     * Get cache server connection 
+     * @return obj Cache server connection 
+     */
     public static function getMemcachedClient() {
 
         if (null !== self::$_memcachedClient) {

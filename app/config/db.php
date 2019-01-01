@@ -22,6 +22,3 @@ Flight::register('pdo', 'PDO', array("mysql:host={$db_host};dbname={$db_name};ch
     }
     $pdo->exec("SET time_zone='{$db_timezone}';");
 });
-
-
-

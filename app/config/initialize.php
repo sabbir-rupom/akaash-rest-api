@@ -26,6 +26,16 @@ Flight::set('app_config', parse_ini_file(CONFIG_DIR . "/config_app.ini"));
  */
 $configArray = Flight::get('app_config');
 
+if(empty($configArray['ENV'])) {
+    Flight::json(array(
+        'error' => array(
+            'title' => 'Server Configuration Error',
+            'message' => 'Server environment is not set in config',
+        ),
+        'result_code' => ResultCode::NOT_FOUND
+    ));
+}
+
 Flight::set('env', $configArray['ENV']);
 
 //Configure Database Connection

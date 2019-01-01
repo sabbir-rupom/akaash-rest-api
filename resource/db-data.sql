@@ -43,6 +43,8 @@ CREATE TABLE `user_login_sessions` (
 	`user_id` INT(11) UNSIGNED NOT NULL COMMENT 'userID',
 	`session_id` VARCHAR(64) NOT NULL COMMENT 'sessionID',
 	`login_type` TINYINT(1) NOT NULL DEFAULT '1' COMMENT 'Type of login (if any)  1 = email-pass',
+	`login_count` SMALLINT(6) NOT NULL DEFAULT '1',
+	`time` INT(11) NOT NULL DEFAULT '0',
 	`created_at` DATETIME NOT NULL COMMENT 'Row create time',
 	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
 	PRIMARY KEY (`id`)

@@ -13,6 +13,7 @@ class GetItemList extends BaseClass {
     const LOGIN_REQUIRED = TRUE;
 
     protected $itemName;
+    protected $targetUserId;
     
     /**
      * Validation of request
@@ -21,6 +22,11 @@ class GetItemList extends BaseClass {
         parent::validate();
         
         $this->itemName = $this->getValueFromJSON('item_name', 'string');
+        
+        /*
+         *  If a user ID is specified through GET / Query string
+         */
+        $this->targetUserId = $this->getValueFromQuery('user_id', 'int');
     }
 
     /**
@@ -30,7 +36,7 @@ class GetItemList extends BaseClass {
         /*
          * Find items from database
          */
-        $itemsObj = Model_UserItem::getAllItems($this->itemName, $this->pdo);
+        $itemsObj = Model_UserItem::getAllItems($this->itemName, $this->targetUserId, $this->pdo);
 
 
         if (empty($itemsObj)) {

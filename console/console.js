@@ -1,7 +1,7 @@
 var apiItems = {};
 var apiUrl = 'http://' + window.location.hostname;
 var pathExt = '/api';
-var tokenHeader = 'X-SOL-TOKEN';
+var tokenHeader = 'X-API-TOKEN';
 
 $(function () {
 
@@ -73,17 +73,17 @@ $(function () {
                     xhr.setRequestHeader(tokenHeader, tokenSignature);
                 },
                 success: function (obj, textStatus, request) {
-                    if (obj.hasOwnProperty('sessionToken')) {
-                        $("input[name=session_token]").val(obj.sessionToken);
-                        if (obj.hasOwnProperty('userId')) {
-                            $("input[name=user_id]").val(obj.userId);
-                            $("input[name=user_type]").val('USER');
-                        } else {
-                            $("input[name=user_id]").val(obj.vendorId);
-                            $("input[name=user_type]").val('VENDOR');
+                    if (obj.hasOwnProperty('data')) {
+                        var data = obj.data;
+                        if (data.hasOwnProperty('session_id')) {
+                            $("input[name=sessionToken]").val(data.session_id);
+                        }
+                        if (data.hasOwnProperty('user_info') && data.user_info.hasOwnProperty('id')) {
+                            $("input[name=userId]").val(data.user_info.id);
                         }
                     }
-                    if (obj.hasOwnProperty('result_code') && obj.result_code == 0) {
+//                    if (obj.hasOwnProperty('result_code') && obj.result_code == 0) {
+                    if (textStatus == 'success') {
                         $("#jsonOutput").css("background-color", "rgb(177, 255, 188)");
                     } else {
                         $("#jsonOutput").css("background-color", "rgb(251, 205, 183)");
@@ -105,7 +105,7 @@ $(function () {
                 $('#jsonOutput').text(syntaxHighlight(str));
                 $('#responseHeader').html(request.getAllResponseHeaders().replace(/\n/g, '<br/>'));
             });
-            $('#submit').attr('disabled');
+//            $('#submit').attr('disabled', 'disabled');
         } else {
             alert('invalid JSON');
         }
@@ -118,8 +118,12 @@ function callApi(apiName) {
     if (apiItems.hasOwnProperty(apiName)) {
         $('input[name="method"]').prop('checked', false);
         var api = apiItems[apiName];
-        console.log(api);
-        $("input[name=url]").val(pathExt + api.obj.action);
+        var actionPath = api.obj.action;
+        if (actionPath.indexOf('login') !== -1) {
+            $('textarea[name=tokenHash], input[name=sessionToken], input[name=userId]').val('');
+        }
+
+        $("input[name=url]").val(pathExt + actionPath);
         $("input[name=method][value=" + api.obj.method + "]").prop('checked', true);
         $("input[name=queryParams]").val(api.obj.query);
         $("textarea[name=requestBody]").val(api.obj.json);
@@ -132,11 +136,13 @@ function callApi(apiName) {
             "alg": "HS256",
             "typ": "JWT"
         };
-
+        var localTime = new Date().getTime() + (new Date().getTimezoneOffset() * 60 * 1000) // Request time in miliseconds UTC
         var data = {
             "sessionToken": session_token,
-            "userID": user_id
+            "reqAt": localTime
         };
+        
+        console.log(data);
 
         var stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
 

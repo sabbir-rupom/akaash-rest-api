@@ -38,7 +38,7 @@
         "action": "/save_user_info",
         "query": "client_type=1&client_version=1&times=0",
         "method": "PUT",
-        "json": "{\"user_name\":\"\",\"email\":\"\", \"longitude\":\"\", \"latitude\":\"\", \"gender\":\"male\", \"profile_image\":\"\", \"last_image\":\"\",\"first_name\":\"\"}"
+        "json": "{\"user_name\":\"\",\"email\":\"\", \"longitude\":\"\", \"latitude\":\"\", \"gender\":\"male\", \"profile_image\":\"\", \"last_image\":\"\",\"first_name\":\"\",\"old_password\":\"\", \"new_password\":\"\"}"
     },
     "/get_user_info": {
         "title": "Get User Information",
@@ -57,7 +57,7 @@
     "/get_item_list": {
         "title": "Get Item List",
         "action": "/get_item_list",
-        "query": "client_type=1&client_version=1",
+        "query": "client_type=1&client_version=1&user_id=",
         "method": "POST",
         "json": "{ \"item_name\":\"\"}"
     },

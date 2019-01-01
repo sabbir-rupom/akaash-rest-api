@@ -13,12 +13,18 @@ class BaseClass {
      * User Authentication variable defined
      */
     const LOGIN_REQUIRED = FALSE;
+    
+    /*
+     * Token Verification bypass config
+     */
+    const TEST_ENV = FALSE;
 
     protected $headers;
     protected $getParams;
     protected $json;
     protected $sessionId = NULL;
     protected $requestToken = NULL;
+    protected $requestTime = NULL;
     protected $userId = NULL;
     protected $cache_user = NULL;
 
@@ -131,8 +137,7 @@ class BaseClass {
      */
     protected function _checkRequestToken() {
 
-        if (Config_Config::getInstance()->getRequestTokenCheckFlag()) {
-
+        if (Config_Config::getInstance()->getRequestTokenCheckFlag()  && !self::TEST_ENV) {
             $result = Lib_JwtToken::verify_token($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
             
             if ($result['error'] > 0) {
@@ -148,11 +153,21 @@ class BaseClass {
                         break;
                 }
             } else {
-                /*
+                /**
                  * Retrieve session ID from payload if exist
                  */
-                if (!empty($result['data']->session_id)) {
-                    $this->sessionId = $result['data']->session_id;
+                
+                if (!empty($result['data']->sessionToken)) {
+                    $this->sessionId = $result['data']->sessionToken;
+                }
+                /**
+                 * Get client API request time 
+                 */
+                if (!empty($result['data']->iat)) {
+                    // convert request time to Server time assuming client request time format is in UTC milisecond
+                    $this->requestTime = intval($result['data']->reqAt) + (date('Z') * 1000); 
+                } else {
+                    $this->requestTime = time();
                 }
             }
         }

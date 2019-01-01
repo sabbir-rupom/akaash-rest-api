@@ -73,7 +73,18 @@ class Controller {
                         'msg' => empty($e->getMessage()) ? ResultCode::getMessage($e->getCode()) : $e->getMessage()
                     )
                 );
+            } else if($e instanceof PDOException){
+                header("HTTP/1.0 " . ResultCode::getHTTPstatusCode(ResultCode::DATABASE_ERROR) . " " . ResultCode::getTitle(ResultCode::DATABASE_ERROR));
+                $result = array(
+                    'result_code' => ResultCode::DATABASE_ERROR,
+                    'time' => Common_DateUtil::getToday(),
+                    'error' => array(
+                        'title' => ResultCode::getTitle(ResultCode::DATABASE_ERROR),
+                        'msg' => ResultCode::getMessage(ResultCode::DATABASE_ERROR) . ': check connection'
+                    )
+                );
             } else {
+            
                 header("HTTP/1.0 " . ResultCode::getHTTPstatusCode(ResultCode::UNKNOWN_ERROR) . " " . ResultCode::getTitle(ResultCode::UNKNOWN_ERROR));
                 $result = array(
                     'result_code' => ResultCode::UNKNOWN_ERROR,
@@ -99,7 +110,7 @@ class Controller {
         $json_array = $result;
 
 
-        if (Flight::get('env') != 'production') {
+        if (strtoupper(Flight::get('env')) != 'PRODUCTION') {
             /*
              * Calculate server execution time for running API script [ For developers only ]
              * And add to output result

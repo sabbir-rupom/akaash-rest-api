@@ -21,6 +21,7 @@ class ResultCode {
     const USER_NOT_FOUND = 6;     // User is not registerd to the system.
     const DATA_ALREADY_EXISTS = 7;    // Data already exist in table
     const DATA_NOT_ALLOWED = 8;    // Provided data not allowed in server
+    const DUPLICATE_DATA = 9;    // Provided data not allowed in server
     const FILE_UPLOAD_ERROR = 10;    // File upload error
     const DATABASE_ERROR = 11;    // File upload error
     const JSON_OUTPUT_ERROR = 20;     //Another user connected to google play
@@ -91,6 +92,11 @@ class ResultCode {
         self::DATA_NOT_ALLOWED => array(
             'title' => 'DATA NOT ALLOWED',
             'msg' => 'Provided data is not acceptable',
+            'http_status' => 406
+        ),
+        self::DUPLICATE_DATA => array(
+            'title' => 'DUPLICATE DATA',
+            'msg' => 'Duplicate data found',
             'http_status' => 406
         ),
         self::DATABASE_ERROR => array(

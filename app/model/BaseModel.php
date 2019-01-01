@@ -53,11 +53,11 @@ abstract class Model_BaseModel {
         }
         list($conditionSql, $values) = self::constructQuery($params, null, null, $forUpdate);
         $sql = "SELECT * FROM " . static::TABLE_NAME . $conditionSql;
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute($values);
-        
+
         $obj = $stmt->fetch(PDO::FETCH_CLASS);
 
         return $obj;
@@ -72,13 +72,13 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function findAllBy($params, $order = null, $limitArgs = null, $pdo = null, $forUpdate = FALSE) {
+    public static function findAllBy($params = array(), $order = null, $limitArgs = null, $pdo = null, $forUpdate = FALSE) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
         list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);
         $sql = "SELECT * FROM " . static::TABLE_NAME . $conditionSql;
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute($values);
@@ -97,8 +97,11 @@ abstract class Model_BaseModel {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
-        list($conditionSql, $values) = self::constructQuery($params);
-
+        if (empty($params)) {
+            list($conditionSql, $values) = array('', array());
+        } else {
+            list($conditionSql, $values) = self::constructQuery($params);
+        }
         $countSql = ' * ';
         if (true === $highPerformanceFlag) {
             $countSql = 'id';
@@ -107,7 +110,7 @@ abstract class Model_BaseModel {
         $sql = "SELECT count(" . $countSql . ") as count FROM " . static::TABLE_NAME . $conditionSql;
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
-        $stmt->execute($values);
+        $stmt->execute();
         $records = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
         $count = 0;
         if (!empty($records[0]->count)) {
@@ -158,6 +161,44 @@ abstract class Model_BaseModel {
             $sql .= " FOR UPDATE";
         }
         return array($sql, $values);
+    }
+
+    /**
+     * To construct query conditions
+     * @param array $params $params[][0] for column-name, $params[][1] for value, $params[][1] for condition
+     * @return array Constructed Query condition
+     */
+    protected static function constructQueryCondition($params = array()) {
+        $condition = '';
+        $values = array();
+        foreach ($params as $v) {
+            if (empty($v[1])) {
+                continue;
+            }
+            $condition .= $condition != '' ? 'AND ' : '';
+            $operator = isset($v[2]) ? $v[2] : '=';
+            $value = $v[1];
+            switch ($operator) {
+                case '=':
+                case '<>':
+                case '!=':
+                case '>=':
+                case '<=':
+                case '>':
+                case '<':
+                    $condition .= $v[0] . " $operator ?";
+                    break;
+                case 'like':
+                    $condition .= $v[0] . " $operator ?";
+                    $value = ("%" . $value . "%");
+                    break;
+            }
+            $values[] = $value;
+        }
+        if (empty($condition)) {
+            $condition = '1';
+        }
+        return array($condition, $values);
     }
 
     /**
@@ -229,7 +270,7 @@ abstract class Model_BaseModel {
         if (is_null($pdo)) {
             $pdo = Flight::pdo();
         }
-        
+
         $stmt = $pdo->prepare('DELETE FROM ' . static::TABLE_NAME . ' WHERE id = ?');
         $stmt->bindParam(1, $this->id);
         $result = $stmt->execute();
@@ -376,7 +417,7 @@ abstract class Model_BaseModel {
         return Common_Util_ConfigUtil::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
     }
 
-     /**
+    /**
      * Based on specified criteria, returns specific items of the records from the database.
      * @param array $columns Column names are values which will be returned in result only 
      * @param array $params Column name the key, associative array whose value is the value to use for the search.
@@ -390,11 +431,11 @@ abstract class Model_BaseModel {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
-        
-        list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);     
-        
-        $sql = "SELECT ". implode(',', $columns)." FROM " . static::TABLE_NAME . $conditionSql;
-        
+
+        list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);
+
+        $sql = "SELECT " . implode(',', $columns) . " FROM " . static::TABLE_NAME . $conditionSql;
+
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute($values);

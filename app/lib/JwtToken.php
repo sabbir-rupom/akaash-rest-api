@@ -8,6 +8,12 @@ use \Firebase\JWT\JWT;
 
 class Lib_JwtToken {
 
+    /**
+     * Verify JWT Token with secret key
+     * @param string $token JWT Token
+     * @param string $key secret key to sign the JWT token 
+     * @return array Token verification result
+     */
     public static function verify_token($token = '', $key = '') {
         $result = array('error' => 0, 'data' => array());
         if ($token == '') {
@@ -24,6 +30,27 @@ class Lib_JwtToken {
         }
 
         $result['data'] = $decoded;
+
+        return $result;
+    }
+
+    /**
+     * Create JWT Token from given key and payload
+     * @param array $payload sensitive data as payload
+     * @param string $key secret key to sign the JWT token 
+     * @return array Token creation result 
+     */
+    public static function createToken($payload = array(), $key = '') {
+
+        $result = array('error' => 0, 'token' => '');
+        try {
+            $jwt = JWT::encode($payload, $key);
+            $result['token'] = $jwt;
+        } catch (\Exception $e) {
+            // Also tried JwtException
+            $result['error'] = 1;
+            return $result;
+        }
 
         return $result;
     }

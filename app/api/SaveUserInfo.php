@@ -95,11 +95,13 @@ class SaveUserInfo extends BaseClass {
                 /*
                  * Verify old password match with user's current password
                  */
-                if (password_verify($oldPassword, $this->user->password) === FALSE) {
-                    throw new Exception_ApiException(ResultCode::PASSWORD_MISMATCHED, 'Current password does not match');
+                if ($newPassword === $oldPassword) {
+                    throw new Exception_ApiException(ResultCode::DUPLICATE_DATA, 'Please provide a new password');
+                } else if(password_verify($oldPassword, $this->user->password) === FALSE) {
+                    throw new Exception_ApiException(ResultCode::DATA_NOT_ALLOWED, 'Current password does not match');
                 }
 
-                $this->user->password = password_hash(trim($newPassword), PASSWORD_BCRYPT, array('cost' => 12));
+                $this->user->password = password_hash(trim($newPassword), PASSWORD_BCRYPT, array('cost' => 10));
                 $this->update_user = true;
             }
         } else if (!empty($_FILES)) {
@@ -132,9 +134,7 @@ class SaveUserInfo extends BaseClass {
         return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => array(
-                'user_info' => $this->user->toJsonHash()
-            ),
+            'data' => [],
             'error' => []
         );
     }
