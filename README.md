@@ -43,12 +43,48 @@ if you have xampp installed, steps are as follows
 ```
 127.0.0.1	rest-api.test
 ```
-* Restart your apache server [Note: change your php.ini file if any module is missing. Check the apache logs if you get any unknown error]
+* Restart your apache server [Note: *change your php.ini file if any module is missing. Check the apache logs if you get any unknown error*]
 * Go to the `app\config` directory inside your project folder. Rename the existing `example.*` file to `config_app.ini`. 
 * Open your `config_app.ini` file and change the configuration parameters suitable to your machine environment.
 * Create an appropriate `.htaccess` file for your Flight-PHP server inside the project folder
 
 That's it. You are ready to develop and test your API server. 
+
+## Skeleton Architecture
+
+The Rest-API project's skeleton is driven by the *Flight microframework*
+
+All necessary routing is done in `app/route/route.php` and pointed to `app/api/Controller.php`
+
+The *Controller* class receive the request method and fetch called api Class written inside the `app/api/` directory.
+
+The called api path is camelized [*The 1st letter associated of underscore is camelized and underscore '_' is removed*] 
+before searching the *API Class*
+
+The database query related functions been defined inside the `app/model` directory. 
+All the DB Table model must be extended with *Base Model Class*
+
+The *Config* Class in `app/config` directory handles most of the major server configurations
+
+For MySQL Database connectivity `PDO Driver` is used
+ 
+The *helper* classes are defined in `app/common` directory. Available helper classes are
+* ArrayUtil : Custom class for various array manipulations 
+* DateUtil : Custom class for various date/time manipulations
+* FileCacheClient : Custom file cache implementation class derived from PhpFileCache module [Weblink: https://github.com/Wruczek/PHP-File-Cache](https://github.com/Wruczek/PHP-File-Cache)
+* MemcachedServer : Custom memcache implementation class
+* Utils : Custom utility class for frequently used helper functions
+
+External library classes are initialized in `app/lib` directory. Currently included libraries are:
+* JwtToken : Custom class for implementing JWT token features from extending JWT library class [Weblink: https://github.com/firebase/php-jwt](https://github.com/Wruczek/PHP-File-Cache)
+
+All necessary server constants are defined in `app/const` directory
+
+Server Exception classes are defined in `app/exception` directory.
+
+## Features
+
+Explain how to run the automated tests for this system
 
 ## Running the tests
 
