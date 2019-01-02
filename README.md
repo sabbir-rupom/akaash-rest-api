@@ -206,5 +206,5 @@ Following third party libraries are used
 
 ## Author
 
-* **Sabbir Hossain (Rupom)** - *Website* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
+* **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
 
