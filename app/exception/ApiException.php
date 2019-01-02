@@ -3,7 +3,7 @@
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
- * Bit Coin Exception
+ * API Exception Class
  */
 class Exception_ApiException extends Exception {
 
