@@ -1,6 +1,10 @@
 # REST-API (flight-PHP)
 A RESTful API template based on flight-PHP framework 
 
+### What is Flight?
+
+Flight is a fast, simple, extensible framework for PHP. Flight enables you to quickly and easily build RESTful web applications. [Weblink](http://flightphp.com/)
+
 **NOTE:** This template is based on my recent API development experiences. I will not boast that its a very good template, 
 this project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
 along with some help with third party PHP libraries so that young developers may find this project helpful to their Rest-API development and learning curve. 
@@ -71,12 +75,12 @@ For MySQL Database connectivity `PDO Driver` is used
 The *helper* classes are defined in `app/common` directory. Available helper classes are
 * ArrayUtil : Custom class for various array manipulations 
 * DateUtil : Custom class for various date/time manipulations
-* FileCacheClient : Custom file cache implementation class derived from PhpFileCache module [Weblink: https://github.com/Wruczek/PHP-File-Cache](https://github.com/Wruczek/PHP-File-Cache)
+* FileCacheClient : Custom file cache implementation class derived from PhpFileCache module [Weblink](https://github.com/Wruczek/PHP-File-Cache)
 * MemcachedServer : Custom memcache implementation class
 * Utils : Custom utility class for frequently used helper functions
 
 External library classes are initialized in `app/lib` directory. Currently included libraries are:
-* JwtToken : Custom class for implementing JWT token features from extending JWT library class [Weblink: https://github.com/firebase/php-jwt](https://github.com/Wruczek/PHP-File-Cache)
+* JwtToken : Custom class for implementing JWT token features from extending JWT library class [Weblink](https://github.com/Wruczek/PHP-File-Cache)
 
 Server constant class definitions in `app/const` directory 
 
@@ -109,78 +113,102 @@ class GetUserInformation extends BaseClass {
          */
         
         return array(
-            'result_code' => ResultCode::SUCCESS,
-            'time' => Common_DateUtil::getToday(),
-            'data' => array('msg' => 'Success'),
-            'error' => []
+            /*
+            * Put successful response here
+            */
         );
     }
 }
 ```
 
-* Allowed HTTP methods are `GET | POST | PUT | DELETE`
-* To retrieve parameters from request method
+* To retrieve parameters from request method, use the following code sample [**NOTE**: Allowed HTTP methods are `GET | POST | PUT | DELETE`]
 ``` 
  $data1 = $this->getValueFromJSON('item', 'string', FALSE);  // JSON Request [*POST / PUT / DELETE*]  
- $data2 = $this->getInputPost('id', 'int', TRUE);    // Post Params [*POST*]
- $data3 = $this->getValueFromQuery('id', 'int');    // Query Params [*GET*]
+ $data2 = $this->getInputPost('id', 'int', TRUE);           // Post Params [*POST*]
+ $data3 = $this->getValueFromQuery('id', 'int');            // Query Params [*GET*]
 ```
+
+* For exception handle inside your backend code, use the following code sample [**NOTE**: Check the `ResultCode` class for status-code definitions]
+``` 
+ throw new Exception_ApiException(ResultCode::NOT_FOUND, "Data not found");
+```
+
+* To access helper / library / config classes, simply call their resources as follows [**NOTE**: Check the class name prefix; must be the similar with the directory name where resides]
+``` 
+ $data = Common_DateUtil::getToday();
+```
+
+* Write your model class in `app/model` directory as follows
+```php
+class Model_TableName extends Model_BaseModel {      
+    // Define your class variables and constants here
+
+    /* Database Table Name */
+    const TABLE_NAME = "users";
+
+    /* Table Column Definitions */
+    protected static $columnDefs = array(
+        'id' => array(
+            'type' => 'int',
+            'json' => true
+        ),
+        'name' => array(
+            'type' => 'string',
+            'json' => true
+        ),
+        'created_at' => array(
+            'type' => 'string',
+            'json' => false
+        ));
+
+    /*
+        Add your code for functions here
+    */
+}
+```
+[**NOTE**]
+
+Try to add separate model classes for each tables in your database.
+
+Table Column Definitions will help you which data to be showed in response and which data to be processed in database through the base model functions
+
+* Check the existing API classes for further study
 
 ## Features
 
-Explain how to run the automated tests for this system
+Features of the system will be defined here shortly
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+* Check the console webpage to test your API. URL: `http://rest-api.test/console`
+* To check your system is fully cope with the project or not, simply goto the `Test API` Sidebar, click the underlining anchor-link, then click **Submit** button. 
+The results and header parameters will be available in Response/ Header tabs under the form page. Check for following results as success:
+```json
+{
+  "result_code": 0,
+  "time": "2019-01-01 12:00:00",
+  "data": {
+    "DB": "Database to user table connection is functional",
+    "JWT": "JWT token verification system is functional",
+    "Cache": "Cache system is functional"
+  },
+  "error": [],
+  "execution_time": 0.05303311347961426
+}
 ```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+* To populate your console page with you own API, edit `api-list.json` page with appropriate API information
 
 ## Deployment
 
 Add additional notes about how to deploy this on a live system
 
-## Built With
+## Used Libraries
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+Following third party libraries are used
+* [PHP File Cache](https://github.com/Wruczek/PHP-File-Cache) - For local file caching
+* [JWT](https://github.com/firebase/php-jwt) - Client request verification
 
-## Contributing
+## Author
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* **Sabbir Hossain (Rupom)** - *Website* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
 
