@@ -58,7 +58,7 @@ All necessary routing is done in `app/route/route.php` and pointed to `app/api/C
 
 The *Controller* class receive the request method and fetch called api Class written inside the `app/api/` directory.
 
-The called api path is camelized [*The 1st letter associated of underscore is camelized and underscore '_' is removed*] 
+The called api path is camelized [*The 1st letter of the string and letter/s next to underscore is camelized and underscore '_' is removed*] 
 before searching the *API Class*
 
 The database query related functions been defined inside the `app/model` directory. 
@@ -78,9 +78,53 @@ The *helper* classes are defined in `app/common` directory. Available helper cla
 External library classes are initialized in `app/lib` directory. Currently included libraries are:
 * JwtToken : Custom class for implementing JWT token features from extending JWT library class [Weblink: https://github.com/firebase/php-jwt](https://github.com/Wruczek/PHP-File-Cache)
 
-All necessary server constants are defined in `app/const` directory
+Server constant class definitions in `app/const` directory 
 
-Server Exception classes are defined in `app/exception` directory.
+Server Exception class definitions in `app/exception` directory.
+
+## Development Guide
+
+* Write your api class controller in `app/api/` directory
+* Extend your API class with *Base Class* 
+* Sample API Controller Class, [**Note**: If your API class name is `GetUserInformation`, your request URL will be `http://rest-api.test/api/get_user_information`]
+
+```php
+class GetUserInformation extends BaseClass {        
+    /*
+    * Define your class variables and constants here
+    */
+
+    public function validate() {
+        parent::validate();
+        /*
+         * Add your code here
+         * to retrieve your request parameters
+         */
+    }
+
+    public function action() {
+
+        /*
+         * Add API code here
+         */
+        
+        return array(
+            'result_code' => ResultCode::SUCCESS,
+            'time' => Common_DateUtil::getToday(),
+            'data' => array('msg' => 'Success'),
+            'error' => []
+        );
+    }
+}
+```
+
+* Allowed HTTP methods are `GET | POST | PUT | DELETE`
+* To retrieve parameters from request method
+``` 
+ $data1 = $this->getValueFromJSON('item', 'string', FALSE);  // JSON Request [*POST / PUT / DELETE*]  
+ $data2 = $this->getInputPost('id', 'int', TRUE);    // Post Params [*POST*]
+ $data3 = $this->getValueFromQuery('id', 'int');    // Query Params [*GET*]
+```
 
 ## Features
 

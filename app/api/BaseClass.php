@@ -13,7 +13,7 @@ class BaseClass {
      * User Authentication variable defined
      */
     const LOGIN_REQUIRED = FALSE;
-    
+
     /*
      * Token Verification bypass config
      */
@@ -137,9 +137,9 @@ class BaseClass {
      */
     protected function _checkRequestToken() {
 
-        if (Config_Config::getInstance()->checkRequestTokenCheckFlag()  && !self::TEST_ENV) {
+        if (Config_Config::getInstance()->checkRequestTokenCheckFlag() && !self::TEST_ENV) {
             $result = Lib_JwtToken::verify_token($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
-            
+
             if ($result['error'] > 0) {
                 switch ($result['error']) {
                     case Const_Application::HASH_SIGNATURE_VERIFICATION_FAILED:
@@ -156,7 +156,6 @@ class BaseClass {
                 /**
                  * Retrieve session ID from payload if exist
                  */
-                
                 if (!empty($result['data']->sessionToken)) {
                     $this->sessionId = $result['data']->sessionToken;
                 }
@@ -165,7 +164,7 @@ class BaseClass {
                  */
                 if (!empty($result['data']->iat)) {
                     // convert request time to Server time assuming client request time format is in UTC milisecond
-                    $this->requestTime = intval($result['data']->reqAt) + (date('Z') * 1000); 
+                    $this->requestTime = intval($result['data']->reqAt) + (date('Z') * 1000);
                 } else {
                     $this->requestTime = time();
                 }
@@ -272,9 +271,9 @@ class BaseClass {
     /**
      * Return from GET parameters to extract the value.
      *
-     * @param $name GET The name of the parameter.
-     * @param $type Type of the variable. "int", "bool", "string".
-     * @param $required Required. Extracted value from
+     * @param string $name GET The name of the parameter.
+     * @param unknown $type Type of the variable. "int", "bool", "string".
+     * @param bool $required Required. Extracted value from
      * @return GET parameters.
      */
     protected function getValueFromQuery($name, $type, $required = FALSE) {
@@ -292,6 +291,35 @@ class BaseClass {
         if (!$this->isValidType($var, $type)) {
             throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
         }
+        return $var;
+    }
+
+    /**
+     * Return parameter value from Post call
+     *
+     * @param string $name Name of the parameter.
+     * @param unknown $type Type of the variable. "int", "bool", "string".
+     * @param bool $required Value required
+     * @param bool $xss_clean XSS clean 
+     * @return parameter value from POST Request.
+     */
+    protected function getInputPost($name, $type, $required = FALSE, $xss_clean = FALSE) {
+        if (isset($_POST[$name])) {
+            $var = $_POST[$name];
+            if ('string' != $type && '' === $var) {
+                $var = NULL;
+            }
+        } else {
+            $var = NULL;
+        }
+
+        if (TRUE == $required && empty($var)) {
+            throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
+        }
+        if (!$this->isValidType($var, $type)) {
+            throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
+        }
+
         return $var;
     }
 
