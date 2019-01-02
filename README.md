@@ -198,10 +198,6 @@ The results and header parameters will be available in Response/ Header tabs und
 ```
 * To populate your console page with you own API, edit `api-list.json` page with appropriate API information
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Used Libraries
 
 Following third party libraries are used
