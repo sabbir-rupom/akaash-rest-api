@@ -56,8 +56,8 @@ $(function () {
         var queryParameter = $("input[name=queryParams]").val();
         var jsonBody = $("textarea[name=requestBody]").val();
         var checkJson = jsonBody != '' ? isJson(jsonBody) : true;
-        var userId = parseInt($("input[name=userId]").val());
-        var sessionToken = $("input[name=sessionToken]").val();
+//        var userId = parseInt($("input[name=userId]").val());
+//        var sessionToken = $("input[name=sessionToken]").val();
         var apiMethod = $('input:radio[name=method]:checked').val();
         var tokenSignature = $('textarea[name=tokenHash]').val();
 
