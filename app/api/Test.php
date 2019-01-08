@@ -39,8 +39,9 @@ class Test extends BaseClass {
         /*
          * Check application log path access permission
          */
+        $logPath = Config_Config::getInstance()->getLogFile();
         if (Config_Config::getInstance()->isLogEnable()) {
-            $logPath = Config_Config::getInstance()->getLogFile();
+
             if (!file_exists($logPath) && !is_dir($logPath)) {
                 if (!mkdir($logPath, 0755, true)) {
                     $responseArray['Log'] = 'Log folder cannnot be created. Please change folder permission for apache access';

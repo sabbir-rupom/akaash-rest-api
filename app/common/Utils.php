@@ -15,7 +15,11 @@ class Common_Utils {
      * @return CamelCase of string, underscore is removed
      */
     public static function camelize($str, $ucfirst = TRUE) {
-        $elements = explode('_', $str);
+        if (stristr($str, '-')) {
+            $elements = explode('-', $str);
+        } else {
+            $elements = explode('_', $str);
+        }
         $capitalized = array();
         if (!$ucfirst) {
             $capitalized[] = array_shift($elements);
@@ -97,7 +101,6 @@ class Common_Utils {
         exit;
     }
 
-
     /**
      * Convert any object into a JSON hash representation
      *
@@ -123,6 +126,7 @@ class Common_Utils {
     }
 
 }
+
 //
 ///**
 // * The default class of JSON of premise object。

@@ -22,8 +22,8 @@ if (!file_exists(CONFIG_DIR . "/config_app.ini")) {
 Flight::set('app_config', parse_ini_file(CONFIG_DIR . "/config_app.ini"));
 
 
-/*
- * Register database connection with the flight server
+/* 
+ * Register the flight server with app configuration
  */
 $configArray = Flight::get('app_config');
 

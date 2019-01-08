@@ -62,7 +62,7 @@ All necessary routing is done in `app/route/route.php` and pointed to `app/api/C
 
 The *Controller* class receive the request method and fetch called api Class written inside the `app/api/` directory.
 
-The called api path is camelized [*The 1st letter of the string and letter/s next to underscore is camelized and underscore '_' is removed*] 
+The called api path is camelized [*The 1st letter of the string and letter/s next to underscore `_` / Hypen `-` is camelized and underscore / hypen is removed*] 
 before searching the *API Class*
 
 The database query related functions been defined inside the `app/model` directory. 
