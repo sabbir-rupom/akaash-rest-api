@@ -9,6 +9,18 @@ Flight is a fast, simple, extensible framework for PHP. Flight enables you to qu
 this project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
 along with some help with third party PHP libraries so that young developers may find this project helpful to their Rest-API development and learning curve. 
 
+### Why use this template?
+
+REST or RESTful APIs used in distributed client/server interaction, like mobile application to server communication. If the REST structure in server is light
+and robust, it can generate response fast and authentic client can retrieve the desired data quickly and process accordingly. And user always love to use server 
+dependant application which can show data without much waiting. I have tried my best to implement as much essential feature as possible without making
+the overall structure *complex* to understand. 
+
+And this template is for those developers, who loves PHP. And a microframework is always faster than normal MVC framework like laravel, codeigniter etc.
+
+You can follow my presentation slide on '[RESTApi Design & Develop](https://www.slideshare.net/rpm_ruoma/restapi-design-develop)'. 
+I have tried to implement many features in this project mentioned in my slide tutorial, and I will continue working on this more ... 
+
 ## Getting Started
 
 This project includes both file cache system and memcache system, along with JWT authentication process.
