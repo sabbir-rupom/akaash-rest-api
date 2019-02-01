@@ -9,7 +9,7 @@ Flight is a fast, simple, extensible framework for PHP. Flight enables you to qu
 this project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
 along with some help with third party PHP libraries so that young developers may find this project helpful to their Rest-API development and learning curve. 
 
-### Why use this template?
+### Why use this?
 
 REST or RESTful APIs used in distributed client/server interaction, like mobile application to server communication. If the REST structure in server is light
 and robust, it can generate response fast and authentic client can retrieve the desired data quickly and process accordingly. And user always love to use server 
