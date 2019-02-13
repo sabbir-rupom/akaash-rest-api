@@ -91,7 +91,7 @@ class Controller {
                     'time' => Common_DateUtil::getToday(),
                     'error' => array(
                         'title' => ResultCode::getTitle(ResultCode::UNKNOWN_ERROR),
-                        'msg' => ResultCode::getMessage(ResultCode::UNKNOWN_ERROR)
+                        'msg' => empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::UNKNOWN_ERROR) : $e->getMessage()
                     )
                 );
             }

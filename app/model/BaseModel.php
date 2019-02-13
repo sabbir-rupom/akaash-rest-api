@@ -91,7 +91,7 @@ abstract class Model_BaseModel {
      * @param array $params Associative array with column name as key, value as search value.
      * @param PDO $pdo When executing within a transaction, specify the PDO object.
      * @param bool $highPerformanceFlag to count the number of records in table
-     * @return Number of records
+     * @return int Number of records
      */
     public static function countBy($params = array(), $pdo = null, $highPerformanceFlag = false) {
         if ($pdo == null) {
@@ -107,10 +107,11 @@ abstract class Model_BaseModel {
             $countSql = 'id';
         }
 
-        $sql = "SELECT count(" . $countSql . ") as count FROM " . static::TABLE_NAME . $conditionSql;
+        $sql = "SELECT count(" . (true === $highPerformanceFlag ? " id " : " * ") . ") as count FROM " . static::TABLE_NAME . (true === $highPerformanceFlag ? '' : $conditionSql);
+
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
-        $stmt->execute();
+        $stmt->execute($values);
         $records = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
         $count = 0;
         if (!empty($records[0]->count)) {
@@ -143,7 +144,7 @@ abstract class Model_BaseModel {
         if (!empty($conditions)) {
             $sql .= " WHERE " . join(' AND ', $conditions);
         }
-        if (isset($order) && is_array($order)) {
+        if (isset($order) && is_array($order) && !empty($order)) {
             $sql .= " ORDER BY ";
             foreach ($order as $key => $val) {
                 $sql .= "{$key} {$val}";
@@ -373,7 +374,7 @@ abstract class Model_BaseModel {
                 } else if ('bool' === static::getColumnType($column) && !is_null($this->$column)) {
                     $hash[$column] = ("1" === $this->$column);
                 } else {
-                    $hash[$column] = $this->$column == null ? "" : $this->$column;
+                    $hash[$column] = (!isset($this->$column) || $this->$column == null) ? "" : $this->$column;
                 }
             }
         }

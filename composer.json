@@ -4,14 +4,15 @@
         "firebase/php-jwt": "^5.0"
     },
     "autoload": {
+        "classmap": ["app/"],
         "psr-4": { 
-                "Config\\": "app/config",
-                "Common\\": "app/common",
-                "Exception\\": "app/exception",
-                "Lib\\": "app/lib",
-                "Model\\": "app/model",
-                "View\\": "app/view"
-            },
-            "classmap": ["app/","app/api"]
+            "Config\\": "app/config",
+            "Common\\": "app/common",
+            "Exception\\": "app/exception",
+            "Lib\\": "app/lib",
+            "Model\\": "app/model",
+            "View\\": "app/view",
+            "": "app/api"
+        }
     }
 }

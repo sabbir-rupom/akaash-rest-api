@@ -6,7 +6,7 @@ var tokenHeader = 'X-API-TOKEN';
 $(function () {
 
     $.getJSON("api-list.json", function (data) {
-        console.clear();
+//        console.clear();
         var i = 0;
         $.each(data, function (key, val) {
             if (key == 'groups') {
