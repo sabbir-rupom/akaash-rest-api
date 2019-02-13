@@ -2,8 +2,6 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
-require_once 'Jwt/autoload.php';
-
 use \Firebase\JWT\JWT;
 
 class Lib_JwtToken {

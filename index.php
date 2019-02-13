@@ -14,9 +14,14 @@ define('CONFIG_DIR', APP_DIR . '/config');
  */
 define('SERVER_HOST', (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST']);
 
-require 'flight/Flight.php';
+require '../vendor/autoload.php';
 
-//load server environment
+/*
+ *  load server environment
+ */
 require_once CONFIG_DIR . '/initialize.php';
 
+/*
+ *  Run Rest-API Application Template 
+ */
 Flight::start();

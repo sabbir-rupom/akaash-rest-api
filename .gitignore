@@ -3,5 +3,4 @@ app/config/config_app.ini
 *.dat
 *.cache.php
 nbproject/
-app/config/config_app.ini
-app/config/config_app.ini
+vendor/
