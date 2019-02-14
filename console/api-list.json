@@ -32,7 +32,7 @@
         "action": "/user_login",
         "query": "client_type=1&client_version=1",
         "method": "POST",
-        "json": "{\"email\": \"user@email.com\",\"password\": \"\",\"device_token\": \"dummy\",\"device_model\": \"Windows 10 Laptop\"}"
+        "json": "{\"email\": \"user@email.com\",\"password\": \"\",\"device_model\": \"Windows 10 Laptop\"}"
     },
     "/user_sign_up": {
         "title": "User Registration",

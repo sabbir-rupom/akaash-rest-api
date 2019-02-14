@@ -29,7 +29,7 @@ class UserSignUp extends BaseClass {
         if (filter_var($this->_user_email, FILTER_VALIDATE_EMAIL) === false) {
             throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
         } 
-        if(Model_User::countBy(array('email' => $this->_user_email), $this->pdo, TRUE) > 0) {
+        if(Model_User::countBy(array('email' => $this->_user_email), $this->pdo) > 0) {
             throw new Exception_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'Another user is registered with this email!');
         }
     }
@@ -54,12 +54,12 @@ class UserSignUp extends BaseClass {
             if (property_exists($this->json, 'gender')) {
                 $user->gender = $this->getValueFromJSON('gender', 'string');
             }
-            if (property_exists($this->json, 'device_token')) {
-                $user->device_token = $this->getValueFromJSON('device_token', 'string');
-            }
-            if (property_exists($this->json, 'device_model')) {
-                    $user->device_model = $this->getValueFromJSON('device_model', 'string');
-            }
+//            if (property_exists($this->json, 'device_token')) {
+//                $user->device_token = $this->getValueFromJSON('device_token', 'string');
+//            }
+//            if (property_exists($this->json, 'device_model')) {
+//                    $user->device_model = $this->getValueFromJSON('device_model', 'string');
+//            }
 
             if (property_exists($this->json, 'longitude')) {
                 $user->longitude = $this->getValueFromJSON('longitude', 'string', TRUE);
