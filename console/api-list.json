@@ -46,7 +46,7 @@
         "action": "/save_user_info",
         "query": "client_type=1&client_version=1",
         "method": "PUT",
-        "json": "{\"user_name\":\"\",\"email\":\"\", \"longitude\":\"\", \"latitude\":\"\", \"gender\":\"male\", \"profile_image\":\"\", \"last_image\":\"\",\"first_name\":\"\",\"old_password\":\"\", \"new_password\":\"\"}"
+        "json": "{\"user_name\":\"\",\"email\":\"\", \"longitude\":\"\", \"latitude\":\"\", \"gender\":\"male\", \"profile_image\":\"\", \"last_name\":\"\",\"first_name\":\"\",\"old_password\":\"\", \"new_password\":\"\"}"
     },
     "/get_user_info": {
         "title": "Get User Information",
