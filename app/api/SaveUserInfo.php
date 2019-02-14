@@ -134,7 +134,9 @@ class SaveUserInfo extends BaseClass {
         return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => [],
+            'data' => [
+                'user_info' => $this->user->toJsonHash($this->pdo)
+            ],
             'error' => []
         );
     }
