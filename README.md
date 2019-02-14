@@ -9,18 +9,6 @@ Flight is a fast, simple, extensible framework for PHP. Flight enables you to qu
 this project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
 along with some help with third party PHP libraries so that young developers may find this project helpful to their Rest-API development and learning curve. 
 
-### Why use this?
-
-REST or RESTful APIs used in distributed client/server interaction, like mobile application to server communication. If the REST structure in server is light
-and robust, it can generate response fast and authentic client can retrieve the desired data quickly and process accordingly. And user always love to use server 
-dependant application which can show data without much waiting. I have tried my best to implement as much essential feature as possible without making
-the overall structure *complex* to understand. 
-
-And this template is for those developers, who loves PHP. And a microframework is always faster than normal MVC framework like laravel, codeigniter etc.
-
-You can follow my presentation slide on '[RESTApi Design & Develop](https://www.slideshare.net/rpm_ruoma/restapi-design-develop)'. 
-I have tried to implement many features in this project mentioned in my slide tutorial, and I will continue working on this more ... 
-
 ## Getting Started
 
 This project includes both file cache system and memcache system, along with JWT authentication process.
@@ -44,6 +32,10 @@ pdo memcache pdo_mysql gd gmp
 if you have xampp installed, steps are as follows
 
 * Clone the repository or download zip then extract in a folder [e.g rest-api] under htdocs 
+* use [Composer](https://getcomposer.org/) to install or update dependencies and autoload required class directories.
+```bash
+$ composer update
+```
 * Create a virtual host. Go to `xampp\apache\conf\extra\` and open file `httpd-vhosts.conf`. Then write a similar configuration as follows:
 ```
 <VirtualHost *:80>
@@ -61,7 +53,7 @@ if you have xampp installed, steps are as follows
 ```
 * Restart your apache server [Note: *change your php.ini file if any module is missing. Check the apache logs if you get any unknown error*]
 * Go to the `app\config` directory inside your project folder. Rename the existing `example.*` file to `config_app.ini`. 
-* Open your `config_app.ini` file and change the configuration parameters suitable to your machine environment.
+* Open your `config_app.ini` file and **change the configuration** parameters suitable to your machine environment.
 * Create an appropriate `.htaccess` file for your Flight-PHP server inside the project folder
 
 That's it. You are ready to develop and test your API server. 
@@ -97,6 +89,18 @@ External library classes are initialized in `app/lib` directory. Currently inclu
 Server constant class definitions in `app/const` directory 
 
 Server Exception class definitions in `app/exception` directory.
+
+### Why use this?
+
+REST or RESTful APIs used in distributed client/server interaction, like mobile application to server communication. If the REST structure in server is light
+and robust, it can generate response fast and authentic client can retrieve the desired data quickly and process accordingly. And user always love to use server 
+dependant application which can show data without much waiting. I have tried my best to implement as much essential feature as possible without making
+the overall structure *complex* to understand. 
+
+And this template is for those developers, who loves PHP. And a microframework is always faster than normal MVC framework like laravel, codeigniter etc.
+
+You can follow my presentation slide on '[RESTApi Design & Develop](https://www.slideshare.net/rpm_ruoma/restapi-design-develop)'. 
+I have tried to implement many features in this project mentioned in my slide tutorial, and I will continue working on this more ... 
 
 ## Development Guide
 
