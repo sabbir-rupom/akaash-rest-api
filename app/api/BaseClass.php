@@ -320,7 +320,7 @@ class BaseClass {
             throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
         }
 
-        return $var;
+        return ($xss_clean === TRUE) ? Common_Security::xss_clean($var) : $var;
     }
 
     /**

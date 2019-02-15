@@ -43,7 +43,6 @@ class Common_Security {
      * source suggestions are picked from CodeIgniter Security class
      *
      * @param	string|string[]	$str		Input data
-     * @param 	bool		$is_image	Whether the input is an image
      * @return	string
      */
     public static function xss_clean($str, $is_image = FALSE) {
@@ -114,14 +113,7 @@ class Common_Security {
          *
          * But it doesn't seem to pose a problem.
          */
-        if ($is_image === TRUE) {
-            // Images have a tendency to have the PHP short opening and
-            // closing tags every so often so we skip those and only
-            // do the long opening tags.
-            $str = preg_replace('/<\?(php)/i', '&lt;?\\1', $str);
-        } else {
-            $str = str_replace(array('<?', '?' . '>'), array('&lt;?', '?&gt;'), $str);
-        }
+        $str = str_replace(array('<?', '?' . '>'), array('&lt;?', '?&gt;'), $str);
 
         /*
          * Compact any exploded words
@@ -229,19 +221,6 @@ class Common_Security {
         // This adds a bit of extra precaution in case
         // something got through the above filters
         $str = $this->security->do_never_allowed($str);
-
-        /*
-         * Images are Handled in a Special Way
-         * - Essentially, we want to know that after all of the character
-         * conversion is done whether any unwanted, likely XSS, code was found.
-         * If not, we return TRUE, as the image is clean.
-         * However, if the string post-conversion does not matched the
-         * string post-removal of XSS, then it fails, as there was unwanted XSS
-         * code found and removed/changed during processing.
-         */
-        if ($is_image === TRUE) {
-            return ($str === $converted_string);
-        }
 
         return $str;
     }

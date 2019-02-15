@@ -32,7 +32,7 @@ pdo memcache pdo_mysql gd gmp
 if you have xampp installed, steps are as follows
 
 * Clone the repository or download zip then extract in a folder [e.g rest-api] under htdocs 
-* use [Composer](https://getcomposer.org/) to install or update dependencies and autoload required class directories. Make sure `composer.json` file is always present in root directory
+* Use [Composer](https://getcomposer.org/) to install or update dependencies and autoload required class directories. Make sure `composer.json` file is always present in root directory
 ```bash
 $ composer update
 ```
@@ -53,7 +53,14 @@ $ composer update
 ```
 * Restart your apache server [Note: *change your php.ini file if any module is missing. Check the apache logs if you get any unknown error*]
 
-**Web Server Configuration*
+**For linux (Ubuntu)**
+
+* Install Apache, MySQL server, PHP [ version 5.6 or higher ]
+* Install Composer if not installed already
+* Clone the repository to your desired root-directory
+* If you are using fresh ubuntu server, you may follow my *Project installation Guide* [https://pastebin.com/KMpSAhYK](https://pastebin.com/KMpSAhYK)
+
+**Web Server Configuration**
 
 * For *Apache*, edit your `.htaccess` file with the following:
 ```
@@ -63,7 +70,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 ```
 **Note**: If you need to use flight in a subdirectory add the line `RewriteBase /subdir/` just after `RewriteEngine On`.
-* Go to the `app\config` directory inside your project folder. Rename the existing `example.*` file to `config_app.ini`. 
+* Go to the `app/config` directory inside your project folder. Rename the existing `example.*` file to `config_app.ini`. 
 * Open your `config_app.ini` file and **change the configuration** parameters suitable to your machine environment.
 
 That's it. You are ready to develop and test your API server. 
@@ -115,7 +122,7 @@ I have tried to implement many features in this project mentioned in my slide tu
 ## Development Guide
 
 * Write your api class controller in `app/api/` directory
-* Extend your API class with *Base Class* 
+* Extend your API Controller Class  with *Base Class* 
 * Sample API Controller Class, [**Note**: If your API class name is `GetUserInformation`, your request URL will be `http://rest-api.test/api/get_user_information`]
 
 ```php
