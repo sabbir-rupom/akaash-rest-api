@@ -58,8 +58,8 @@ $ composer update
 * Install Apache, MySQL server, PHP [ version 5.6 or higher ]
 * Install Composer if not installed already
 * Clone the repository to your desired root-directory
-* If you are using fresh ubuntu server, you may follow my *Project installation Guide* [https://pastebin.com/KMpSAhYK](https://pastebin.com/KMpSAhYK)
 
+[If you are using fresh ubuntu server, you may follow my *Project installation Guide* [https://pastebin.com/KMpSAhYK](https://pastebin.com/KMpSAhYK) ]
 **Web Server Configuration**
 
 * For *Apache*, edit your `.htaccess` file with the following:
