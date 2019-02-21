@@ -27,10 +27,10 @@ class UserSignUp extends BaseClass {
         $this->_user_name = $this->getValueFromJSON('user_name', 'string', TRUE);
 
         if (filter_var($this->_user_email, FILTER_VALIDATE_EMAIL) === false) {
-            throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
+            throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
         } 
         if(Model_User::countBy(array('email' => $this->_user_email), $this->pdo) > 0) {
-            throw new Exception_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'Another user is registered with this email!');
+            throw new System_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'Another user is registered with this email!');
         }
     }
 

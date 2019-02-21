@@ -32,7 +32,7 @@ class UserItemAdd extends BaseClass {
         $userItemObj = Model_UserItem::addUserItem($this->userId, $this->item_name, $this->pdo);
         
         if(empty($userItemObj->id)) {
-            throw new Exception_ApiException(ResultCode::DATABASE_ERROR, 'Failed to insert item in database!');
+            throw new System_ApiException(ResultCode::DATABASE_ERROR, 'Failed to insert item in database!');
         }
 
         return array(

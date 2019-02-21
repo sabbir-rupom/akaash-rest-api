@@ -2,7 +2,7 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
-class Common_MemcachedServer {
+class System_MemcachedServer {
 
     public $host;
     public $port;

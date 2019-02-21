@@ -141,7 +141,7 @@ function callApi(apiName) {
             "sessionToken": session_token,
             "reqAt": localTime
         };
-        
+
         console.log(data);
 
         var stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
@@ -161,6 +161,7 @@ function callApi(apiName) {
 
 //        console.log(signature_token);
     }
+    $("#jsonOutput").css("background-color", "#DDD");
 }
 
 function base64url(source) {

@@ -46,7 +46,7 @@ class GetOtherUsers extends BaseClass {
 
 
         if (empty($allUsersObj)) {
-            throw new Exception_ApiException(ResultCode::NOT_FOUND, 'Session user not found');
+            throw new System_ApiException(ResultCode::NOT_FOUND, 'Session user not found');
         }
 
         // Initialize empty array

@@ -26,9 +26,9 @@ class Test extends BaseClass {
         /*
          * JWT token verification test case
          */
-        $result = Lib_JwtToken::createToken(array('test' => 1), $this->config['REQUEST_TOKEN_SECRET']);
+        $result = System_JwtToken::createToken(array('test' => 1), $this->config['REQUEST_TOKEN_SECRET']);
         if ($result['error'] == 0) {
-            $result = Lib_JwtToken::verify_token($result['token'], $this->config['REQUEST_TOKEN_SECRET']);
+            $result = System_JwtToken::verify_token($result['token'], $this->config['REQUEST_TOKEN_SECRET']);
         }
 
         $responseArray = [

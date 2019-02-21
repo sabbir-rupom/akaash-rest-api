@@ -110,7 +110,7 @@ class BaseClass {
             $this->isLoggedIn();
 
             if (FALSE == $this->userId) {
-                throw new Exception_ApiException(ResultCode::SESSION_ERROR, 'Session error.');
+                throw new System_ApiException(ResultCode::SESSION_ERROR, 'Session error.');
             }
         }
     }
@@ -118,7 +118,7 @@ class BaseClass {
     /**
      * Maintenance check
      *
-     * @throws Exception_ApiException
+     * @throws System_ApiException
      */
     protected function _checkMaintenance() {
         // Maintenance check parameter
@@ -126,7 +126,7 @@ class BaseClass {
 
         if ($maintainance_check) {
             if ($this->isMaintenance()) {
-                throw new Exception_ApiException(ResultCode::MAINTENANCE, 'maintenance.');
+                throw new System_ApiException(ResultCode::MAINTENANCE, 'maintenance.');
             }
         }
     }
@@ -138,18 +138,18 @@ class BaseClass {
     protected function _checkRequestToken() {
 
         if (Config_Config::getInstance()->checkRequestTokenCheckFlag() && !self::TEST_ENV) {
-            $result = Lib_JwtToken::verify_token($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
+            $result = System_JwtToken::verify_token($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
 
             if ($result['error'] > 0) {
                 switch ($result['error']) {
                     case Const_Application::HASH_SIGNATURE_VERIFICATION_FAILED:
-                        throw new Exception_ApiException(ResultCode::INVALID_REQUEST_TOKEN, 'Signature Verification Error');
+                        throw new System_ApiException(ResultCode::INVALID_REQUEST_TOKEN, 'Signature Verification Error');
                         break;
                     case Const_Application::EMPTY_TOKEN:
-                        throw new Exception_ApiException(ResultCode::INVALID_REQUEST_TOKEN, 'Token is empty');
+                        throw new System_ApiException(ResultCode::INVALID_REQUEST_TOKEN, 'Token is empty');
                         break;
                     default :
-                        throw new Exception_ApiException(ResultCode::UNKNOWN_ERROR, 'Unexpected token error has been found');
+                        throw new System_ApiException(ResultCode::UNKNOWN_ERROR, 'Unexpected token error has been found');
                         break;
                 }
             } else {
@@ -185,7 +185,7 @@ class BaseClass {
             $this->cache_user = Model_User::cache_or_find($this->userId, $this->pdo);
 
             if (empty($this->cache_user)) {
-                throw new Exception_ApiException(ResultCode::USER_NOT_FOUND, 'Session user not found');
+                throw new System_ApiException(ResultCode::USER_NOT_FOUND, 'Session user not found');
             }
 
             $this->cache_user->last_api_time = Common_DateUtil::getToday();
@@ -241,7 +241,7 @@ class BaseClass {
      */
     protected function getValueFromJSON($path, $type, $required = FALSE) {
         if (empty($this->json) && $required) {
-            throw new Exception_ApiException(ResultCode::INVALID_JSON, 'JSON is empty.');
+            throw new System_ApiException(ResultCode::INVALID_JSON, 'JSON is empty.');
         }
         if (is_string($path)) {
             $path = array(
@@ -260,10 +260,10 @@ class BaseClass {
             $var = NULL;
         }
         if (TRUE == $required && (is_null($var) || $var === '')) {
-            throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$pathStr is not set.");
+            throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$pathStr is not set.");
         }
         if (!$this->isValidType($var, $type)) {
-            throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $pathStr is not valid.");
+            throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $pathStr is not valid.");
         }
         return $var;
     }
@@ -286,10 +286,10 @@ class BaseClass {
             $var = NULL;
         }
         if (TRUE == $required && is_null($var)) {
-            throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
+            throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
         }
         if (!$this->isValidType($var, $type)) {
-            throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
+            throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
         }
         return $var;
     }
@@ -314,10 +314,10 @@ class BaseClass {
         }
 
         if (TRUE == $required && empty($var)) {
-            throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
+            throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
         }
         if (!$this->isValidType($var, $type)) {
-            throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
+            throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
         }
 
         return ($xss_clean === TRUE) ? Common_Security::xss_clean($var) : $var;
@@ -563,7 +563,7 @@ class BaseClass {
     protected function process_image_upload($ID, $image_file, $type = '', $old_image_delete = TRUE) {
         $ext = pathinfo($image_file['name'], PATHINFO_EXTENSION);
         if (!in_array($ext, array('jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'))) {
-            throw new Exception_ApiException(ResultCode::DATA_NOT_ALLOWED, "Improper image is provided! Only jpg and png allowed!");
+            throw new System_ApiException(ResultCode::DATA_NOT_ALLOWED, "Improper image is provided! Only jpg and png allowed!");
         }
 
         $curr_time = time();
@@ -598,7 +598,7 @@ class BaseClass {
         if (move_uploaded_file($image_file["tmp_name"], $output_file)) {
             $this->resize_image($output_file, $image_name, Const_Application::MOBILE_IMAGE_WIDTH, Const_Application::MOBILE_IMAGE_HEIGHT, $type);
         } else {
-            throw new Exception_ApiException(ResultCode::FILE_UPLOAD_ERROR, 'An error occured in system! Upload failed!');
+            throw new System_ApiException(ResultCode::FILE_UPLOAD_ERROR, 'An error occured in system! Upload failed!');
         }
 
         return $image_name;

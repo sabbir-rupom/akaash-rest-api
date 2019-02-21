@@ -33,7 +33,7 @@ class UserItemDelete extends BaseClass {
         
         
         if(empty($userItemObj)) {
-            throw new Exception_ApiException(ResultCode::NOT_FOUND, 'User does not have this item!');
+            throw new System_ApiException(ResultCode::NOT_FOUND, 'User does not have this item!');
         }
         
         /*

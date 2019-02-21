@@ -97,16 +97,15 @@ For MySQL Database connectivity `PDO Driver` is used
 The *helper* classes are defined in `app/common` directory. Available helper classes are
 * ArrayUtil : Custom class for various array manipulations 
 * DateUtil : Custom class for various date/time manipulations
-* FileCacheClient : Custom file cache implementation class derived from PhpFileCache module [Weblink](https://github.com/Wruczek/PHP-File-Cache)
-* MemcachedServer : Custom memcache implementation class
 * Utils : Custom utility class for frequently used helper functions
 
-External library classes are initialized in `app/lib` directory. Currently included libraries are:
-* JwtToken : Custom class for implementing JWT token features from extending JWT library class [Weblink](https://github.com/Wruczek/PHP-File-Cache)
+Application system classes are initialized in `app/system` directory. These classes are:
+* JwtToken : Implementing JWT token features from extending JWT library package [source link](https://jwt.io/)
+* FileCacheClient : File cache class extending PhpFileCache library package [source link](https://github.com/Wruczek/PHP-File-Cache)
+* MemcachedServer : Memcache implementation class
+* Security : Security class
 
 Server constant class definitions in `app/const` directory 
-
-Server Exception class definitions in `app/exception` directory.
 
 ### Why use this?
 
@@ -164,10 +163,10 @@ class GetUserInformation extends BaseClass {
 
 * For exception handle inside your backend code, use the following code sample [**NOTE**: Check the `ResultCode` class for status-code definitions]
 ``` 
- throw new Exception_ApiException(ResultCode::NOT_FOUND, "Data not found");
+ throw new System_ApiException(ResultCode::NOT_FOUND, "Data not found");
 ```
 
-* To access helper / library / config classes, simply call their resources as follows [**NOTE**: Check the class name prefix; must be the similar with the directory name where resides]
+* To access system / model / common / config classes, simply call their resources as follows [**NOTE**: Check the class name prefix; must be the similar with the directory name where resides]
 ``` 
  $data = Common_DateUtil::getToday();
 ```
@@ -234,7 +233,7 @@ The results and header parameters will be available in Response/ Header tabs und
 
 ## Used Libraries
 
-Following third party libraries are used
+Following third party libraries are used in Application system
 * [PHP File Cache](https://github.com/Wruczek/PHP-File-Cache) - For local file caching
 * [JWT](https://github.com/firebase/php-jwt) - Client request verification
 

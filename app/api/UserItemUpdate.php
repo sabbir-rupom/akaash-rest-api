@@ -34,7 +34,7 @@ class UserItemUpdate extends BaseClass {
         $userItemObj = Model_UserItem::findBy(array('user_id' => $this->userId, 'id' => $this->item_id), $this->pdo, TRUE);
         
         if(empty($userItemObj)) {
-            throw new Exception_ApiException(ResultCode::NOT_FOUND, 'User item not found in database!');
+            throw new System_ApiException(ResultCode::NOT_FOUND, 'User item not found in database!');
         }
         
         /*

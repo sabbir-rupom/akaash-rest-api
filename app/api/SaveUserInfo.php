@@ -22,7 +22,7 @@ class SaveUserInfo extends BaseClass {
 
         $this->user = $this->cache_user;
         if (empty($this->user)) {
-            throw new Exception_ApiException(ResultCode::USER_NOT_FOUND, 'Session user not found!');
+            throw new System_ApiException(ResultCode::USER_NOT_FOUND, 'Session user not found!');
         }
 
         $this->update_user = false;
@@ -83,7 +83,7 @@ class SaveUserInfo extends BaseClass {
                 $email = $this->getValueFromJSON('email', 'string', TRUE);
                 If (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     // Email is not valid.
-                    throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "Invalid email address");
+                    throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "Invalid email address");
                 }
                 $this->user->email = $email;
                 $this->update_user = true;
@@ -96,9 +96,9 @@ class SaveUserInfo extends BaseClass {
                  * Verify old password match with user's current password
                  */
                 if ($newPassword === $oldPassword) {
-                    throw new Exception_ApiException(ResultCode::DUPLICATE_DATA, 'Please provide a new password');
+                    throw new System_ApiException(ResultCode::DUPLICATE_DATA, 'Please provide a new password');
                 } else if(password_verify($oldPassword, $this->user->password) === FALSE) {
-                    throw new Exception_ApiException(ResultCode::DATA_NOT_ALLOWED, 'Current password does not match');
+                    throw new System_ApiException(ResultCode::DATA_NOT_ALLOWED, 'Current password does not match');
                 }
 
                 $this->user->password = password_hash(trim($newPassword), PASSWORD_BCRYPT, array('cost' => 10));
@@ -113,7 +113,7 @@ class SaveUserInfo extends BaseClass {
             if (isset($_FILES['profile_image']) && $_FILES['profile_image']['size'] > 0) {
                 $profile_image = $_FILES['profile_image'];
             } else {
-                throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "profile_image is not set.");
+                throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "profile_image is not set.");
             }
             
             $this->user->profile_image = $this->process_image_upload($this->userId, $profile_image, 'profile');

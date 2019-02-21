@@ -2,7 +2,7 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
-class Common_Security {
+class System_Security {
 
     /**
      * List of never allowed strings

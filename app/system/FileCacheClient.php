@@ -1,8 +1,8 @@
 <?php
 
-require_once "PhpFileCache.php";
+use Wruczek\PhpFileCache\PhpFileCache;
 
-class Common_FileCacheClient {
+class System_FileCacheClient {
 
     private $connection;
 

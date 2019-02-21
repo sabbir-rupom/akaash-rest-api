@@ -34,15 +34,15 @@ class UserLogin extends BaseClass {
 
 
                 if (empty($this->_user_password)) {
-                    throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Password is empty');
+                    throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Password is empty');
                 }
 
                 if (filter_var($this->_user_email, FILTER_VALIDATE_EMAIL) === false) {
-                    throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
+                    throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
                 }
                 break;
             default :
-                throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
+                throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
                 break;
         }
     }
@@ -59,14 +59,14 @@ class UserLogin extends BaseClass {
                 case 1:
                     $user = Model_User::findBy(array('email' => $this->_user_email), $this->pdo, TRUE);
                     if (null === $user || empty($user)) {
-                        throw new Exception_ApiException(ResultCode::USER_NOT_FOUND);
+                        throw new System_ApiException(ResultCode::USER_NOT_FOUND);
                     }
                     if (password_verify($this->_user_password, $user->password) === FALSE) {
-                        throw new Exception_ApiException(ResultCode::PASSWORD_MISMATCHED);
+                        throw new System_ApiException(ResultCode::PASSWORD_MISMATCHED);
                     }
                     break;
                 default :
-                    throw new Exception_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
+                    throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
                     break;
             }
 

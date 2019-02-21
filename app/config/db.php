@@ -3,6 +3,12 @@
 if (!defined('APP_NAME'))
     die('Forbidden');
 
+/*
+ * Initialize database connections from config
+ * 
+ * @author sabbir-hossain
+ */
+
 $db_host = $configArray['DB_HOST'];
 $db_name = $configArray['DB_NAME'];
 $db_user = $configArray['DB_USER'];

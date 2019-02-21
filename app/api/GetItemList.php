@@ -40,7 +40,7 @@ class GetItemList extends BaseClass {
 
 
         if (empty($itemsObj)) {
-            throw new Exception_ApiException(ResultCode::NOT_FOUND, 'No items available as user item');
+            throw new System_ApiException(ResultCode::NOT_FOUND, 'No items available as user item');
         }
 
         // Initialize empty array

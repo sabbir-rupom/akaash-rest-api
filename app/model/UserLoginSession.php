@@ -51,7 +51,7 @@ class Model_UserLoginSession extends Model_BaseModel {
      * @param string $sessionId
      * @param int $loginType
      * @param obj $pdo
-     * @throws Exception_ApiException
+     * @throws System_ApiException
      * @return bool
      */
     public static function updateSession($userId, $sessionId, $loginType, $pdo = null) {

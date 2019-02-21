@@ -82,7 +82,7 @@ class Model_User extends Model_BaseModel {
      * Registration process execution.
      *
      * @return User object.
-     * @throws Exception_ApiException
+     * @throws System_ApiException
      */
 
     public function createUser($dataArray, $pdo = null) {
@@ -114,7 +114,7 @@ class Model_User extends Model_BaseModel {
             $this->create($pdo);
 
         } else {
-            throw new Exception_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
+            throw new System_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
         }
         return $user;
     }

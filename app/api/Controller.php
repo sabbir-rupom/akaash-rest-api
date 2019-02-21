@@ -40,7 +40,7 @@ class Controller {
                  * Check if requested parameters are in json format or not 
                  */
                 if (!empty($data) && json_last_error() != JSON_ERROR_NONE && empty($_FILES)) {
-                    throw new Exception_ApiException(ResultCode::INVALID_JSON, "Invalid JSON: $data");
+                    throw new System_ApiException(ResultCode::INVALID_JSON, "Invalid JSON: $data");
                 }
             } else {
                 self::$json = array();
@@ -50,7 +50,7 @@ class Controller {
              * Check if requested API controller exist in server
              */
             if (!class_exists(self::$apiName)) {
-                throw new Exception_ApiException(ResultCode::UNKNOWN_ERROR, "No such api: " . $name);
+                throw new System_ApiException(ResultCode::UNKNOWN_ERROR, "No such api: " . $name);
             }
 
             /**
@@ -63,7 +63,7 @@ class Controller {
              * Handle all exception messages
              */
 
-            if ($e instanceof Exception_ApiException) {
+            if ($e instanceof System_ApiException) {
                 header("HTTP/1.0 " . ResultCode::getHTTPstatusCode($e->getCode()) . " " . ResultCode::getTitle($e->getCode()));
                 $result = array(
                     'result_code' => $e->getCode(),

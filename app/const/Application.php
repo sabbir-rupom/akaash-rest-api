@@ -3,11 +3,13 @@
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
- * Application constant defined classes
+ * Application constant class
+ * This class provides all constant values required throughout this application
+ * 
+ * @author sabbir-hossain
  */
 class Const_Application {
 
-    
     /**
      */
     const PLATFORM_TYPE_NONE = 0;

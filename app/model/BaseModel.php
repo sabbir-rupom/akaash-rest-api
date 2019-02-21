@@ -3,16 +3,23 @@
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
- * Base Abstract Model 
+ * Abstract Base Model Class 
+ * 
+ * @author sabbir-hossain
  */
 abstract class Model_BaseModel {
 
     // Table name. Be overridden by the implementation class.
     const TABLE_NAME = "";
+    
     // Updated_at whether the column exists. Be overridden by the implementation class, if necessary.
     const HAS_UPDATED_AT = TRUE;
+    
     // Created_at whether the column exists. Be overridden by the implementation class, if necessary.
     const HAS_CREATED_AT = TRUE;
+    
+    // Memcached Validity period
+    const MEMCACHED_EXPIRE = 1800; // 30 minutes
 
     // Cache the column name list on the db
     private static $columnsOnDB = null;
@@ -22,7 +29,7 @@ abstract class Model_BaseModel {
      * @param mixed $id Table row ID
      * @param PDO $pdo Database connection object
      * @param boolean $forUpdate Whether to update the query result
-     * @return Model_User Object
+     * @return object Search result as an object of called class
      */
     public static function find($id, $pdo = null, $forUpdate = FALSE) {
         if ($pdo == null) {
@@ -45,7 +52,7 @@ abstract class Model_BaseModel {
      * @param array $params Column name the key, associative array whose value is the value to use for the search.
      * @param PDO $pdo Database connection object
      * @param boolean $forUpdate Whether to update the query result
-     * @return Search result object.
+     * @return object Search result as an object of called class
      */
     public static function findBy($params, $pdo = null, $forUpdate = FALSE) {
         if ($pdo == null) {
@@ -324,6 +331,32 @@ abstract class Model_BaseModel {
     }
 
     /**
+     * Based on specified criteria, returns specific items of the records from the database.
+     * @param array $columns Column names are values which will be returned in result only 
+     * @param array $params Column name the key, associative array whose value is the value to use for the search.
+     * @param string $order SQL ORDER BY column, associative array whose value is Direction and key is Column
+     * @param array $limitArgs SQL LIMIT value
+     * @param PDO $pdo Database connection object
+     * @param boolean $forUpdate Whether to update the query result
+     * @return PDO PDO fetch class object
+     */
+    public static function getColumnSpecificData($columns, $params, $order = null, $limitArgs = null, $pdo = null) {
+        if ($pdo == null) {
+            $pdo = Flight::pdo();
+        }
+
+        list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);
+
+        $sql = "SELECT " . implode(',', $columns) . " FROM " . static::TABLE_NAME . $conditionSql;
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute($values);
+        $objs = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        return $objs;
+    }
+
+    /**
      * To check whether there is a column name both in database and model class definition
      * */
     public static function hasColumn($name) {
@@ -415,33 +448,28 @@ abstract class Model_BaseModel {
      * Returns the key for setting all records in memcache.
      */
     protected static function getAllKey() {
-        return Common_Util_ConfigUtil::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
+        return Config_Config::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
     }
-
+    
     /**
-     * Based on specified criteria, returns specific items of the records from the database.
-     * @param array $columns Column names are values which will be returned in result only 
-     * @param array $params Column name the key, associative array whose value is the value to use for the search.
-     * @param string $order SQL ORDER BY column, associative array whose value is Direction and key is Column
-     * @param array $limitArgs SQL LIMIT value
-     * @param PDO $pdo Database connection object
-     * @param boolean $forUpdate Whether to update the query result
-     * @return PDO PDO fetch class object
+     * To get all the data from Memcache.
+     * If it's not registered to Memcache, it is set to Memcache to retrieve from the database.
+     *
+     * @return array Array of model objects.
      */
-    public static function getColumnSpecificData($columns, $params, $order = null, $limitArgs = null, $pdo = null) {
-        if ($pdo == null) {
-            $pdo = Flight::pdo();
+    public static function getAll() {
+        $key = static::getAllKey();
+        // To connect to Memcached, to get the value.
+        $memcache = Config_Config::getMemcachedClient();
+        $value = $memcache->get($key);
+        if (FALSE === $value) {
+            // If the value has been set to Memcached, it is set to Memcached to retrieve from the database.
+            $value = self::findAllBy(array());
+            if ($value) {
+                $memcache->set($key, $value, 0, static::MEMCACHED_EXPIRE);
+            }
         }
-
-        list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);
-
-        $sql = "SELECT " . implode(',', $columns) . " FROM " . static::TABLE_NAME . $conditionSql;
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
-        $stmt->execute($values);
-        $objs = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
-        return $objs;
+        return $value;
     }
 
 }

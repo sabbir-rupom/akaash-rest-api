@@ -2,6 +2,13 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
+/**
+ * Config class
+ * Application configuration class
+ * 
+ * @author sabbir-hossain
+ */
+
 class Config_Config {
 
     // store config parameters
@@ -114,7 +121,7 @@ class Config_Config {
             return $this->_memcachedServerInstance;
         }
 
-        $memcachedServerDto = new Common_MemcachedServer();
+        $memcachedServerDto = new System_MemcachedServer();
         if (isset($this->_config['MEMCACHED_HOST'])) {
             $memcachedServerDto->host = $this->_config['MEMCACHED_HOST'];
         }
@@ -139,7 +146,7 @@ class Config_Config {
 
         if (true == $config->isLocalCache()) {
 
-            $localFileClient = new Common_FileCacheClient($config->getLocalCachePath());
+            $localFileClient = new System_FileCacheClient($config->getLocalCachePath());
 
             self::$_memcachedClient = $localFileClient;
             return $localFileClient;
@@ -218,7 +225,7 @@ class Config_Config {
         $location = $this->_config["CLIENT_UPDATE_LOCATION"];
 
         if (empty($location)) {
-            throw new Exception_ApiException(ResultCode::UNKNOWN_ERROR, 'Client location not found!');
+            throw new System_ApiException(ResultCode::UNKNOWN_ERROR, 'Client location not found!');
         }
         return $location;
     }

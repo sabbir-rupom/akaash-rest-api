@@ -3,7 +3,9 @@
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
- * 　Cache key generation Util class
+ * 　Cache key generation Model class
+ * 
+ * @author sabbir-hossain
  */
 class Model_CacheKey {
 

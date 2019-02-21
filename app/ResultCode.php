@@ -3,8 +3,10 @@
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
- * Description of ResultCode
- *
+ * ResultCode Class
+ * This class represents the state of API during / after the execution 
+ * Points out the type of exception along with user-defined messages to handle all error exceptions
+ * 
  * @author sabbir-hossain
  */
 class ResultCode {
@@ -26,13 +28,10 @@ class ResultCode {
     const DATABASE_ERROR = 11;    // File upload error
     const JSON_OUTPUT_ERROR = 20;     //Another user connected to google play
     const ACCESS_FORBIDDEN = 100;     //Forbidden access error
-
-    /*
-     * SERVER RELATED 
-     */
     const NOT_FOUND = 404;     // Data not found
-    // Login blacklist. Not be able to game play.
-    const LOGIN_BLACKLIST = 1000;
+
+    
+    const USER_BLACKLIST = 1000; // User is blacklisted / blocked error
     const CODE_MESSAGE = array(
         self::SUCCESS => array(
             'title' => 'SUCCESS',
@@ -79,7 +78,7 @@ class ResultCode {
             'msg' => 'Data not found',
             'http_status' => 404
         ),
-        self::LOGIN_BLACKLIST => array(
+        self::USER_BLACKLIST => array(
             'title' => 'BLACKLIST USER',
             'msg' => 'User is blacklisted',
             'http_status' => 401
@@ -135,7 +134,7 @@ class ResultCode {
     }
 
     /**
-     * Get http status code of result code
+     * Get result code corresponding HTTP status code
      * @param int $code
      * @return int Return HTTP Status code against result code.
      */
