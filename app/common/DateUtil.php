@@ -10,8 +10,9 @@ class Common_DateUtil {
 
     /**
      * Insert the current time with DateTime type when storing it in MySQL.。
-     *
-     * @return String
+     * 
+     * @param string $format [optional]
+     * @return string Formatted date
      */
     public static function getToday($format = null) {
 
@@ -121,8 +122,8 @@ class Common_DateUtil {
     /**
      * Output date in specified format.
      *
-     * @param unknown_type $date
-     * @param unknown_type $format
+     * @param string $date
+     * @param unknown_type $format Formatted date
      */
     public static function getFormatDate($date, $format = null) {
 
@@ -131,9 +132,10 @@ class Common_DateUtil {
     }
 
     /**
-     * Get the difference seconds from two dates.
-     * @param $toDate
-     * @param $fromDate
+     * Get the difference in seconds from two dates.
+     * @param string $toDate
+     * @param string $fromDate
+     * @return int $intervalTime
      */
     public static function getSecDiff($toDate, $fromDate) {
 
@@ -148,15 +150,16 @@ class Common_DateUtil {
     }
 
     /**
-     * Get the number of days difference from two dates.
-     * @param $toDate
-     * @param $fromDate
+     * Get the number of days difference between two dates.
+     * @param string $toDate
+     * @param string $fromDate
+     * @return int $intervalDay
      */
     public static function getDayDiff($toDate, $fromDate) {
 
         // Set the date separately
-        $fromDateArray = explode("-", DateUtil::getFormatDate($fromDate, "Y-m-d"));
-        $toDateArray = explode("-", DateUtil::getFormatDate($toDate, "Y-m-d"));
+        $fromDateArray = explode("-", self::getFormatDate($fromDate, "Y-m-d"));
+        $toDateArray = explode("-", self::getFormatDate($toDate, "Y-m-d"));
 
         // Calculate UnixTime from the arrayed date
         $fromDateTime = mktime(0, 0, 0, $fromDateArray[1], $fromDateArray[2], $fromDateArray[0]); // 1236265200
@@ -171,9 +174,10 @@ class Common_DateUtil {
     }
 
     /**
-     * Acquire the difference month from two dates
-     * @param $toDate
-     * @param $fromDate
+     * Get the difference in month between two dates
+     * @param string $toDate
+     * @param string $fromDate
+     * @return int $diff 
      */
     public static function getMonthDiff($toDate, $fromDate) {
 
@@ -189,14 +193,16 @@ class Common_DateUtil {
 
     /**
      * Display time in days, hours, minutes, seconds
-     * Enter description here ...
+     * 
+     * @param int $time (in seconds)
+     * @return array $diff 
      */
-    public static function convertTimeTodate($time, $seek) {
+    public static function convertTimeTodate($time) {
 
         $tempTime = $time;
         $seek = array(
             'day' => 'Day',
-            'time' => 'Time',
+            'hour' => 'Hour',
             'minute' => 'Minute',
             'sec' => 'Second'
         );
@@ -209,7 +215,7 @@ class Common_DateUtil {
         }
         //time
         if ($tempTime >= 3600) {
-            $res['time'] = floor($tempTime / 3600);
+            $res['hour'] = floor($tempTime / 3600);
             $tempTime = $tempTime % 3600;
         }
         //Minute
@@ -225,16 +231,44 @@ class Common_DateUtil {
         $resStr = '';
         foreach ($seek as $key => $val) {
             if (array_key_exists($key, $res)) {
-                $resStr .= $res[$key] . $val;
+                $resStr .= $resStr !== '' ? ' ' . $res[$key] . $val : $res[$key] . $val;
             }
         }
         return $resStr;
     }
 
+    /*
+     * Return time difference between two dates
+     * [NOTE] Date Should In YYYY-MM-DD [H:i:s] Format
+     * RESULT FORMAT: From 2018-01-01 12:30:15 to 2019-03-02
+     * '%y Year %m Month %d Day %h Hours %i Minute %s Seconds'  =>  1 Year 2 Month 1 Day 12 Hours 30 Minute 15 Seconds
+     * '%y Year %m Month %d Day'                                =>  1 Year 2 Month 1 Day
+     * '%m Month %d Day'                                        =>  2 Month 1 Day
+     * '%d Day %h Hours'                                        =>  1 Day 12 Hours
+     * '%d Day'                                                 =>  1 Day
+     * '%h Hours %i Minute %s Seconds'                          =>  12 Hours 30 Minute 15 Seconds
+     * '%i Minute %s Seconds'                                   =>  30 Minute 15 Seconds
+     * '%h Hours                                                =>  12 Hours
+     * '%a Days                                                 =>  425 Days
+     * 
+     * @param string $toDate End date/datetime
+     * @param string $fromDate Start date/datetime
+     * @return unknown_type $differenceFormat 
+     */
+    public static function dateDifference($toDate, $fromDate, 
+            $differenceFormat = '%a'  ) {
+        $datetime1 = date_create($toDate);
+        $datetime2 = date_create($fromDate);
+
+        $interval = date_diff($datetime1, $datetime2);
+
+        return $interval->format($differenceFormat);
+    }
+
     /**
      * Data to be displayed on the application side is acquired "hh: mm" on the day of acquisition, "MM / DD" not on the day
-     * @param $toDate
-     * @param $fromDate
+     * @param string $date
+     * @return string formatted date
      */
     public static function getDisplayDate($date) {
 
@@ -255,6 +289,7 @@ class Common_DateUtil {
      * Specify the start and end dates and get sequential date arrays between them
      * @param $toDate
      * @param $fromDate
+     * @param $format [optional]
      */
     public static function getSequenceDate($toDate, $fromDate, $format = null) {
 
@@ -282,6 +317,13 @@ class Common_DateUtil {
     }
 
     /**
+     * Returns server Timezone
+     */
+    public static function getServerTimeZone() {
+        return date_default_timezone_get();
+    }
+
+    /**
      * Returns the elapsed time from the specified time stamp in microseconds.
      *
      */
@@ -290,8 +332,8 @@ class Common_DateUtil {
     }
 
     /**
-     * Get week (From Sunday 0, 1, 2 ...)
-     * @return string
+     * Get week number of specific month (From Sunday 0, 1, 2 ...)
+     * @return string Week
      */
     public static function getDayOfWeek($date = null) {
         if (null == $date) {
@@ -301,12 +343,61 @@ class Common_DateUtil {
         return date('w', strtotime($date));
     }
 
-    public static function getConvertTimeZone($fromTimeZone, $toTimeZone, $dateTime) {
+    /*
+     * Convert datetime from one timezone to another timezone
+     * 
+     * @param $fromTimeZone initial timezone
+     * @param $toTimeZone new timezone
+     * @param $dateTime datetime to be converted
+     * @return string datetime
+     */
 
+    public static function getConvertTimeZone($fromTimeZone, $toTimeZone, $dateTime) {
         $t = new DateTime($dateTime, new DateTimeZone($fromTimeZone));
         $t->setTimezone(new DateTimeZone($toTimeZone));
         $format = "Y-m-d H:i:s";
         return $t->format($format);
+    }
+
+    /**
+     * The time string converted to a timestamp (in seconds).
+     *
+     * @param string $str DB time character string
+     * @return int Unix timestamp (in seconds)
+     */
+    public static function strToTime($str) {
+        return strtotime($str);
+    }
+
+    /**
+     * Conversion time stamp (in seconds) to datetime specific
+     *
+     * @param int $time Unix timestamp
+     * @return DB registration for the time string
+     */
+    public static function timeToStr($time) {
+        return date('Y-m-d H:i:s', $time);
+    }
+
+    /**
+     * Convert time stamp (sec) to database registration date string.
+     *
+     * @param int $time Unix timestamp
+     * @return Datetime for DB registration
+     */
+    public static function timeToDateStr($time) {
+        return strftime('%Y-%m-%d', $time);
+    }
+
+    /**
+     * Check if the two specified time stamps (in seconds) are the same day
+     *
+     * @param int $time1 Unix timestamp
+     * @param int $time2 Unix timestamp
+     * @return boolean Check result
+     */
+    public static function isSameDay($time1, $time2) {
+        return self::timeToDateStr($time1) == self::timeToDateStr($time2);
     }
 
 }

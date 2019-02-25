@@ -38,6 +38,19 @@ if(empty($configArray['ENV'])) {
     exit;
 }
 
+/*
+ * Set server timezone acording to Configuration
+ */
+if(!empty($configArray['DB_TIMEZONE']) 
+        && !empty($configArray['DB_SET_TIMEZONE'])
+        && $configArray['DB_SET_TIMEZONE'] == 1) {
+    if(!date_default_timezone_set($configArray['DB_TIMEZONE'])) {
+        /*
+         * Set error condition if server timezone is set wrongly
+         */
+    }
+}
+
 Flight::set('env', $configArray['ENV']);
 
 //Configure Database Connection

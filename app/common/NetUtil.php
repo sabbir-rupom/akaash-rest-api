@@ -36,17 +36,4 @@ class Common_NetUtil {
         return $platformType;
     }
 
-    /**
-     * String parameter sent with HTTP POST
-     * @return string
-     */
-    public static function getPostStringParameter() {
-        $handle = fopen('php://input', 'r');
-        $string = fgets($handle);
-
-        fclose($handle);
-
-        return $string;
-    }
-
 }

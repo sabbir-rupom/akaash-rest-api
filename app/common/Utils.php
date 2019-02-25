@@ -3,7 +3,7 @@
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
- * Utility class
+ * Utility helper class
  */
 class Common_Utils {
 
@@ -41,47 +41,6 @@ class Common_Utils {
             return true;
         }
         return preg_match("/^[0-9]+$/", $var) > 0;
-    }
-
-    /**
-     * The time string retrieved from the database, converted to a timestamp (in seconds).
-     *
-     * @param string $str DB time character string
-     * @return int Unix timestamp
-     */
-    public static function strToTime($str) {
-        return strtotime($str);
-    }
-
-    /**
-     * Conversion time stamp (in seconds) in the database for registration time string.
-     *
-     * @param int $time Unix timestamp
-     * @return DB registration for the time string
-     */
-    public static function timeToStr($time) {
-        return strftime('%Y-%m-%d %H:%M:%S', $time);
-    }
-
-    /**
-     * Convert time stamp (sec) to database registration date string.
-     *
-     * @param int $time Unix timestamp
-     * @return Datetime for DB registration
-     */
-    public static function timeToDateStr($time) {
-        return strftime('%Y-%m-%d', $time);
-    }
-
-    /**
-     * Check if the specified time stamps (seconds) are the same day
-     *
-     * @param int $time1 Unix timestamp
-     * @param int $time2 Unix timestamp
-     * @return boolean Check result
-     */
-    public static function isSameDay($time1, $time2) {
-        return Utils::timeToDateStr($time1) == Utils::timeToDateStr($time2);
     }
 
     /**
@@ -123,6 +82,19 @@ class Common_Utils {
         $str = json_encode($hash);
         $obj = json_decode($str, FALSE);
         return $obj;
+    }
+
+    /**
+     * String parameter sent with HTTP POST
+     * @return string
+     */
+    public static function getPostStringParameter() {
+        $handle = fopen('php://input', 'r');
+        $string = fgets($handle);
+
+        fclose($handle);
+
+        return $string;
     }
 
 }

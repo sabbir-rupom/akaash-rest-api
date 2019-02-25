@@ -2,7 +2,6 @@
 
 /**
  * A utility class that summarizes processing related to arrays
- *
  */
 class Common_ArrayUtil {
 
@@ -33,7 +32,7 @@ class Common_ArrayUtil {
 
     /**
      * Rewind array index from 0
-     * If the value value is set to null, it is removed from the array
+     * If the value is set to null, it is removed from the array
      *
      * @access public
      * @param array $arrayData Target sequence
