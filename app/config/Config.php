@@ -105,7 +105,16 @@ class Config_Config {
     public function getLocalCachePath() {
         return $this->_config["LOCAL_CACHE_PATH"];
     }
+    /**
+     * Local log file path
+     */
+    public function getAppLogPath() {
+        return $this->_config["LOG_FILE_PATH"];
+    }
 
+    /*
+     * Whether production environment is live or not
+     */
     public function checkProductionEnvironment() {
         return $this->_config["PRODUCTION_ENV"];
     }
@@ -235,25 +244,16 @@ class Config_Config {
      *
      * @return boolean
      */
-    public function checkRequestTokenCheckFlag() {
+    public function checkRequestTokenFlag() {
         if (array_key_exists("CHECK_REQUEST_TOKEN", $this->_config) && $this->_config["CHECK_REQUEST_TOKEN"] === '1') {
             return true;
         }
         return false;
     }
-
-    /**
-     * Check the log write permission flag
-     *
-     * @return boolean
-     */
-    public function getApplicationLog() {
-        if (array_key_exists("APPLICATION_LOG", $this->_config) && $this->_config["APPLICATION_LOG"] === '1') {
-            return true;
-        }
-        return false;
-    }
     
+    /*
+     * Get class instance
+     */
     public static function getInstance() {
         return new Config_Config;
     }

@@ -137,7 +137,7 @@ class BaseClass {
      */
     protected function _checkRequestToken() {
 
-        if (Config_Config::getInstance()->checkRequestTokenCheckFlag() && !self::TEST_ENV) {
+        if (Config_Config::getInstance()->checkRequestTokenFlag() && !self::TEST_ENV) {
             $result = System_JwtToken::verify_token($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
 
             if ($result['error'] > 0) {

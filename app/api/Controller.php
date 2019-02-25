@@ -52,6 +52,7 @@ class Controller {
             if (!class_exists(self::$apiName)) {
                 throw new System_ApiException(ResultCode::UNKNOWN_ERROR, "No such api: " . $name);
             }
+            balsal;
 
             /**
              * Call Base Controller to Retrieve Instance of API Controller
@@ -64,37 +65,59 @@ class Controller {
              */
 
             if ($e instanceof System_ApiException) {
-                header("HTTP/1.0 " . ResultCode::getHTTPstatusCode($e->getCode()) . " " . ResultCode::getTitle($e->getCode()));
+                /*
+                 * Handle all application error messages
+                 */
+                header("HTTP/1.1 " . ResultCode::getHTTPstatusCode($e->getCode()) . " " . ResultCode::getTitle($e->getCode()));
+                $errMsg = empty($e->getMessage()) ? ResultCode::getMessage($e->getCode()) : $e->getMessage();
                 $result = array(
                     'result_code' => $e->getCode(),
                     'time' => Common_DateUtil::getToday(),
                     'error' => array(
                         'title' => ResultCode::getTitle($e->getCode()),
-                        'msg' => empty($e->getMessage()) ? ResultCode::getMessage($e->getCode()) : $e->getMessage()
+                        'msg' => $errMsg
                     )
                 );
-            } else if($e instanceof PDOException){
-                header("HTTP/1.0 " . ResultCode::getHTTPstatusCode(ResultCode::DATABASE_ERROR) . " " . ResultCode::getTitle(ResultCode::DATABASE_ERROR));
+
+                Common_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
+            } else if ($e instanceof PDOException) {
+                /*
+                 * Handle all database related error messages
+                 */
+                header("HTTP/1.1 " . ResultCode::getHTTPstatusCode(ResultCode::DATABASE_ERROR) . " " . ResultCode::getTitle(ResultCode::DATABASE_ERROR));
+                $errMsg = empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::DATABASE_ERROR) . ': check connection' : $e->getMessage();
                 $result = array(
                     'result_code' => ResultCode::DATABASE_ERROR,
                     'time' => Common_DateUtil::getToday(),
                     'error' => array(
                         'title' => ResultCode::getTitle(ResultCode::DATABASE_ERROR),
-                        'msg' => ResultCode::getMessage(ResultCode::DATABASE_ERROR) . ': check connection'
+                        'msg' => $errMsg
                     )
                 );
+
+                Common_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
             } else {
-            
-                header("HTTP/1.0 " . ResultCode::getHTTPstatusCode(ResultCode::UNKNOWN_ERROR) . " " . ResultCode::getTitle(ResultCode::UNKNOWN_ERROR));
+                /*
+                 * Handle all system error messages
+                 */
+                header("HTTP/1.1 " . ResultCode::getHTTPstatusCode(ResultCode::UNKNOWN_ERROR) . " " . ResultCode::getTitle(ResultCode::UNKNOWN_ERROR));
+                $errMsg = empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::UNKNOWN_ERROR) : $e->getMessage();
                 $result = array(
                     'result_code' => ResultCode::UNKNOWN_ERROR,
                     'time' => Common_DateUtil::getToday(),
                     'error' => array(
                         'title' => ResultCode::getTitle(ResultCode::UNKNOWN_ERROR),
-                        'msg' => empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::UNKNOWN_ERROR) : $e->getMessage()
+                        'msg' => $errMsg
                     )
                 );
+
+                Common_Log::log(array(
+                    'message' => self::$apiName . ' (' . ResultCode::UNKNOWN_ERROR . '): ' . $errMsg,
+                    'file_name' => $e->getFile(),
+                    'line_number' => $e->getLine()
+                ));
             }
+
             if (Config_Config::getInstance()->isErrorDump()) {
                 /*
                  * Additional error messages 
@@ -117,10 +140,9 @@ class Controller {
              */
             $json_array['execution_time'] = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
         }
-        
+
         // JSON Output
         View_Output::responseJson($json_array);
-
     }
 
     /**
@@ -162,4 +184,5 @@ class Controller {
     public static function initDelete($name) {
         self::init($name, 'DELETE');
     }
+
 }
