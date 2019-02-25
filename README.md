@@ -206,6 +206,7 @@ Try to add separate model classes for each tables in your database.
 Table Column Definitions will help you which data to be showed in response and which data to be processed in database through the base model functions
 
 * Check the existing API classes for further study
+* If you get any error like `"Class '' not found"` during development, you may need to run the `composer update` command from root directory (*if any new class files not loaded*)
 
 ## Features
 
