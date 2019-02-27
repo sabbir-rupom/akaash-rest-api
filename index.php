@@ -15,7 +15,12 @@ define('CONFIG_DIR', APP_DIR . '/config');
 define('SERVER_HOST', (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST']);
 
 /*
- * Load Flight and other required libraries
+ * Load Flight microframework
+ */
+require 'flight/Flight.php';
+
+/*
+ * Load other dependency libraries
  */
 require 'vendor/autoload.php';
 
