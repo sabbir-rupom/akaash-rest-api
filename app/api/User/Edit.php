@@ -20,7 +20,7 @@ class User_Edit extends BaseClass {
     public function validate() {
         parent::validate();
 
-        $this->user = $this->cache_user;
+        $this->user = $this->cacheUser;
         if (empty($this->user)) {
             throw new System_Exception(ResultCode::USER_NOT_FOUND, 'Session user not found!');
         }
