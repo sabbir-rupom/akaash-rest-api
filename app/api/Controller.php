@@ -1,19 +1,5 @@
 <?php
 
-/*
- * RESTful API Template
- * 
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
- * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
- */
-
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
@@ -32,17 +18,17 @@ class Controller {
     /**
      * Initialize application
      * 
-     * @param string $name REST API name
-     * @param string $method Application request Method 
+     * @param array $arrayParams Array parameters for initializing API class
      */
-    public static function init($name, $method) {
+    public static function init($arrayParams) {
         $data = null;
         try {
-            self::$apiName = Common_Utils::camelize($name); // prepare api controller from request url call
+            // prepare api controller from request url call
+            self::$apiName = self::prepareApiClass($arrayParams['name'], $arrayParams['group']);
             self::$getParams = $_GET;
             self::$headers = getallheaders();
 
-            if (in_array($method, array('POST', 'PUT', 'PATCH', 'DELETE'))) {
+            if (in_array($arrayParams['method'], array('POST', 'PUT', 'PATCH', 'DELETE'))) {
                 /*
                  * Fetch all requested parameters
                  */
@@ -54,7 +40,7 @@ class Controller {
                  * Check if requested parameters are in json format or not 
                  */
                 if (!empty($data) && json_last_error() != JSON_ERROR_NONE && empty($_FILES)) {
-                    throw new System_ApiException(ResultCode::INVALID_JSON, "Invalid JSON: $data");
+                    throw new System_Exception(ResultCode::INVALID_JSON, "Invalid JSON: $data");
                 }
             } else {
                 self::$json = array();
@@ -64,7 +50,7 @@ class Controller {
              * Check if requested API controller exist in server
              */
             if (!class_exists(self::$apiName)) {
-                throw new System_ApiException(ResultCode::UNKNOWN_ERROR, "No such api: " . $name);
+                throw new System_Exception(ResultCode::UNKNOWN_ERROR, "No such api: " . self::$apiName);
             }
 
             /**
@@ -77,7 +63,7 @@ class Controller {
              * Handle all exception messages
              */
 
-            if ($e instanceof System_ApiException) {
+            if ($e instanceof System_Exception) {
                 /*
                  * Handle all application error messages
                  */
@@ -85,14 +71,14 @@ class Controller {
                 $errMsg = empty($e->getMessage()) ? ResultCode::getMessage($e->getCode()) : $e->getMessage();
                 $result = array(
                     'result_code' => $e->getCode(),
-                    'time' => Common_DateUtil::getToday(),
+                    'time' => Helper_DateUtil::getToday(),
                     'error' => array(
                         'title' => ResultCode::getTitle($e->getCode()),
                         'msg' => $errMsg
                     )
                 );
 
-                Common_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
+                System_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
             } else if ($e instanceof PDOException) {
                 /*
                  * Handle all database related error messages
@@ -101,14 +87,14 @@ class Controller {
                 $errMsg = empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::DATABASE_ERROR) . ': check connection' : $e->getMessage();
                 $result = array(
                     'result_code' => ResultCode::DATABASE_ERROR,
-                    'time' => Common_DateUtil::getToday(),
+                    'time' => Helper_DateUtil::getToday(),
                     'error' => array(
                         'title' => ResultCode::getTitle(ResultCode::DATABASE_ERROR),
                         'msg' => $errMsg
                     )
                 );
 
-                Common_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
+                System_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
             } else {
                 /*
                  * Handle all system error messages
@@ -117,14 +103,14 @@ class Controller {
                 $errMsg = empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::UNKNOWN_ERROR) : $e->getMessage();
                 $result = array(
                     'result_code' => ResultCode::UNKNOWN_ERROR,
-                    'time' => Common_DateUtil::getToday(),
+                    'time' => Helper_DateUtil::getToday(),
                     'error' => array(
                         'title' => ResultCode::getTitle(ResultCode::UNKNOWN_ERROR),
                         'msg' => $errMsg
                     )
                 );
 
-                Common_Log::log(array(
+                System_Log::log(array(
                     'message' => self::$apiName . ' (' . ResultCode::UNKNOWN_ERROR . '): ' . $errMsg,
                     'file_name' => $e->getFile(),
                     'line_number' => $e->getLine()
@@ -164,43 +150,37 @@ class Controller {
     }
 
     /**
-     * Initialize application for GET method
+     * Initialize API application
      * @param type $name Api name
      */
-    public static function initGet($name) {
-        self::init($name, 'GET');
+    public static function initAPI($name) {
+        self::init([
+            'name' => $name,
+            'method' => $_SERVER['REQUEST_METHOD'],
+            'group' => NULL
+        ]);
     }
 
     /**
-     * Initialize application for POST method
+     * Initialize API Application from Group
+     * @param type $group Group name
      * @param type $name Api name
      */
-    public static function initPost($name) {
-        self::init($name, 'POST');
+    public static function initGroupAPI($group, $name) {
+        self::init([
+            'name' => $name,
+            'method' => $_SERVER['REQUEST_METHOD'],
+            'group' => $group,
+        ]);
     }
 
     /**
-     * Initialize application for PUT method
-     * @param type $name Api name
+     * Prepare API class name
+     * @param string $name Api name
+     * @param string $group Api Group name
      */
-    public static function initPut($name) {
-        self::init($name, 'PUT');
-    }
-
-    /**
-     * Initialize application for PATCH method
-     * @param type $name Api name
-     */
-    public static function initPatch($name) {
-        self::init($name, 'PATCH');
-    }
-
-    /**
-     * Initialize application for DELETE method
-     * @param type $name Api name
-     */
-    public static function initDelete($name) {
-        self::init($name, 'DELETE');
+    public static function prepareApiClass($name, $group) {
+        return is_null($group) ? Helper_CommonUtil::camelize($name) : ucfirst($group) . '_' . Helper_CommonUtil::camelize($name);
     }
 
 }

@@ -36,7 +36,7 @@ class ShowImage extends BaseClass {
                     $mobileDevice = TRUE;
                 }
 
-                $imgPath = ($mobileDevice ? Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE : Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE) . $userInfo->profile_image;
+                $imgPath = ($mobileDevice ? System_Constant::UPLOAD_PROFILE_IMAGE_PATH_MOBILE : System_Constant::UPLOAD_PROFILE_IMAGE_PATH_MOBILE) . $userInfo->profile_image;
                 break;
 
             default:

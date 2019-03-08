@@ -1,19 +1,5 @@
 <?php
 
-/*
- * RESTful API Template
- * 
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
- * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
- */
-
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
@@ -248,7 +234,7 @@ class Config_Config {
         $location = $this->_config["CLIENT_UPDATE_LOCATION"];
 
         if (empty($location)) {
-            throw new System_ApiException(ResultCode::UNKNOWN_ERROR, 'Client location not found!');
+            throw new System_Exception(ResultCode::UNKNOWN_ERROR, 'Client location not found!');
         }
         return $location;
     }

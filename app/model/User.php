@@ -82,7 +82,7 @@ class Model_User extends Model_BaseModel {
      * Registration process execution.
      *
      * @return User object.
-     * @throws System_ApiException
+     * @throws System_Exception
      */
 
     public function createUser($dataArray, $pdo = null) {
@@ -106,7 +106,7 @@ class Model_User extends Model_BaseModel {
             $this->longitude = $dataArray['long'];
             $this->gender = $dataArray['gender'];
 
-            $this->last_api_time = Common_DateUtil::getToday();
+            $this->last_api_time = Helper_DateUtil::getToday();
 
             $this->device_token = $dataArray['d_token'];
             $this->device_model = $dataArray['d_model'];
@@ -114,7 +114,7 @@ class Model_User extends Model_BaseModel {
             $this->create($pdo);
 
         } else {
-            throw new System_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
+            throw new System_Exception(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
         }
         return $user;
     }
@@ -128,7 +128,7 @@ class Model_User extends Model_BaseModel {
             if (null === $pdo) {
                 $pdo = Flight::pdo();
             }
-            $this->last_api_time = Common_DateUtil::getToday();
+            $this->last_api_time = Helper_DateUtil::getToday();
             $this->update($pdo);
         }
     }

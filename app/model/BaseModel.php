@@ -1,19 +1,5 @@
 <?php
 
-/*
- * RESTful API Template
- * 
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
- * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
- */
-
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
@@ -25,17 +11,15 @@ abstract class Model_BaseModel {
 
     // Table name. Be overridden by the implementation class.
     const TABLE_NAME = "";
-    
     // Updated_at whether the column exists. Be overridden by the implementation class, if necessary.
     const HAS_UPDATED_AT = TRUE;
-    
     // Created_at whether the column exists. Be overridden by the implementation class, if necessary.
     const HAS_CREATED_AT = TRUE;
-    
     // Memcached Validity period
     const MEMCACHED_EXPIRE = 1800; // 30 minutes
 
     // Cache the column name list on the db
+
     private static $columnsOnDB = null;
 
     /**
@@ -235,7 +219,7 @@ abstract class Model_BaseModel {
         // Prepare SQL
         list($columns, $values) = $this->getValues();
 
-        $now = Common_DateUtil::getToday();
+        $now = Helper_DateUtil::getToday();
         $sql = 'INSERT INTO ' . static::TABLE_NAME . ' (' . join(',', $columns);
         $sql .= (static::HAS_CREATED_AT === TRUE ? ',created_at' : '');
         $sql .= (static::HAS_UPDATED_AT === TRUE ? ',updated_at' : '');
@@ -270,7 +254,7 @@ abstract class Model_BaseModel {
         }
         $sql .= join(',', $setStmts);
         if (static::HAS_UPDATED_AT === TRUE) {
-            $sql .= ",updated_at='" . Common_DateUtil::getToday() . "'";
+            $sql .= ",updated_at='" . Helper_DateUtil::getToday() . "'";
         }
         $sql .= ' WHERE id = ?';
         $stmt = $pdo->prepare($sql);
@@ -464,7 +448,7 @@ abstract class Model_BaseModel {
     protected static function getAllKey() {
         return Config_Config::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
     }
-    
+
     /**
      * To get all the data from Memcache.
      * If it's not registered to Memcache, it is set to Memcache to retrieve from the database.
@@ -484,6 +468,38 @@ abstract class Model_BaseModel {
             }
         }
         return $value;
+    }
+
+    /**
+     * Get random string with provided length; default length 4
+     * @param int $length String length
+     * @param string $type Type of Random String
+     * @return string $randomString 
+     */
+    protected function generateRandomString($length = 4, $type = 'string') {
+        $stringRegex = "1234567890ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        $intRegex = "1234567890";
+        $capNdigitRegex = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        switch ($type) {
+            case 'num': // All NUMERIC
+                $regex = $intRegex;
+                break;
+            case 'cap': // All CAPITAL
+                $regex = $capNdigitRegex;
+                break;
+
+            default: // Any Character Combination
+                $regex = $stringRegex;
+                break;
+        }
+
+        $charactersLength = strlen($regex);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $regex[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 
 }

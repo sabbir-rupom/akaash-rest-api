@@ -1,19 +1,5 @@
 <?php
 
-/*
- * RESTful API Template
- * 
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
- * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
- */
-
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 use \Firebase\JWT\JWT;
@@ -26,7 +12,7 @@ class System_JwtToken {
      * @param string $key secret key to sign the JWT token 
      * @return array Token verification result
      */
-    public static function verify_token($token = '', $key = '') {
+    public static function verifyToken($token = '', $key = '') {
         $result = array('error' => 0, 'data' => array());
         if ($token == '') {
             $result['error'] = 5;

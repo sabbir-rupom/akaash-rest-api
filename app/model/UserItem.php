@@ -61,7 +61,7 @@ class Model_UserItem extends Model_BaseModel {
 
             $userItemObj->create($pdo);
         } else {
-            throw new System_ApiException(ResultCode::DATABASE_ERROR, 'Item already exist!');
+            throw new System_Exception(ResultCode::DATABASE_ERROR, 'Item already exist!');
         }
 
         return $userItemObj;

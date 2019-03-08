@@ -9,7 +9,8 @@
  * 
  * @author sabbir-hossain
  */
-class ResultCode {
+
+class System_ResultCode {
     /*
      * USER DEFINED
      */
