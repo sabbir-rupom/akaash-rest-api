@@ -14,7 +14,6 @@
  * @filesource
  */
 
-
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
