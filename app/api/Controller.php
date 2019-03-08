@@ -139,10 +139,10 @@ class Controller {
              */
             $json_array['execution_time'] = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
 
-//            $sql = "INSERT INTO `api_exec_time` (`api_name`, `exec_time`) VALUES ('{$name}', {$json_array['execution_time']});";
-//            $pdo = Flight::pdo();
-//            $stmt = $pdo->prepare($sql);
-//            $stmt->execute();
+            $sql = "INSERT INTO `api_exec_time` (`api_name`, `exec_time`) VALUES ('" . self::$apiName . "', {$json_array['execution_time']});";
+            $pdo = Flight::pdo();
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
         }
 
         // JSON Output

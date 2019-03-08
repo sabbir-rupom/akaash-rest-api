@@ -44,7 +44,7 @@ class Model_UserItem extends Model_BaseModel {
      * @param int $userId
      * @param string $itemName
      * @param obj $pdo
-     * @throws System_ApiException
+     * @throws System_Exception
      * @return obj
      */
     public static function addUserItem($userId, $itemName, $pdo = null) {
@@ -70,6 +70,7 @@ class Model_UserItem extends Model_BaseModel {
     /**
      * Get all item list available in database
      * @param string $itemName Item name to be searched
+     * @param string $userId User ID to be searched
      * @param obj $pdo
      * @return array $result Array of item list
      */
