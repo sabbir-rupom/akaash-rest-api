@@ -431,6 +431,9 @@ abstract class Model_BaseModel {
      * @param unknown_type $key
      */
     public static function getCache($cacheKey) {
+        if(Config_Config::getInstance()->isCacheEnable() === FALSE) {
+            return FALSE;
+        } 
         $memcache = Config_Config::getMemcachedClient();
         return $memcache->get($cacheKey);
     }
@@ -441,6 +444,9 @@ abstract class Model_BaseModel {
      * @param unknown_type $value
      */
     public static function setCache($cacheKey, $value) {
+        if(Config_Config::getInstance()->isCacheEnable() === FALSE) {
+            return FALSE;
+        } 
         $memcache = Config_Config::getMemcachedClient();
         $call_class = get_called_class();
         $ret_value = $memcache->set($cacheKey, $value, MEMCACHE_COMPRESSED, $call_class::MEMCACHED_EXPIRE);
@@ -452,6 +458,9 @@ abstract class Model_BaseModel {
      * @param unknown_type $key
      */
     public static function deleteCache($cacheKey) {
+        if(Config_Config::getInstance()->isCacheEnable() === FALSE) {
+            return;
+        } 
         $memcache = Config_Config::getMemcachedClient();
         $memcache->delete($cacheKey);
     }
@@ -470,6 +479,9 @@ abstract class Model_BaseModel {
      * @return array Array of model objects.
      */
     public static function getAll() {
+        if(Config_Config::getInstance()->isCacheEnable() === FALSE) {
+            return FALSE;
+        } 
         $key = static::getAllKey();
         // To connect to Memcached, to get the value.
         $memcache = Config_Config::getMemcachedClient();

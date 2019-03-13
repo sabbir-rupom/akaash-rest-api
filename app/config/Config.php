@@ -104,6 +104,16 @@ class Config_Config {
     }
     
     /**
+     * Whether the Server caching enabled or disabled
+     */
+    public function isCacheEnable() {
+        if (array_key_exists("SERVER_CACHE", $this->_config) && $this->_config["SERVER_CACHE"] === '1') {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
      * Whether the Local Cache mode ON or OFF
      */
     public function isLogEnable() {
