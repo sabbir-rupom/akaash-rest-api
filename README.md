@@ -216,6 +216,10 @@ Table Column Definitions will help you which data to be showed in response and w
 or you can put the PHP library in `app/lib` directory and extend your custom class inside the directory by defining class name with directory-name 
 as classname-prefix `class Lib_Library {}`
 
+## Changelog and New Features
+
+You can find a list of all changes for each release/version in the [change log](https://github.com/sabbir-rupom/rest-api-flight-PHP/blob/master/changelog.rst) 
+
 ## Features
 
 Features of the system will be defined here shortly
