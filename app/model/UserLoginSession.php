@@ -47,12 +47,12 @@ class Model_UserLoginSession extends Model_BaseModel {
     /**
      * Insert / Update user session for each day
      *
-     * @param int $userId
-     * @param string $sessionId
-     * @param int $loginType
-     * @param obj $pdo
+     * @param int $userId User ID
+     * @param string $sessionId User's session ID
+     * @param int $loginType Type of login
+     * @param obj $pdo DB connection Object PDO
      * @throws System_ApiException
-     * @return bool
+     * @return bool Success [TRUE]
      */
     public static function updateSession($userId, $sessionId, $loginType, $pdo = null) {
         if (null === $pdo) {

@@ -132,16 +132,6 @@ class Model_User extends Model_BaseModel {
             $this->update($pdo);
         }
     }
-
-    /**
-     * Return from the session to get a user ID.
-     */
-//    public static function retrieveUserIdFromSession($sessionId) {
-//        $sessionKey = Model_CacheKey::getUserSessionKey($sessionId);
-//        $memcache = Config_Config::getMemcachedClient();
-//        $userId = $memcache->get($sessionKey);
-//        return $userId;
-//    }
     
     /**
      * Return from the session to get a user ID.
@@ -203,9 +193,9 @@ class Model_User extends Model_BaseModel {
 
     /**
      * Find User form cache
-     * @param int $userId
-     * @param PDO $pdo
-     * @return Model_User
+     * @param int $userId User ID
+     * @param obj $pdo DB connection Object PDO
+     * @return obj array object Model_User
      */
     public static function cache_or_find($userId, $pdo = null) {
         $user = parent::getCache(Model_CacheKey::getUserKey($userId));
@@ -219,9 +209,9 @@ class Model_User extends Model_BaseModel {
 
     /**
      * Refresh Cache
-     * @param type $userId
-     * @param type $pdo
-     * @return type
+     * @param int $userId User ID
+     * @param obj $pdo DB connection Object PDO
+     * @return obj array object Model_User
      */
     public static function refreshCache($userId, $pdo = null) {
         $user = self::find($userId, $pdo, TRUE);
@@ -231,7 +221,8 @@ class Model_User extends Model_BaseModel {
 
     /**
      * Before Update Deleting Cache
-     * @param type $pdo
+     * @param obj $pdo DB connection Object PDO
+     * @param bool $cacheDelete [optional] Delete data from cache if exist
      */
     public function update($pdo = null, $cacheDelete = TRUE) {
         if ($cacheDelete) {

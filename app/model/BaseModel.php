@@ -18,8 +18,6 @@
 
 /**
  * Abstract Base Model Class 
- * 
- * @author sabbir-hossain
  */
 abstract class Model_BaseModel {
 
@@ -103,7 +101,7 @@ abstract class Model_BaseModel {
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute($values);
-        $objs = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        $objs = $stmt->fetchAll();
         return $objs;
     }
 
@@ -133,7 +131,7 @@ abstract class Model_BaseModel {
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute($values);
-        $records = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        $records = $stmt->fetchAll();
         $count = 0;
         if (!empty($records[0]->count)) {
             $count = $records[0]->count;
@@ -252,7 +250,7 @@ abstract class Model_BaseModel {
 
     /**
      * To update the object.
-     * @param PDO $pdo
+     * @param PDO $pdo DB connection Object PDO
      */
     public function update($pdo = null) {
         if (!isset($this->id)) {
@@ -283,7 +281,8 @@ abstract class Model_BaseModel {
 
     /**
      * Delete the object of specific row ID from table
-     * @param PDO $pdo
+     * @param PDO $pdo DB connection Object PDO
+     * @return obj PDO query execution result
      */
     public function delete($pdo = null) {
         if (!isset($this->id)) {

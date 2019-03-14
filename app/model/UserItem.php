@@ -41,11 +41,11 @@ class Model_UserItem extends Model_BaseModel {
     /**
      * Insert new unique item for session user
      *
-     * @param int $userId
-     * @param string $itemName
-     * @param obj $pdo
+     * @param int $userId User ID
+     * @param string $itemName Name of user item
+     * @param obj $pdo DB connection Object PDO
      * @throws System_Exception
-     * @return obj
+     * @return obj $userItemObj Model_UserItem object 
      */
     public static function addUserItem($userId, $itemName, $pdo = null) {
         if (null === $pdo) {
@@ -71,7 +71,7 @@ class Model_UserItem extends Model_BaseModel {
      * Get all item list available in database
      * @param string $itemName Item name to be searched
      * @param string $userId User ID to be searched
-     * @param obj $pdo
+     * @param obj $pdo DB connection Object PDO
      * @return array $result Array of item list
      */
     public static function getAllItems($itemName = '', $userId = null, $pdo = null) {
