@@ -111,18 +111,32 @@ class Common_Utils {
         return $string;
     }
 
-}
+    /**
+     * Return the requested OS type
+     *
+     * @return int $platformType Type of client platform
+     */
+    public static function getHttpRequestPlatformType() {
 
-//
-///**
-// * The default class of JSON of premise object。
-// *
-// * Operational policies and methods of DTO put in here as an interim implementation until the firm.
-// */
-//class Jsonizable {
-//
-//    public function toJsonHash() {
-//        return Utils::objToJsonHash($this);
-//    }
-//
-//}
+        // Unable to acquire OS type None
+        if (false == array_key_exists('platform_type', $_GET)) {
+            if (TRUE == array_key_exists('client_type', $_GET)) {
+                $client = intval($_GET['client_type']);
+                if ($client === 2) {
+                    return Const_Application::PLATFORM_TYPE_ANDROID;
+                }
+            }
+            return Const_Application::PLATFORM_TYPE_NONE;
+        }
+
+        $platformType = $_GET['platform_type'];
+        // Not applicable OS type
+        if (Const_Application::PLATFORM_TYPE_IOS != $platformType &&
+                Const_Application::PLATFORM_TYPE_ANDROID != $platformType) {
+            return Const_Application::PLATFORM_TYPE_NONE;
+        }
+
+        return $platformType;
+    }
+
+}

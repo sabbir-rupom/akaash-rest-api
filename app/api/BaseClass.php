@@ -450,40 +450,6 @@ class BaseClass {
     }
 
     /**
-     * 
-     * @param int $now
-     * @return string Date formated as "Ymd His"
-     */
-    protected function time($now = null) {
-        return date("Y-m-d H:i:s", ($now == null ? time() : $now));
-    }
-
-    /**
-     * Get Distance between two latlong co-ordinates
-     * @param int $latitude1, $longitude1, $latitude2, $longitude2, Unit of return(K = Km, M= Miles, N= Nautical)
-     * @return float value as Distance
-     */
-    protected function distance($lat1, $lon1, $lat2, $lon2, $unit) {
-
-        $theta = $lon1 - $lon2;
-        $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-        $dist = acos($dist);
-        $dist = rad2deg($dist);
-        $miles = $dist * 60 * 1.1515;
-        $unit = strtoupper($unit);
-
-        if ($unit == "K") {
-            return ($miles * 1.609344);
-        } else if ($unit == "M") {
-            return ($miles * 1.609344 * 1000);
-        } else if ($unit == "N") {
-            return ($miles * 0.8684);
-        } else {
-            return $miles;
-        }
-    }
-
-    /**
      * Get Distance between two latlong co-ordinates
      * @param int $length String length
      * @param string $type Type of Random String
