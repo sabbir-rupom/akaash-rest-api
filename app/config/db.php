@@ -1,12 +1,24 @@
 <?php
 
+/*
+ * RESTful API Template
+ * 
+ * A RESTful API template based on flight-PHP framework
+ * This software project is based on my recent REST-API development experiences. 
+ * 
+ * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
+ * 
+ * @author	Sabbir Hossain Rupom
+ * @since	Version 1.0.0
+ * @filesource
+ */
+
 if (!defined('APP_NAME'))
     die('Forbidden');
 
 /*
  * Initialize database connections from config
- * 
- * @author sabbir-hossain
  */
 
 $db_host = $configArray['DB_HOST'];

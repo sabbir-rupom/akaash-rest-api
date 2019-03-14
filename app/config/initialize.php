@@ -25,10 +25,10 @@ if (!file_exists(CONFIG_DIR . "/config_app.ini")) {
     Flight::json(array(
         'error' => array(
             'title' => 'Server Configuration Error',
-            'message' => 'Server configuration file is missing',
+            'message' => 'Server configuration file [ config_app.ini ] is missing',
         ),
-        'result_code' => 404
-    ), 404);
+        'result_code' => 500
+    ), 500);
     exit;
 }
 
@@ -46,8 +46,8 @@ if(empty($configArray['ENV'])) {
             'title' => 'Server Configuration Error',
             'message' => 'Server environment is not set in config',
         ),
-        'result_code' => 404
-    ), 404);
+        'result_code' => 503
+    ), 503);
     exit;
 }
 
