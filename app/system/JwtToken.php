@@ -26,7 +26,7 @@ class System_JwtToken {
      * @param string $key secret key to sign the JWT token 
      * @return array Token verification result
      */
-    public static function verify_token($token = '', $key = '') {
+    public static function verifyToken($token = '', $key = '') {
         $result = array('error' => 0, 'data' => array());
         if ($token == '') {
             $result['error'] = 5;

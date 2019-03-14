@@ -144,7 +144,7 @@ class Controller {
             }
         }
         $json_array = $result;
-
+        
 
         if (strtoupper(Flight::get('env')) != 'PRODUCTION') {
             /*

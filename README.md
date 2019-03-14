@@ -220,14 +220,17 @@ The results and header parameters will be available in Response/ Header tabs und
 ```json
 {
   "result_code": 0,
-  "time": "2019-01-01 12:00:00",
+  "time": "2019-03-14 09:55:52",
   "data": {
     "DB": "Database to user table connection is functional",
-    "JWT": "JWT token verification system is functional",
-    "Cache": "Cache system is functional"
+    "JWT": "JWT verification system is functional",
+    "Log": "System application log is functional",
+    "Cache": "Cache system is functional",
+    "testImagUrl": "http://flight-api-v1.sol/uploads/profile_images/profiletest_1552535752.png",
+    "Upload": "File upload system is functional"
   },
   "error": [],
-  "execution_time": 0.05303311347961426
+  "execution_time": 0.05903311347961426
 }
 ```
 * To populate your console page with you own API, edit `api-list.json` page with appropriate API information
