@@ -4,7 +4,7 @@ Project Features
 
 This project does not include much features, but I have tried to add some to make the application more user-friendly. Let's see these features:
 
--   Integration of **flight-microframework** - which is extremely light weight. To learn it's features, simply go to this :doc:`FlightPHP <http://flightphp.com/learn/>`_
+-   Integration of **flight-microframework** - which is extremely light weight. To learn it's features, simply go to this `FlightPHP <http://flightphp.com/learn/>`_
 -   Custom **Model-View-Controller** system
 -   **Single Configuration** file with Config class
 -   Base Controller class for **Client Request** validation
