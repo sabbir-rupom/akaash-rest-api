@@ -214,6 +214,7 @@ Features of the system will be defined here shortly
 ## Running the tests
 
 * Check the console webpage to test your API. URL: `http://rest-api.test/console`
+
 **Note**: If you need to use this project-template in sub-directory under the *Root Directory*, 
 you may need change the *Base URL* path in the form / console.js - whatever is suited for you
 * To check your system is fully cope with the project or not, simply goto the `Test API` Sidebar, click the underlining anchor-link, then click **Submit** button. 
