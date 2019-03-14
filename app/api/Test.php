@@ -25,46 +25,46 @@ class Test extends BaseClass {
             $dbUserCount = Model_User::countBy();
             $responseArray['DB'] = !empty($dbUserCount) ? 'Database to user table connection is functional' : 'Database to user table connection is not functional';
         } else {
-            $responseArray['DB'] = 'Database connection is not functional';
+            $responseArray['DB'] = 'Database connection is not functional. Please check config_app.ini';
         }
 
         /*
          * JWT token verification test case
          */
         if (Config_Config::getInstance()->checkRequestTokenFlag() === FALSE) {
-            $responseArray['JWT'] = 'JWT token verification system is disabled';
+            $responseArray['JWT'] = 'JWT token verification system is disabled. To enable, please check config_app.ini';
         } else {
             if (empty($this->config['REQUEST_TOKEN_SECRET'])) {
-                $responseArray['JWT'] = 'JWT token secret key is not set';
+                $responseArray['JWT'] = 'JWT token secret key is not set. Please check config_app.ini';
             } else {
                 $result = System_JwtToken::createToken(array('test' => 1), $this->config['REQUEST_TOKEN_SECRET']);
                 if ($result['error'] == 0) {
                     $result = System_JwtToken::verifyToken($result['token'], $this->config['REQUEST_TOKEN_SECRET']);
                 }
-                $responseArray['JWT'] = ($result['error'] > 0) ? 'JWT token verification system is not functional' : 'JWT token verification system is functional';
+                $responseArray['JWT'] = ($result['error'] > 0) ? 'JWT verification system is not functional' : 'JWT verification system is functional';
             }
         }
 
         /*
-         * Check application log path access permission
+         * Check application logging is functional or not
          */
-        $cacheLogStatus = TRUE;
+        $checkLogStatus = TRUE;
         if (Config_Config::getInstance()->isLogEnable()) {
 
             $logPath = Config_Config::getInstance()->getLogFile();
             if (!file_exists($logPath) && !is_dir($logPath)) {
                 if (!mkdir($logPath, 0755, true)) {
                     $responseArray['Log'] = 'Log folder cannnot be created. Please change folder permission for apache access : ' . $logPath;
-                    $cacheLogStatus = FALSE;
+                    $checkLogStatus = FALSE;
                 }
             } else {
                 if (!is_writable($logPath)) {
                     $responseArray['Log'] = 'Log folder is not writable. Please change file permission for apache access : ' . $logPath;
-                    $cacheLogStatus = FALSE;
+                    $checkLogStatus = FALSE;
                 }
             }
 
-            if ($cacheLogStatus) {
+            if ($checkLogStatus) {
                 $responseArray['Log'] = 'System application log is functional';
             }
         } else {
