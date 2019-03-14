@@ -70,7 +70,6 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 ```
-**Note**: If you need to use flight in a subdirectory add the line `RewriteBase /subdir/` just after `RewriteEngine On`.
 * Go to the `app/config` directory inside your project folder. Rename the existing `example.*` file to `config_app.ini`. 
 * Open your `config_app.ini` file and **change the configuration** parameters suitable to your machine environment.
 
@@ -227,6 +226,9 @@ Features of the system will be defined here shortly
 ## Running the tests
 
 * Check the console webpage to test your API. URL: `http://rest-api.test/console`
+
+**Note**: If you need to use this project-template in sub-directory under the *Root Directory*, 
+you may need change the *Base URL* path in the form / console.js - whatever is suited for you
 * To check your system is fully cope with the project or not, simply goto the `Test API` Sidebar, click the underlining anchor-link, then click **Submit** button. 
 The results and header parameters will be available in Response/ Header tabs under the form page. Check for following results as success:
 ```json
