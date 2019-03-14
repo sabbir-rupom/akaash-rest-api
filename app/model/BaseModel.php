@@ -414,14 +414,14 @@ abstract class Model_BaseModel {
     public function toJsonHash() {
         foreach (static::getColumns() as $column) {
             if (static::isColumnIncludedInJson($column)) {
-                if ('int' === static::getColumnType($column) && !is_null($this->$column)) {
+                if ('int' === static::getColumnType($column) && isset($this->$column)) {
                     $hash[$column] = (int) $this->$column;
-                } else if ('float' === static::getColumnType($column) && !is_null($this->$column)) {
+                } else if ('float' === static::getColumnType($column) && isset($this->$column)) {
                     $hash[$column] = floatval($this->$column);
-                } else if ('bool' === static::getColumnType($column) && !is_null($this->$column)) {
-                    $hash[$column] = ("1" === $this->$column);
+                } else if ('bool' === static::getColumnType($column) && isset($this->$column) && !is_null($this->$column)) {
+                    $hash[$column] = (bool) $this->$column;
                 } else {
-                    $hash[$column] = (!isset($this->$column) || $this->$column == null) ? "" : $this->$column;
+                    $hash[$column] = (!isset($this->$column) || is_null($this->$column)) ? "" : $this->$column;
                 }
             }
         }
