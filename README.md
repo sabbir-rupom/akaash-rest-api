@@ -20,7 +20,7 @@ and added some custom API along with a `/console` webform to communicate those A
 
 `PHP 5.6` or greater. Some prerequisite modules are:
 ```
-pdo memcache pdo_mysql gd gmp
+pdo memcache memcached pdo_mysql gd gmp
 ```
 
 `MySQL 5.6` or greater.
