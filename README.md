@@ -209,7 +209,7 @@ Table Column Definitions will help you which data to be showed in response and w
 
 ## Features
 
-Features of the system will be defined here shortly
+The project application features are listed [Here](user_guide/features.rst)
 
 ## Running the tests
 
