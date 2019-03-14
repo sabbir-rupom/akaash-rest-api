@@ -3,7 +3,7 @@ A RESTful API template based on flight-PHP framework
 
 ### What is Flight?
 
-Flight is a fast, simple, extensible framework for PHP. Flight enables you to quickly and easily build RESTful web applications. [Weblink](http://flightphp.com/)
+Flight is a fast, simple, extensible framework for PHP. Flight enables you to quickly and easily build RESTful web applications. [Learn more about Flight-PHP](http://flightphp.com/)
 
 **NOTE:** This template is based on my recent API development experiences. I will not boast that its a very good template, 
 this project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
@@ -20,7 +20,7 @@ and added some custom API along with a `/console` webform to communicate those A
 
 `PHP 5.6` or greater. Some prerequisite modules are:
 ```
-pdo memcache memcached pdo_mysql gd gmp
+pdo memcache/memcached pdo_mysql gd gmp
 ```
 
 `MySQL 5.6` or greater.
@@ -231,6 +231,7 @@ The results and header parameters will be available in Response/ Header tabs und
 }
 ```
 * To populate your console page with you own API, edit `api-list.json` page with appropriate API information
+* This project is tested in PHP version 5.6 to 7.2.4 . Any version of PHP below the lower number or upper may cause errors during project run. 
 
 ## Used Libraries
 
