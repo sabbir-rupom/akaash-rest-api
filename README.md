@@ -81,36 +81,37 @@ The Rest-API project's skeleton is driven by the *Flight microframework*
 
 All necessary routing is done in `app/route/route.php` and pointed to `app/api/Controller.php`
 
-The *Controller* class receive the request method and fetch called api Class written inside the `app/api/` directory.
+The *Controller* class receive the request method and search corresponding api Class inside the `app/api/` directory.
 
 The called api path is camelized [*The 1st letter of the string and letter/s next to underscore `_` / Hypen `-` is camelized and underscore / hypen is removed*] 
 before searching the *API Class*
 
 The database query related functions been defined inside the `app/model` directory. 
-All the DB Table model must be extended with *Base Model Class*
+All the DB Table model has to be extended with *Base Model Class* to inherit some basic query builder functions. 
 
-The *Config* Class in `app/config` directory handles most of the major server configurations
+The *Config* Class in `app/config` directory handles most of the major server configurations.
 
-For MySQL Database connectivity `PDO Driver` is used
+For MySQL Database connectivity `PDO Driver` is used. If you are not familiar with PDO, please visit and learn the basics [ PDO Tutorial ](https://phpdelusions.net/pdo) 
  
-The *helper* classes are defined in `app/common` directory. Available helper classes are
+The *helper* classes are defined in `app/common` directory. Available helper classes are:
 * ArrayUtil : Custom class for various array manipulations 
 * DateUtil : Custom class for various date/time manipulations
 * Utils : Custom utility class for frequently used helper functions
 
 Application system classes are initialized in `app/system` directory. These classes are:
-* JwtToken : Implementing JWT token features from extending JWT library package [source link](https://jwt.io/)
+* ApiException : API Exception class extends the default PHP *Exception Class* for common & user-defined exception messages for REST-APi
 * FileCacheClient : File cache class extending PhpFileCache library package [source link](https://github.com/Wruczek/PHP-File-Cache)
+* JwtToken : Implementing JWT token features from extending JWT library package [source link](https://jwt.io/)
 * MemcachedServer : Memcache implementation class
-* Security : Security class
+* Security : Security class consists of some common sanitization function for input handling from xss-attack
 
 Server constant class definitions in `app/const` directory 
 
 ### Why use this?
 
 REST or RESTful APIs used in distributed client/server interaction, like mobile application to server communication. If the REST structure in server is light
-and robust, it can generate response fast and authentic client can retrieve the desired data quickly and process accordingly. And user always love to use server 
-dependant application which can show data without much waiting. I have tried my best to implement as much essential feature as possible without making
+and robust, it can generate response fast and authentic client can retrieve the desired data quickly and process accordingly. And user always love to use those server 
+dependant application which can show respective data without delay. I have tried my best to implement as much essential feature as possible without making
 the overall structure *complex* to understand. 
 
 And this template is for those developers, who loves PHP. And a microframework is always faster than normal MVC framework like laravel, codeigniter etc.
@@ -121,7 +122,7 @@ I have tried to implement many features in this project mentioned in my slide tu
 ## Development Guide
 
 * Write your api class controller in `app/api/` directory
-* Extend your API Controller Class  with *Base Class* 
+* Extend your API Controller Class with *Base Class* 
 * Sample API Controller Class, [**Note**: If your API class name is `GetUserInformation`, your request URL will be `http://rest-api.test/api/get_user_information`]
 
 ```php
@@ -165,7 +166,8 @@ class GetUserInformation extends BaseClass {
  throw new System_ApiException(ResultCode::NOT_FOUND, "Data not found");
 ```
 
-* To access system / model / common / config classes, simply call their resources as follows [**NOTE**: Check the class name prefix; must be the similar with the directory name where resides]
+* To access system / model / common / config classes, simply call their resources as follows 
+[**NOTE**: Check the class name prefix; must be the similar with the directory name where resides]
 ``` 
  $data = Common_DateUtil::getToday();
 ```
@@ -202,7 +204,7 @@ class Model_TableName extends Model_BaseModel {
 
 Try to add separate model classes for each tables in your database.
 
-Table Column Definitions will help you which data to be showed in response and which data to be processed in database through the base model functions
+Table Column Definitions will help you organize your table data with desired data-type in JSON response as well as handles data insertion in table through the base model functions
 
 * Check the existing API classes for further study
 * If you get any error like `"Class '' not found"` during development, you may need to run the `composer update` command from root directory (*if any new class files not loaded*)
@@ -217,8 +219,10 @@ The project application features are listed in [User Guide](usage_guide/features
 
 **Note**: If you need to use this project-template in sub-directory under the *Root Directory*, 
 you may need change the *Base URL* path in the form / console.js - whatever is suited for you
-* To check your system is fully cope with the project or not, simply goto the `Test API` Sidebar, click the underlining anchor-link, then click **Submit** button. 
-The results and header parameters will be available in Response/ Header tabs under the form page. Check for following results as success:
+
+* To check your system is fully cope with the project or not, simply goto the `Test API` from Sidebar, click the underlining anchor-link, then click **Submit** button 
+from the right form section. The results and header parameters will be available in Response/ Header tabs under the form page. If your server is fully coped with 
+this REST-API template, it will show the following results as success:
 ```json
 {
   "result_code": 0,

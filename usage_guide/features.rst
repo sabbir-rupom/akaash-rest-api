@@ -5,7 +5,7 @@ Project Features
 This project does not include much features, but I have tried to add some to make the application more user-friendly. Let's see these features:
 
 -   Integration of **flight-microframework** - which is extremely light weight. To learn it's features, simply go to this `Weblink <http://flightphp.com/learn/>`_
--   Custom **Model-View-Controller** system
+-   A **Model-View-Controller** like system architecture
 -   **Single Configuration** file with Config class
 -   Base Controller class for **Client Request** validation
 -   MySQL database connection support with **PDO driver**
