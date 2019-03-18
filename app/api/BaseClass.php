@@ -92,12 +92,14 @@ class BaseClass {
 
         foreach ($this->headers as $key => $value) {
             $upperKey = strtoupper($key);
-//            if ($this->config['USER_SESSION_HEADER_KEY'] == $upperKey) {
-//                $this->sessionId = $value;
-//            }
+            if ($this->config['USER_SESSION_HEADER_KEY'] == $upperKey) {
+                $this->sessionId = $value;
+            }
             if ($this->config['REQUEST_TOKEN_HEADER_KEY'] == $upperKey) {
                 $this->requestToken = $value;
-                break;
+                if(Config_Config::getInstance()->checkRequestTokenFlag()) {
+                    break;
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ var apiItems = {};
 var apiUrl = 'http://' + window.location.hostname;
 var pathExt = '/api';
 var tokenHeader = 'X-API-TOKEN';
+var sessionHeader = 'X-USER-SESSION-ID';
 
 $(function () {
     
@@ -60,7 +61,7 @@ $(function () {
         var jsonBody = $("textarea[name=requestBody]").val();
         var checkJson = jsonBody != '' ? isJson(jsonBody) : true;
 //        var userId = parseInt($("input[name=userId]").val());
-//        var sessionToken = $("input[name=sessionToken]").val();
+        var sessionToken = $("input[name=sessionToken]").val();
         var apiMethod = $('input:radio[name=method]:checked').val();
         var tokenSignature = $('textarea[name=tokenHash]').val();
 
@@ -74,6 +75,7 @@ $(function () {
                 async: false,
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(tokenHeader, tokenSignature);
+                    xhr.setRequestHeader(sessionHeader, sessionToken);
                 },
                 success: function (obj, textStatus, request) {
                     if (obj.hasOwnProperty('data')) {
