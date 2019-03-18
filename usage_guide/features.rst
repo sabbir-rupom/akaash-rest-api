@@ -9,10 +9,10 @@ This project does not include much features, but I have tried to add some to mak
 -   **Single Configuration** file with Config class
 -   Base Controller class for **Client Request** validation
 -   MySQL database connection support with **PDO driver**
--   **Abstract Base Model** class for **Database Query Support**
+-   **Abstract Base Model** class for database **Query Builder Function** support
 -   File upload, image masking and resizing function
 -   **Common Helper** classes: Array, Date, Log, Utils(Utility)
 -   **System Library** classes: ApiException, FileCacheClient, JwtToken, MemcachedServer, Security
 -   Application constant class
--   **Result-Code** class for exception handle
+-   **Result-Code** class for supporting exception handle with necessary status codes
 -   **Console** testing 

@@ -107,6 +107,8 @@ Application system classes are initialized in `app/system` directory. These clas
 
 Server constant class definitions in `app/const` directory 
 
+The *ResultCode* class is defined to modify messages from exception class with appropriate result-code and http-status-code for clients
+
 ### Why use this?
 
 REST or RESTful APIs used in distributed client/server interaction, like mobile application to server communication. If the REST structure in server is light
