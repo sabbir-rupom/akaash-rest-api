@@ -56,7 +56,7 @@ $ composer update
 [**NOTE**] If you are having trouble installing memcache in your system, simply follow [ this guide ](https://commaster.net/content/installing-memcached-windows) 
 
 * If your windows is 64bit and PHP version 7.2, use the ts version of `php-7.2.x_memcache.dll` as module extension
-* Use the binary version of memcached-win64-1.4.*.zip to install memcache server. Follow the instructions accordingly.
+* Use the binary version of `memcached-win64-1.4.*.zip` to install memcache server. Follow the instructions accordingly.
 
 **For linux (Ubuntu)**
 
@@ -258,6 +258,7 @@ Following third party libraries are used in Application system
 ## Author
 
 * **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
+
 
 
 
