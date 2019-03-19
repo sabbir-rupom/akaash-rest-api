@@ -62,3 +62,12 @@ CREATE TABLE `user_items` (
 	PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB;
+
+CREATE TABLE `api_exec_time` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`api_name` VARCHAR(50) NOT NULL,
+	`exec_time` FLOAT NOT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
