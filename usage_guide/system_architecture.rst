@@ -12,4 +12,4 @@ starting their development on this project. The system architecture is as follow
 As we are talking about **REST API**, the *View* part of an MVC is not a concern. So, my view is restricted to only the 
 *Output Class* - whose member function receives a JSON data as parameter and show them as ``application/json`` content-type.
 
-![pictorial view of application flow](https://sabbirrupom.com/resources/git/rest-template-architecture.jpg)
+.. |Application Flow| image:: https://sabbirrupom.com/resources/git/rest-template-architecture.jpg
