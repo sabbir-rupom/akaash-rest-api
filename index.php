@@ -43,7 +43,11 @@ require 'vendor/autoload.php';
  */
 require_once CONFIG_DIR . '/initialize.php';
 
+
 /*
  *  Run Rest-API Application Template 
  */
+
 Flight::start();
+/* ----- End of script execution ----- */
+
