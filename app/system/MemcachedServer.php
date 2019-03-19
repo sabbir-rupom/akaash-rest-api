@@ -15,7 +15,13 @@
  */
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
-class System_MemcachedServer {
+
+/**
+ * MemcachedServer Class
+ *
+ */
+
+class MemcachedServer {
 
     public $host;
     public $port;

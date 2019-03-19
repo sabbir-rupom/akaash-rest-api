@@ -40,7 +40,7 @@ class Item_List extends BaseClass {
 
 
         if (empty($itemsObj)) {
-            throw new System_Exception(ResultCode::NOT_FOUND, 'No items available as user item');
+            throw new AppException(ResultCode::NOT_FOUND, 'No items available as user item');
         }
 
         // Initialize empty array

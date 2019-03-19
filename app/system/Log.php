@@ -17,20 +17,20 @@
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
 /**
- * Log helper class
+ * Log class
  * 
  * Developer may use this custom function to write different API logs
  * Or they can use any existing PHP log library [ e.g Monolog Logger ] for better development friendly situation
  */
-class System_Log {
+class Log {
 
     /**
      * Write log file
      *
      * @param unknown_type $arrMsg message or array of message
      */
-    public static function log($arrMsg) {
-        if (Config_Config::getInstance()->isLogEnable() == FALSE || empty($arrMsg)) {
+    public static function write($arrMsg) {
+        if (Config::getInstance()->isLogEnable() == FALSE || empty($arrMsg)) {
             return;
         }
 
@@ -57,7 +57,7 @@ class System_Log {
 
         //open the file append mode,dats the log file will create day wise  
 
-        if (($fp = fopen(Config_Config::getInstance()->getAppLogPath() . DIRECTORY_SEPARATOR . $logFileName, 'a+')) !== FALSE) {
+        if (($fp = fopen(Config::getInstance()->getAppLogPath() . DIRECTORY_SEPARATOR . $logFileName, 'a+')) !== FALSE) {
             if (flock($fp, LOCK_EX) === TRUE) {
                 //write the info into the file  
                 fwrite($fp, $logEntry);

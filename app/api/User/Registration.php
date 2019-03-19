@@ -27,10 +27,10 @@ class User_Registration extends BaseClass {
         $this->_user_name = $this->getValueFromJSON('user_name', 'string', TRUE);
 
         if (filter_var($this->_user_email, FILTER_VALIDATE_EMAIL) === false) { // Verify email address
-            throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
         } 
         if(Model_User::countBy(array('email' => $this->_user_email), $this->pdo) > 0) { // Check for duplicate email address
-            throw new System_Exception(ResultCode::DATA_ALREADY_EXISTS, 'Another user is registered with this email!');
+            throw new AppException(ResultCode::DATA_ALREADY_EXISTS, 'Another user is registered with this email!');
         }
     }
 
@@ -67,7 +67,7 @@ class User_Registration extends BaseClass {
                 $profile_image = $this->getValueFromJSON('profile_image', 'string'); // nullable
                 if (!empty($profile_image)) {
                     if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $profile_image)) { // checking if data is in base64 formatted or not
-                        $user->profile_image = Model_FileUpload::processBinaryImage('new', $profile_image, 'profile');
+                        $user->profile_image = FileUpload::processBinaryImage('new', $profile_image, 'profile');
                     }
                 }
             }
@@ -79,7 +79,7 @@ class User_Registration extends BaseClass {
             $user->create($this->pdo);
 
             $this->pdo->commit();
-        } catch (PDOException $e) {
+        } catch (PDOAppException $e) {
             $this->pdo->rollback();
             throw $e;
         }

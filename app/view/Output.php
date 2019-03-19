@@ -60,18 +60,18 @@ class View_Output {
             case JSON_ERROR_NONE:
                 return $encoded;
             case JSON_ERROR_DEPTH:
-                throw new System_Exception(ResultCode::JSON_OUTPUT_ERROR, "Maximum stack depth exceeded");
+                throw new AppException(ResultCode::JSON_OUTPUT_ERROR, "Maximum stack depth exceeded");
             case JSON_ERROR_STATE_MISMATCH:
-                throw new System_Exception(ResultCode::JSON_OUTPUT_ERROR, "Underflow or the modes mismatch");
+                throw new AppException(ResultCode::JSON_OUTPUT_ERROR, "Underflow or the modes mismatch");
             case JSON_ERROR_CTRL_CHAR:
-                throw new System_Exception(ResultCode::JSON_OUTPUT_ERROR, "Unexpected control character found");
+                throw new AppException(ResultCode::JSON_OUTPUT_ERROR, "Unexpected control character found");
             case JSON_ERROR_SYNTAX:
-                throw new System_Exception(ResultCode::JSON_OUTPUT_ERROR, "Syntax error, malformed JSON");
+                throw new AppException(ResultCode::JSON_OUTPUT_ERROR, "Syntax error, malformed JSON");
             case JSON_ERROR_UTF8:
                 $clean = self::utf8ize($data);
                 return self::safe_json_encode($clean);
             default:
-                throw new System_Exception(ResultCode::JSON_OUTPUT_ERROR, "Unknown error");
+                throw new AppException(ResultCode::JSON_OUTPUT_ERROR, "Unknown error");
         }
     }
 

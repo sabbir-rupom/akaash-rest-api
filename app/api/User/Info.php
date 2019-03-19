@@ -40,7 +40,7 @@ class User_Info extends BaseClass {
         }
 
         if (empty($user)) {
-            throw new System_Exception(ResultCode::USER_NOT_FOUND, 'User not found');
+            throw new AppException(ResultCode::USER_NOT_FOUND, 'User not found');
         }
 
         return array(

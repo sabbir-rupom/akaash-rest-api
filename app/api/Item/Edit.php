@@ -34,7 +34,7 @@ class Item_Edit extends BaseClass {
         $userItemObj = Model_UserItem::findBy(array('user_id' => $this->userId, 'id' => $this->itemId), $this->pdo, TRUE);
         
         if(empty($userItemObj)) {
-            throw new System_Exception(ResultCode::NOT_FOUND, 'User item not found in database!');
+            throw new AppException(ResultCode::NOT_FOUND, 'User item not found in database!');
         }
         
         /*

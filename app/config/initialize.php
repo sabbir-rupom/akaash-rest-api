@@ -51,6 +51,8 @@ if (empty($configArray['ENV'])) {
     exit;
 }
 
+Flight::set('env', $configArray['ENV']); // Set system environment 
+
 /*
  * Set server timezone acording to Configuration
  */
@@ -62,18 +64,54 @@ if (!empty($configArray['DB_TIMEZONE']) && !empty($configArray['DB_SET_TIMEZONE'
     }
 }
 
-Flight::set('env', $configArray['ENV']);
 
-//Configure Database Connection
-require_once CONFIG_DIR . '/db.php';
+if (file_exists(CONFIG_DIR . '/constants.php')) {
+    //load server constants
+    require_once(CONFIG_DIR . '/constants.php');
+} else {
+    Flight::json(array(
+        'error' => array(
+            'title' => 'Server Configuration Error',
+            'message' => 'Server constants file not found',
+        ),
+        'result_code' => 404
+            ), 404);
+    exit;
+}
 
-//load basic routes
-require_once APP_DIR . '/route/route.php';
+if (file_exists(CONFIG_DIR . '/db.php')) {
+    //load database connection
+    require_once(CONFIG_DIR . '/db.php');
+} else {
+    Flight::json(array(
+        'error' => array(
+            'title' => 'Server Configuration Error',
+            'message' => 'DB configuration file not found',
+        ),
+        'result_code' => 404
+            ), 404);
+    exit;
+}
+
+if (file_exists(CONFIG_DIR . '/route.php')) {
+    //load basic routes
+    require_once(CONFIG_DIR . '/route.php');
+} else {
+    Flight::json(array(
+        'error' => array(
+            'title' => 'Server Configuration Error',
+            'message' => 'Routing file not found',
+        ),
+        'result_code' => 404
+            ), 404);
+    exit;
+}
 
 /*
  * Initialize required class directories for autoload register
  */
-Flight::path(array(APP_DIR, API_DIR));
+Flight::path(array(APP_DIR, API_DIR, SYSTEM_DIR));
+
 spl_autoload_register('directoryClassLoader');
 /*
  * directoryClassLoader finds a class and register with the system 
@@ -81,10 +119,9 @@ spl_autoload_register('directoryClassLoader');
  * the function with treat the class inside a directory 
  * which will be found at 0'th index value after explode() 
  */
-
 function directoryClassLoader($class) {
-    if (strpos($class, '_') || strpos($class, '\\')) {
-        $class_file = explode('/', str_replace(array('\\', '_'), '/', $class) . '.php');
+    if (strpos($class, '_')) {
+        $class_file = explode('/', str_replace('_', '/', $class) . '.php');
         for ($i = 0; $i < count($class_file) - 1; $i++) {
             $class_file[$i] = strtolower($class_file[$i]);
         }

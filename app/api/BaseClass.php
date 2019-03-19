@@ -41,6 +41,7 @@ class BaseClass {
     protected $requestTime = NULL;
     protected $userId = NULL;
     protected $cacheUser = NULL;
+    protected $queryValue = NULL;
 
     /**
      * Client Type, Version
@@ -67,11 +68,12 @@ class BaseClass {
      * @param string $apiName API Controller Class Name
      * @return Instance of Requested API Controller
      */
-    public function __construct($headers, $getParams, $json, $actionName) {
+    public function __construct($headers, $getParams, $json, $actionName, $queryValue) {
         $this->headers = $headers;
         $this->getParams = $getParams;
         $this->json = $json;
         $this->actionName = $actionName;
+        $this->queryValue = $queryValue;
 
         /*
          * Get Configuration Parameters
@@ -105,7 +107,7 @@ class BaseClass {
     /**
      * filter processing
      *
-     * @throws Exception
+     * @throws AppException
      */
     protected function _filter() {
         /*
@@ -124,7 +126,7 @@ class BaseClass {
             $this->isLoggedIn();
 
             if (FALSE == $this->userId) {
-                throw new System_Exception(ResultCode::SESSION_ERROR, 'Session error.');
+                throw new AppException(ResultCode::SESSION_ERROR, 'Session error.');
             }
         }
     }
@@ -132,7 +134,7 @@ class BaseClass {
     /**
      * Maintenance check
      *
-     * @throws System_Exception
+     * @throws AppException
      */
     protected function _checkMaintenance() {
         // Maintenance check parameter
@@ -140,7 +142,7 @@ class BaseClass {
 
         if ($maintainance_check) {
             if ($this->isMaintenance()) {
-                throw new System_Exception(ResultCode::MAINTENANCE, 'maintenance.');
+                throw new AppException(ResultCode::MAINTENANCE, 'maintenance.');
             }
         }
     }
@@ -151,19 +153,19 @@ class BaseClass {
      */
     protected function _checkRequestToken() {
 
-        if (Config_Config::getInstance()->checkRequestTokenFlag() && !self::TEST_ENV) {
-            $result = System_JwtToken::verifyToken($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
+        if (Config::getInstance()->checkRequestTokenFlag() && !self::TEST_ENV) {
+            $result = JwtToken::verifyToken($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
 
             if ($result['error'] > 0) {
                 switch ($result['error']) {
-                    case System_Constant::HASH_SIGNATURE_VERIFICATION_FAILED:
-                        throw new System_Exception(ResultCode::INVALID_REQUEST_TOKEN, 'Signature Verification Error');
+                    case HASH_SIGNATURE_VERIFICATION_FAILED:
+                        throw new AppException(ResultCode::INVALID_REQUEST_TOKEN, 'Signature Verification Error');
                         break;
-                    case System_Constant::EMPTY_TOKEN:
-                        throw new System_Exception(ResultCode::INVALID_REQUEST_TOKEN, 'Token is empty');
+                    case EMPTY_TOKEN:
+                        throw new AppException(ResultCode::INVALID_REQUEST_TOKEN, 'Token is empty');
                         break;
                     default :
-                        throw new System_Exception(ResultCode::UNKNOWN_ERROR, 'Unexpected token error has been found');
+                        throw new AppException(ResultCode::UNKNOWN_ERROR, 'Unexpected token error has been found');
                         break;
                 }
             } else {
@@ -199,7 +201,7 @@ class BaseClass {
             $this->cacheUser = Model_User::cache_or_find($this->userId, $this->pdo);
 
             if (empty($this->cacheUser)) {
-                throw new System_Exception(ResultCode::USER_NOT_FOUND, 'Session user not found');
+                throw new AppException(ResultCode::USER_NOT_FOUND, 'Session user not found');
             }
 
             $this->cacheUser->last_api_time = Helper_DateUtil::getToday();
@@ -224,10 +226,10 @@ class BaseClass {
      * Execute the individual processing of the action.
      *
      * @return array Array to convert to response JSON.
-     * @throws Exception
+     * @throws AppException
      */
     public function action() {
-        throw new Exception('action is not implemented.');
+        throw new AppException('action is not implemented.');
     }
 
     /**
@@ -255,29 +257,22 @@ class BaseClass {
      */
     protected function getValueFromJSON($path, $type, $required = FALSE) {
         if (empty($this->json) && $required) {
-            throw new System_Exception(ResultCode::INVALID_JSON, 'JSON is empty.');
+            throw new AppException(ResultCode::INVALID_JSON, 'JSON is empty.');
         }
-        if (is_string($path)) {
-            $path = array(
-                $path
-            );
-        }
-        $pathStr = implode("->", $path);
         $var = $this->json;
-
         try {
-            while (!empty($path)) {
-                $pathElement = array_shift($path);
-                $var = $var->$pathElement;
+            if (!empty($path)) {
+//                $pathElement = array_shift($path);
+                $var = $var->$path;
             }
         } catch (Exception $e) {
             $var = NULL;
         }
         if (TRUE == $required && (is_null($var) || $var === '')) {
-            throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, "$pathStr is not set.");
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "$path is not set.");
         }
         if (!$this->isValidType($var, $type)) {
-            throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $pathStr is not valid.");
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $path is not valid.");
         }
         return $var;
     }
@@ -300,10 +295,10 @@ class BaseClass {
             $var = NULL;
         }
         if (TRUE == $required && is_null($var)) {
-            throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
         }
         if (!$this->isValidType($var, $type)) {
-            throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
         }
         return $var;
     }
@@ -328,10 +323,10 @@ class BaseClass {
         }
 
         if (TRUE == $required && empty($var)) {
-            throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
         }
         if (!$this->isValidType($var, $type)) {
-            throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
         }
 
         return ($xss_clean === TRUE) ? System_Security::xssClean($var) : $var;
@@ -409,14 +404,14 @@ class BaseClass {
 
 
         // In the case of maintenance state
-        if (System_Constant::MAINTENANCE_TYPE_NORMAL == $this->config['MAINTENANCE']) {
+        if (MAINTENANCE_TYPE_NORMAL == $this->config['MAINTENANCE']) {
 
             // If it is not in the test user
             if (false == $this->isTestUser()) {
                 return true;
             }
             // No RDB connection maintenance
-        } else if (System_Constant::MAINTENANCE_TYPE_NONE_RDB_CONNECTION == $this->config['MAINTENANCE']) {
+        } else if (MAINTENANCE_TYPE_NONE_RDB_CONNECTION == $this->config['MAINTENANCE']) {
             return true;
         }
         return false;

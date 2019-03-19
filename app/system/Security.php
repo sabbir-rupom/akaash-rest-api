@@ -16,7 +16,12 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
-class System_Security {
+/**
+ * Security Class
+ *
+ */
+
+class Security {
 
     /**
      * List of never allowed strings
@@ -43,7 +48,7 @@ class System_Security {
      */
     public function __construct() {
         // get class instance
-        $this->security = new System_Security();
+        $this->security = new Security();
     }
 
     //put your code here

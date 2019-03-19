@@ -14,8 +14,6 @@ class User_Login extends BaseClass {
 
     private $_user_email = null;
     private $_user_password = null;
-    private $_user_id = null;
-    private $_login_type = null;
 
     /**
      * Validating Login Request
@@ -23,27 +21,16 @@ class User_Login extends BaseClass {
     public function validate() {
         parent::validate();
 
-        $this->_login_type = $this->getValueFromJSON('login_type', 'int');
-        if (empty($this->_login_type)) {
-            $this->_login_type = 1;
+        $this->_user_email = $this->getValueFromJSON('email', 'string', TRUE);
+        $this->_user_password = $this->getValueFromJSON('password', 'string', TRUE);
+
+
+        if (empty($this->_user_password)) {
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, 'Password is empty');
         }
-        switch ($this->_login_type) {
-            case 1:
-                $this->_user_email = $this->getValueFromJSON('email', 'string', TRUE);
-                $this->_user_password = $this->getValueFromJSON('password', 'string', TRUE);
 
-
-                if (empty($this->_user_password)) {
-                    throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, 'Password is empty');
-                }
-
-                if (filter_var($this->_user_email, FILTER_VALIDATE_EMAIL) === false) {
-                    throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
-                }
-                break;
-            default :
-                throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
-                break;
+        if (filter_var($this->_user_email, FILTER_VALIDATE_EMAIL) === false) {
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
         }
     }
 
@@ -54,20 +41,15 @@ class User_Login extends BaseClass {
         $this->pdo->beginTransaction();
 
         try {
-            $user = null;
-            switch ($this->_login_type) {
-                case 1:
-                    $user = Model_User::findBy(array('email' => $this->_user_email), $this->pdo, TRUE);
-                    if (null === $user || empty($user)) {
-                        throw new System_Exception(ResultCode::USER_NOT_FOUND);
-                    }
-                    if (password_verify($this->_user_password, $user->password) === FALSE) {
-                        throw new System_Exception(ResultCode::PASSWORD_MISMATCHED);
-                    }
-                    break;
-                default :
-                    throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
-                    break;
+            /*
+             * Search user from DB table
+             */
+            $user = Model_User::findBy(array('email' => $this->_user_email), $this->pdo, TRUE);
+            if (null === $user || empty($user)) {
+                throw new AppException(ResultCode::USER_NOT_FOUND);
+            }
+            if (password_verify($this->_user_password, $user->password) === FALSE) {
+                throw new AppException(ResultCode::PASSWORD_MISMATCHED);
             }
 
             /*
@@ -104,7 +86,10 @@ class User_Login extends BaseClass {
 
             $user->update($this->pdo);
 
-            Model_UserLoginSession::updateSession($user->id, $sessionId, $this->_login_type, $this->pdo);
+            /*
+             * Update last login in same day
+             */
+            Model_UserLoginSession::updateSession($user->id, $sessionId, 1, $this->pdo);
 
             /*
              * Update User data in cache
@@ -113,11 +98,11 @@ class User_Login extends BaseClass {
             Model_User::setCache(Model_CacheKey::getUserKey($user->id), $user);
 
             $this->pdo->commit();
-        } catch (PDOException $e) {
+        } catch (PDOAppException $e) {
             $this->pdo->rollback();
             throw $e;
         }
-        
+
         /*
          * Encode session data for client
          */
@@ -125,7 +110,7 @@ class User_Login extends BaseClass {
             'session_id' => $sessionId,
             'user_id' => $user->id
         )));
-        
+
         return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Helper_DateUtil::getToday(),

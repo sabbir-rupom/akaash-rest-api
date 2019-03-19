@@ -22,7 +22,7 @@ class User_Edit extends BaseClass {
 
         $this->user = $this->cacheUser;
         if (empty($this->user)) {
-            throw new System_Exception(ResultCode::USER_NOT_FOUND, 'Session user not found!');
+            throw new AppException(ResultCode::USER_NOT_FOUND, 'Session user not found!');
         }
 
         $this->update_user = false;
@@ -83,7 +83,7 @@ class User_Edit extends BaseClass {
                 $email = $this->getValueFromJSON('email', 'string', TRUE);
                 If (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     // Email is not valid.
-                    throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, "Invalid email address");
+                    throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "Invalid email address");
                 }
                 $this->user->email = $email;
                 $this->update_user = true;
@@ -96,9 +96,9 @@ class User_Edit extends BaseClass {
                  * Verify old password match with user's current password
                  */
                 if ($newPassword === $oldPassword) {
-                    throw new System_Exception(ResultCode::DUPLICATE_DATA, 'Please provide a new password');
+                    throw new AppException(ResultCode::DUPLICATE_DATA, 'Please provide a new password');
                 } else if(password_verify($oldPassword, $this->user->password) === FALSE) {
-                    throw new System_Exception(ResultCode::DATA_NOT_ALLOWED, 'Current password does not match');
+                    throw new AppException(ResultCode::DATA_NOT_ALLOWED, 'Current password does not match');
                 }
 
                 $this->user->password = password_hash(trim($newPassword), PASSWORD_BCRYPT, array('cost' => 10));
@@ -113,7 +113,7 @@ class User_Edit extends BaseClass {
             if (isset($_FILES['profile_image']) && $_FILES['profile_image']['size'] > 0) {
                 $profile_image = $_FILES['profile_image'];
             } else {
-                throw new System_Exception(ResultCode::INVALID_REQUEST_PARAMETER, "profile_image is not set.");
+                throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "profile_image is not set.");
             }
             
             $this->user->profile_image = $this->process_image_upload($this->userId, $profile_image, 'profile');

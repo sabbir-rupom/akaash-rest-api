@@ -129,17 +129,17 @@ class Helper_CommonUtil {
             if (TRUE == array_key_exists('client_type', $_GET)) {
                 $client = intval($_GET['client_type']);
                 if ($client === 2) {
-                    return System_AppConstant::PLATFORM_TYPE_ANDROID;
+                    return PLATFORM_TYPE_ANDROID;
                 }
             }
-            return System_AppConstant::PLATFORM_TYPE_NONE;
+            return PLATFORM_TYPE_NONE;
         }
 
         $platformType = $_GET['platform_type'];
         // Not applicable OS type
-        if (System_AppConstant::PLATFORM_TYPE_IOS != $platformType &&
-                System_AppConstant::PLATFORM_TYPE_ANDROID != $platformType) {
-            return System_AppConstant::PLATFORM_TYPE_NONE;
+        if (PLATFORM_TYPE_IOS != $platformType &&
+                PLATFORM_TYPE_ANDROID != $platformType) {
+            return PLATFORM_TYPE_NONE;
         }
 
         return $platformType;

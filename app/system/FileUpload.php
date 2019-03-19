@@ -16,7 +16,12 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
-class Model_FileUpload extends Model_BaseModel {
+/**
+ * FileUpload Class
+ *
+ */
+
+class FileUpload {
 
     /**
      * Process base64 formatted image upload
@@ -33,29 +38,29 @@ class Model_FileUpload extends Model_BaseModel {
         $imageName = $image_prefix . $curr_time . '.png';
         $mask = $image_prefix . '*.*';
 
-        if (!file_exists(System_Constant::UPLOAD_PROFILE_IMAGE_PATH)) {
+        if (!file_exists(UPLOAD_PROFILE_IMAGE_PATH)) {
             /*
              * If upload directory not exist, create
              */
-            mkdir(System_Constant::UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
+            mkdir(UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
         } else if ($deleteOld) {
             /*
              * Delete all previous profile image
              */
-            array_map('unlink', glob(System_Constant::UPLOAD_PROFILE_IMAGE_PATH . $mask));
+            array_map('unlink', glob(UPLOAD_PROFILE_IMAGE_PATH . $mask));
         }
 
 
-        if (!file_exists(System_Constant::UPLOAD_PROFILE_IMAGE_PATH_MOBILE)) {
-            mkdir(System_Constant::UPLOAD_PROFILE_IMAGE_PATH_MOBILE, 0777, true);
+        if (!file_exists(UPLOAD_PROFILE_IMAGE_PATH_MOBILE)) {
+            mkdir(UPLOAD_PROFILE_IMAGE_PATH_MOBILE, 0777, true);
         } else if ($deleteOld) {
             /*
              * Delete all previous profile (mobile size) image
              */
-            array_map('unlink', glob(System_Constant::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $mask));
+            array_map('unlink', glob(UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $mask));
         }
 
-        $outputFile = System_Constant::UPLOAD_PROFILE_IMAGE_PATH . $imageName;
+        $outputFile = UPLOAD_PROFILE_IMAGE_PATH . $imageName;
 
         $ifp = fopen($outputFile, "wb");
         $data = explode(',', $base64_string);
@@ -67,7 +72,7 @@ class Model_FileUpload extends Model_BaseModel {
          * Resize uploaded image for mobile view
          */
 //        if ($type == 'profile') {
-        $resizeTypes = System_Constant::CUSTOM_IMAGE_RESIZE_ARRAY;
+        $resizeTypes = CUSTOM_IMAGE_RESIZE_ARRAY;
         if (!empty($resizeTypes)) {
             foreach ($resizeTypes as $size) {
                 $width = $size[0];
@@ -89,7 +94,7 @@ class Model_FileUpload extends Model_BaseModel {
     public static function processImageUpload($ID, $imageFile, $type = '', $oldImageToDelete = TRUE) {
         $ext = pathinfo($imageFile['name'], PATHINFO_EXTENSION);
         if (!in_array($ext, array('jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'))) {
-            throw new Exception_BitCoinException(ResultCode::DATA_NOT_ALLOWED, "Improper image is provided! Only jpg and png allowed!");
+            throw new AppException(ResultCode::DATA_NOT_ALLOWED, "Improper image is provided! Only jpg and png allowed!");
         }
 
         $curr_time = time();
@@ -100,36 +105,36 @@ class Model_FileUpload extends Model_BaseModel {
         /*
          * If upload temp directory not exist, create
          */
-        if (!file_exists(System_Constant::UPLOAD_PROFILE_IMAGE_PATH)) {
+        if (!file_exists(UPLOAD_PROFILE_IMAGE_PATH)) {
             /*
              * If upload directory not exist, create
              */
-            mkdir(System_Constant::UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
+            mkdir(UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
         } else if ($old_image_delete) {
             /*
              * Delete all previous profile image
              */
-            array_map('unlink', glob(System_Constant::UPLOAD_PROFILE_IMAGE_PATH . $mask));
+            array_map('unlink', glob(UPLOAD_PROFILE_IMAGE_PATH . $mask));
         }
 
 
-        if (!file_exists(System_Constant::UPLOAD_PROFILE_IMAGE_PATH_MOBILE)) {
-            mkdir(System_Constant::UPLOAD_PROFILE_IMAGE_PATH_MOBILE, 0777, true);
+        if (!file_exists(UPLOAD_PROFILE_IMAGE_PATH_MOBILE)) {
+            mkdir(UPLOAD_PROFILE_IMAGE_PATH_MOBILE, 0777, true);
         } else {
             /*
              * Delete all previous profile (mobile size) image
              */
-            array_map('unlink', glob(System_Constant::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $mask));
+            array_map('unlink', glob(UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $mask));
         }
 
-        $outputFile = System_Constant::UPLOAD_PROFILE_IMAGE_PATH . $imageName;
+        $outputFile = UPLOAD_PROFILE_IMAGE_PATH . $imageName;
 
         if (move_uploaded_file($imageFile["tmp_name"], $outputFile)) {
             /*
              * Resize uploaded image for mobile view
              */
 //            if ($type == 'profile') {
-            $resizeTypes = System_Constant::CUSTOM_IMAGE_RESIZE_ARRAY;
+            $resizeTypes = CUSTOM_IMAGE_RESIZE_ARRAY;
             if (!empty($resizeTypes)) {
                 foreach ($resizeTypes as $size) {
                     $width = $size[0];
@@ -139,7 +144,7 @@ class Model_FileUpload extends Model_BaseModel {
             }
 //            }
         } else {
-            throw new System_Exception(ResultCode::FILE_UPLOAD_ERROR, 'An error occured in system! Upload failed!');
+            throw new AppException(ResultCode::FILE_UPLOAD_ERROR, 'An error occured in system! Upload failed!');
         }
 
         return $imageName;
@@ -154,7 +159,7 @@ class Model_FileUpload extends Model_BaseModel {
      * @return string $randomString 
      */
     public static function resizeImage($imageSource, $imageName, $maxDimW, $maxDimH) {
-        $destinationImage = System_Constant::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $imageName;
+        $destinationImage = UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $imageName;
         copy($imageSource, $destinationImage);
 
         $targetFilename = '';

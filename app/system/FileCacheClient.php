@@ -18,7 +18,12 @@
 
 use Wruczek\PhpFileCache\PhpFileCache;
 
-class System_FileCacheClient {
+/**
+ * FileCacheClient Class
+ *
+ */
+
+class FileCacheClient {
 
     private $connection;
 

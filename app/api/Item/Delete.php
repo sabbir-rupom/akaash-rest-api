@@ -33,7 +33,7 @@ class Item_Delete extends BaseClass {
         
         
         if(empty($userItemObj)) {
-            throw new System_Exception(ResultCode::NOT_FOUND, 'User does not have this item!');
+            throw new AppException(ResultCode::NOT_FOUND, 'User does not have this item!');
         }
         
         /*

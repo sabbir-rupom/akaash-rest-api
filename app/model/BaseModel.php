@@ -254,7 +254,7 @@ abstract class Model_BaseModel {
      */
     public function update($pdo = null) {
         if (!isset($this->id)) {
-            throw new Exception('The ' . get_called_class() . ' is not saved yet.');
+            throw new AppException('The ' . get_called_class() . ' is not saved yet.');
         }
         if (is_null($pdo)) {
             $pdo = Flight::pdo();
@@ -285,7 +285,7 @@ abstract class Model_BaseModel {
      */
     public function delete($pdo = null) {
         if (!isset($this->id)) {
-            throw new Exception('The ' . get_called_class() . ' is not initiated properly.');
+            throw new AppException('The ' . get_called_class() . ' is not initiated properly.');
         }
         if (is_null($pdo)) {
             $pdo = Flight::pdo();
@@ -431,10 +431,10 @@ abstract class Model_BaseModel {
      * @param unknown_type $key
      */
     public static function getCache($cacheKey) {
-        if(Config_Config::getInstance()->isCacheEnable() === FALSE) {
+        if(Config::getInstance()->isCacheEnable() === FALSE) {
             return FALSE;
         } 
-        $memcache = Config_Config::getMemcachedClient();
+        $memcache = Config::getMemcachedClient();
         return $memcache->get($cacheKey);
     }
 
@@ -444,10 +444,10 @@ abstract class Model_BaseModel {
      * @param unknown_type $value
      */
     public static function setCache($cacheKey, $value) {
-        if(Config_Config::getInstance()->isCacheEnable() === FALSE) {
+        if(Config::getInstance()->isCacheEnable() === FALSE) {
             return FALSE;
         } 
-        $memcache = Config_Config::getMemcachedClient();
+        $memcache = Config::getMemcachedClient();
         $call_class = get_called_class();
         $ret_value = $memcache->set($cacheKey, $value, MEMCACHE_COMPRESSED, $call_class::MEMCACHED_EXPIRE);
         return $ret_value;
@@ -458,10 +458,10 @@ abstract class Model_BaseModel {
      * @param unknown_type $key
      */
     public static function deleteCache($cacheKey) {
-        if(Config_Config::getInstance()->isCacheEnable() === FALSE) {
+        if(Config::getInstance()->isCacheEnable() === FALSE) {
             return;
         } 
-        $memcache = Config_Config::getMemcachedClient();
+        $memcache = Config::getMemcachedClient();
         $memcache->delete($cacheKey);
     }
 
@@ -469,7 +469,7 @@ abstract class Model_BaseModel {
      * Returns the key for setting all records in memcache.
      */
     protected static function getAllKey() {
-        return Config_Config::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
+        return Config::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
     }
 
     /**
@@ -479,12 +479,12 @@ abstract class Model_BaseModel {
      * @return array Array of model objects.
      */
     public static function getAll() {
-        if(Config_Config::getInstance()->isCacheEnable() === FALSE) {
+        if(Config::getInstance()->isCacheEnable() === FALSE) {
             return FALSE;
         } 
         $key = static::getAllKey();
         // To connect to Memcached, to get the value.
-        $memcache = Config_Config::getMemcachedClient();
+        $memcache = Config::getMemcachedClient();
         $value = $memcache->get($key);
         if (FALSE === $value) {
             // If the value has been set to Memcached, it is set to Memcached to retrieve from the database.

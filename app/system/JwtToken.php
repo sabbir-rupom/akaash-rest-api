@@ -18,7 +18,12 @@
 
 use \Firebase\JWT\JWT;
 
-class System_JwtToken {
+/**
+ * JwtToken Class
+ *
+ */
+
+class JwtToken {
 
     /**
      * Verify JWT Token with secret key

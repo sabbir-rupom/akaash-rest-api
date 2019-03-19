@@ -37,6 +37,9 @@ if (!isset($argv)) {
     
     // Set group route for GET|POST|PUT|PATCH|DELETE query request from client
     Flight::route('GET|POST|PUT|PATCH|DELETE /api/@group/@name', array('Controller', 'initGroupAPI'));
+    
+    // Set group route for GET|POST|PUT|PATCH|DELETE query request from client
+    Flight::route('GET|POST|PUT|PATCH|DELETE /api/@group/@name/@value', array('Controller', 'initGroupAPIwithParam'));
 
     /*
      * Image path is masked in API response 

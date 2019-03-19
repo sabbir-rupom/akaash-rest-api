@@ -28,6 +28,7 @@ class Controller {
     protected static $getParams;
     protected static $headers;
     protected static $json;
+    protected static $queryValue;
 
     /**
      * Initialize application
@@ -41,6 +42,7 @@ class Controller {
             self::$apiName = self::prepareApiClass($arrayParams['name'], $arrayParams['group']);
             self::$getParams = $_GET;
             self::$headers = getallheaders();
+            self::$queryValue = $arrayParams['value'];
 
             if (in_array($arrayParams['method'], array('POST', 'PUT', 'PATCH', 'DELETE'))) {
                 /*
@@ -54,7 +56,7 @@ class Controller {
                  * Check if requested parameters are in json format or not 
                  */
                 if (!empty($data) && json_last_error() != JSON_ERROR_NONE && empty($_FILES)) {
-                    throw new System_Exception(ResultCode::INVALID_JSON, "Invalid JSON: $data");
+                    throw new AppException(ResultCode::INVALID_JSON, "Invalid JSON: $data");
                 }
             } else {
                 self::$json = array();
@@ -64,20 +66,20 @@ class Controller {
              * Check if requested API controller exist in server
              */
             if (!class_exists(self::$apiName)) {
-                throw new System_Exception(ResultCode::UNKNOWN_ERROR, "No such api: " . self::$apiName);
+                throw new AppException(ResultCode::UNKNOWN_ERROR, "No such api: " . self::$apiName);
             }
 
             /**
              * Call Base Controller to Retrieve Instance of API Controller
              */
-            $action = new self::$apiName(self::$headers, self::$getParams, self::$json, self::$apiName);
+            $action = new self::$apiName(self::$headers, self::$getParams, self::$json, self::$apiName, self::$queryValue);
             $result = $action->process();
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             /*
              * Handle all exception messages
              */
 
-            if ($e instanceof System_Exception) {
+            if ($e instanceof AppException) {
                 /*
                  * Handle all application error messages
                  */
@@ -92,8 +94,8 @@ class Controller {
                     )
                 );
 
-                System_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
-            } else if ($e instanceof PDOException) {
+                Log::write(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
+            } else if ($e instanceof PDOAppException) {
                 /*
                  * Handle all database related error messages
                  */
@@ -108,7 +110,7 @@ class Controller {
                     )
                 );
 
-                System_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
+                Log::write(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
             } else {
                 /*
                  * Handle all system error messages
@@ -124,14 +126,14 @@ class Controller {
                     )
                 );
 
-                System_Log::log(array(
+                Log::write(array(
                     'message' => self::$apiName . ' (' . ResultCode::UNKNOWN_ERROR . '): ' . $errMsg,
                     'file_name' => $e->getFile(),
                     'line_number' => $e->getLine()
                 ));
             }
 
-            if (Config_Config::getInstance()->isErrorDump()) {
+            if (Config::getInstance()->isErrorDump()) {
                 /*
                  * Additional error messages 
                  * For developers debug purpose
@@ -171,7 +173,8 @@ class Controller {
         self::init([
             'name' => $name,
             'method' => $_SERVER['REQUEST_METHOD'],
-            'group' => NULL
+            'group' => NULL,
+            'value' => NULL
         ]);
     }
 
@@ -185,6 +188,22 @@ class Controller {
             'name' => $name,
             'method' => $_SERVER['REQUEST_METHOD'],
             'group' => $group,
+            'value' => NULL
+        ]);
+    }
+    
+    /**
+     * Initialize API Application from Group with requested value as query-param
+     * @param type $group Group name
+     * @param type $name Api name
+     * @param type $value Query parameter
+     */
+    public static function initGroupAPIwithParam($group, $name, $value) {
+        self::init([
+            'name' => $name,
+            'method' => $_SERVER['REQUEST_METHOD'],
+            'group' => $group,
+            'value' => empty($value) ? NULL : $value
         ]);
     }
 

@@ -23,7 +23,7 @@
  * @author sabbir-hossain
  */
 
-class Config_Config {
+class Config {
 
     // store config parameters
     protected $_config = null;
@@ -175,11 +175,11 @@ class Config_Config {
             return self::$_memcachedClient;
         }
 
-        $config = New Config_Config();
+        $config = New Config();
 
         if (true == $config->isLocalCache()) {
 
-            $localFileClient = new System_FileCacheClient($config->getLocalCachePath());
+            $localFileClient = new FileCacheClient($config->getLocalCachePath());
 
             self::$_memcachedClient = $localFileClient;
             return $localFileClient;
@@ -258,7 +258,7 @@ class Config_Config {
         $location = $this->_config["CLIENT_UPDATE_LOCATION"];
 
         if (empty($location)) {
-            throw new System_Exception(ResultCode::UNKNOWN_ERROR, 'Client location not found!');
+            throw new AppException(ResultCode::UNKNOWN_ERROR, 'Client location not found!');
         }
         return $location;
     }
@@ -279,7 +279,7 @@ class Config_Config {
      * Get class instance
      */
     public static function getInstance() {
-        return new Config_Config;
+        return new Config;
     }
 
 }

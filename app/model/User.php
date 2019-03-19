@@ -82,7 +82,7 @@ class Model_User extends Model_BaseModel {
      * Registration process execution.
      *
      * @return User object.
-     * @throws System_Exception
+     * @throws AppException
      */
 
     public function createUser($dataArray, $pdo = null) {
@@ -114,7 +114,7 @@ class Model_User extends Model_BaseModel {
             $this->create($pdo);
 
         } else {
-            throw new System_Exception(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
+            throw new AppException(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
         }
         return $user;
     }
@@ -138,7 +138,7 @@ class Model_User extends Model_BaseModel {
      */
 //    public static function retrieveUserIdFromSession($sessionId) {
 //        $sessionKey = Model_CacheKey::getUserSessionKey($sessionId);
-//        $memcache = Config_Config::getMemcachedClient();
+//        $memcache = Config::getMemcachedClient();
 //        $userId = $memcache->get($sessionKey);
 //        return $userId;
 //    }
@@ -148,7 +148,7 @@ class Model_User extends Model_BaseModel {
      */
     public static function retrieveSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $memcache = Config_Config::getMemcachedClient();
+        $memcache = Config::getMemcachedClient();
         $sessionId = $memcache->get($sessionKey);
         return $sessionId;
     }
@@ -169,7 +169,7 @@ class Model_User extends Model_BaseModel {
      */
     public function removeSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $session = Config_Config::getMemcachedClient();
+        $session = Config::getMemcachedClient();
         $session->remove($sessionKey);
     }
 
@@ -178,7 +178,7 @@ class Model_User extends Model_BaseModel {
      */
     public static function cacheSession($sessionId, $userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $memcache = Config_Config::getMemcachedClient();
+        $memcache = Config::getMemcachedClient();
         $memcache->set($sessionKey, $sessionId, 0, self::SESSION_DURATION_SEC);
     }
 

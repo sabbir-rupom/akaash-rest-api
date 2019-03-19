@@ -17,10 +17,11 @@ header_remove('X-Powered-By');
 
 define('APP_NAME', 'RESTful API Template (Flight PHP)');
 
-define('ROOT_DIR', realpath(__DIR__));
-define('APP_DIR', ROOT_DIR . '/../app');
-define('API_DIR', APP_DIR . '/api');
-define('CONFIG_DIR', APP_DIR . '/config');
+define('ROOT_DIR'   , realpath(__DIR__));
+define('APP_DIR'    , ROOT_DIR . '/../app');
+define('API_DIR'    , APP_DIR . '/api');
+define('CONFIG_DIR' , APP_DIR . '/config');
+define('SYSTEM_DIR' , APP_DIR . '/system');
 
 /*
  * Server Host URL
