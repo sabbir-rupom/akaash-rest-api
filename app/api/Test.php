@@ -76,7 +76,7 @@ class Test extends BaseClass {
          * Check cache system is functional or not
          */
         $message = '';
-        if (Config_Config::getInstance()->isLocalCache()) {
+        if (Config_Config::getInstance()->isLocalCacheEnable()) {
             /*
              * Check local cache path access permission
              */
