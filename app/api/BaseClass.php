@@ -154,7 +154,7 @@ class BaseClass {
     protected function _checkRequestToken() {
 
         if (Config_Config::getInstance()->checkRequestTokenFlag() && !static::TEST_ENV) {
-            $result = System_JwtToken::verifyToken($this->requestToken, $this->config['REQUEST_TOKEN_SECRET']);
+            $result = System_JwtToken::verifyToken($this->requestToken, Config_Config::getInstance()->getRequestTokenSecret());
 
             if ($result['error'] > 0) {
                 switch ($result['error']) {
@@ -410,18 +410,15 @@ class BaseClass {
      */
     protected function isMaintenance() {
 
-
         // In the case of maintenance state
-        if (Const_Application::MAINTENANCE_TYPE_NORMAL == $this->config['MAINTENANCE']) {
+        if (Config_Config::getInstance()->checkMaintenance()) {
 
             // If it is not in the test user
             if (false == $this->isTestUser()) {
                 return true;
             }
-            // No RDB connection maintenance
-        } else if (Const_Application::MAINTENANCE_TYPE_NONE_RDB_CONNECTION == $this->config['MAINTENANCE']) {
-            return true;
         }
+        
         return false;
     }
 
@@ -435,7 +432,7 @@ class BaseClass {
         // If you are already logged in
         if (true == $this->isLoggedIn()) {
             // Check if session user ID matches the tester ID
-            return ($this->userId == 1); // Tester ID is Set to 1
+            return ($this->userId == Config_Config::getInstance()->getTestUserID());
         }
 
         return false;
