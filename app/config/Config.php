@@ -299,7 +299,7 @@ class Config_Config {
 
         $config = New Config_Config();
 
-        if (true == $config->isLocalCache()) {
+        if (true == $config->isLocalCacheEnable()) {
 
             $localFileClient = new System_FileCacheClient($config->getLocalCachePath());
 
@@ -323,3 +323,4 @@ class Config_Config {
     }
 
 }
+

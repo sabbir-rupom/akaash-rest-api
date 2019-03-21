@@ -10,6 +10,11 @@ Configuration keys are explained below:
 - **ENV**
     - Server environment of deployed project application 
     - e.g `development`, `beta`, `alpha`, `production` etc.
+    - Sample code for retrieving the environment value is given below:
+    ::
+
+	$config = new Config_Config();
+        echo $config->getEnv();
 - **PRODUCTION_ENV** 
     - Set project environment status. 
     - Purpose of this parameter is for testing features which are dependent on specific credential key's [ e.g. switch Stripe payment feature as sandbox test or live production etc. ]
@@ -71,3 +76,4 @@ Configuration keys are explained below:
     - If enabled, any data / response will be written as log in local directory
 - **LOG_FILE_PATH**
     - Application log file path in local directory
+
