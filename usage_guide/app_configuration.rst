@@ -8,6 +8,5 @@ then **change the configuration parameters** suitable to your machine environmen
 Configuration keys are explained below:
 
 -   **ENV** : Server environment of deployed project application [ e.g development, beta, alpha, production etc. ]
--   **PRODUCTION_ENV** : Set project environment status. Purpose of this parameter is for testing 
-features which are dependent on specific credential key's [ e.g. switch Stripe payment feature as sandbox test or live production etc. ]
+-   **PRODUCTION_ENV** : Set project environment status. Purpose of this parameter is for testing features which are dependent on specific credential key's [ e.g. switch Stripe payment feature as sandbox test or live production etc. ]
 -   
