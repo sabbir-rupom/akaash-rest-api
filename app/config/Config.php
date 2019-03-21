@@ -72,7 +72,7 @@ class Config_Config {
                 $location = $this->_config["CLIENT_UPDATE_LOCATION_iOS"];
                 break;
             case Const_Application::PLATFORM_TYPE_WINDOWS :
-                $location = $this->_config["CLIENT_UPDATE_LOCATION_WindowsApp"];
+                $location = $this->_config["CLIENT_UPDATE_LOCATION_WINDOWS_APP"];
                 break;
         }
         
@@ -323,6 +323,7 @@ class Config_Config {
     }
 
 }
+
 
 
 

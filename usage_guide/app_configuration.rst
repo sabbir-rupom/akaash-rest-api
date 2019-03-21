@@ -46,7 +46,7 @@ Configuration keys are explained below:
 
         $config = new Config_Config();
         echo $config->getClientUpdateLocation(Const_Application::PLATFORM_TYPE_IOS);
-- **CLIENT_UPDATE_LOCATION_WindowsApp** 
+- **CLIENT_UPDATE_LOCATION_WINDOWS_APP** 
     - Client application download link for Windows phone 
     - Add the microsoft-store path
     ::
@@ -139,6 +139,7 @@ Configuration keys are explained below:
     - If enabled, any data / response will be written as log in local directory
 - **LOG_FILE_PATH**
     - Application log file path in local directory
+
 
 
 
