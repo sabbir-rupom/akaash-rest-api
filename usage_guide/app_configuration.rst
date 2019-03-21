@@ -18,6 +18,11 @@ Configuration keys are explained below:
 - **PRODUCTION_ENV** 
     - Set project environment status. 
     - Purpose of this parameter is for testing features which are dependent on specific credential key's [ e.g. switch Stripe payment feature as sandbox test or live production etc. ]
+    ::
+	$config = new Config_Config();
+        if($config->checkProductionEnvironment()) {
+            // Do your staff
+        }
 - **CLIENT_VERSION** 
     - Current application version in Server. 
     - Purpose of this parameter is to crosscheck the client request with the server application. 
@@ -76,4 +81,6 @@ Configuration keys are explained below:
     - If enabled, any data / response will be written as log in local directory
 - **LOG_FILE_PATH**
     - Application log file path in local directory
+
+
 
