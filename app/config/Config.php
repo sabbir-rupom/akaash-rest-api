@@ -36,7 +36,134 @@ class Config_Config {
         // Load application config file
         $this->_config = Flight::get('app_config');
     }
+        
+    /**
+     * Read Server Environment 
+     */
+    public function getEnv() {
+        return $this->_config["ENV"];
+    }
 
+    /*
+     * Whether production environment is live or not
+     */
+    public function checkProductionEnvironment() {
+        return $this->_config["PRODUCTION_ENV"];
+    }
+
+    /**
+     * Read Server Application Version
+     */
+    public function getClientVersion() {
+        return (int) $this->_config["CLIENT_VERSION"];
+    }
+
+    /*
+     * Retrieve client application download link
+     * @return string $location
+     */
+    public function getClientUpdateLocation($clientType) {
+        
+        switch ($clientType) {
+            case Const_Application::PLATFORM_TYPE_ANDROID :
+                $location = $this->_config["CLIENT_UPDATE_LOCATION_ANDROID"];
+                break;
+            case Const_Application::PLATFORM_TYPE_IOS :
+                $location = $this->_config["CLIENT_UPDATE_LOCATION_iOS"];
+                break;
+            case Const_Application::PLATFORM_TYPE_WINDOWS :
+                $location = $this->_config["CLIENT_UPDATE_LOCATION_WindowsApp"];
+                break;
+        }
+        
+        if (empty($location)) {
+            throw new System_ApiException(ResultCode::UNKNOWN_ERROR, 'Client location not found! Check configuration file.');
+        }
+        return $location;
+    }
+    
+    /*
+     * Check error debugging mode
+     * 
+     * @return boolean
+     */
+    public function isErrorDump() {
+        if (array_key_exists("ERROR_DUMP", $this->_config) && $this->_config["ERROR_DUMP"] === '1') {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Read Server Maintenance Mode
+     */
+    public function checkMaintenance() {
+        if (array_key_exists("MAINTENANCE", $this->_config) && $this->_config["MAINTENANCE"] === '1') {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Read Global Test User ID
+     * This user will to test server API responses while in maintenance mode
+     * if user ID exists in database
+     * 
+     * @return int User ID
+     */
+    public function getTestUserID() {
+        if (array_key_exists("TEST_USER_ID", $this->_config)) {
+            return (int) $this->_config['TEST_USER_ID'];
+        }
+        return -1;
+    }
+    
+    /**
+     * Read Support Mail Address
+     */
+    public function getSupportMailAddress() {
+        return $this->_config['SUPPORT_MAIL_TO'];
+    }
+
+    /**
+     * Check the request token verification flag
+     *
+     * @return boolean
+     */
+    public function checkRequestTokenFlag() {
+        if (array_key_exists("CHECK_REQUEST_TOKEN", $this->_config) && $this->_config["CHECK_REQUEST_TOKEN"] === '1') {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Read Client Token HTTP Header Key
+     */
+    public function getRequestTokenHeaderKey() {
+        return $this->_setting["REQUEST_TOKEN_HEADER_KEY"];
+    }
+    
+    /**
+     * Read Client Session HTTP Header Key
+     */
+    public function getClientSessionHeaderKey() {
+        return $this->_setting["USER_SESSION_HEADER_KEY"];
+    }
+
+    /**
+     * Request Token secret Key
+     */
+    public function getRequestTokenSecret() {
+        $key = 'REQUEST_TOKEN_SECRET';
+
+        if (array_key_exists($key, $this->_config)) {
+            return $this->_config[$key];
+        }
+
+        return null;
+    }
+    
     /**
      * Read Database Host Name
      */
@@ -45,14 +172,14 @@ class Config_Config {
     }
 
     /**
-     * Read Database Access Name
+     * Read Database Name
      */
     public function getDatabaseName() {
         return $this->_config['DB_NAME'];
     }
 
     /**
-     * Read Database User Name
+     * Read Database Access Username
      */
     public function getDatabaseUser() {
         return $this->_config['DB_USER'];
@@ -73,41 +200,29 @@ class Config_Config {
     }
 
     /**
-     * Read Server Log File path
+     * Whether to set the time zone or not
+     *
+     * @return boolean
      */
-    public function getLogFile() {
-        return $this->_config['LOG_FILE_PATH'];
-    }
-
-    /**
-     * Request Token secret Key
-     */
-    public function getRequestTokenSecret() {
-//     $key = 'REQUEST_TOKEN_SECRET_' . $clientVersion;
-        $key = 'REQUEST_TOKEN_SECRET';
-
-        if (array_key_exists($key, $this->_config)) {
-            return $this->_config[$key];
-        }
-
-        return null;
-    }
-
-    /**
-     * Whether the Local Cache mode ON or OFF
-     */
-    public function isLocalCache() {
-        if (array_key_exists("LOCAL_CACHE_FLAG", $this->_config) && $this->_config["LOCAL_CACHE_FLAG"] === '1') {
+    public function isDbSetTimezone() {
+        if (array_key_exists("DB_SET_TIMEZONE", $this->_config) && $this->_config["DB_SET_TIMEZONE"] === '1') {
             return true;
         }
         return false;
     }
-    
+
     /**
-     * Whether the Local Cache mode ON or OFF
+     * Get Server Time zone
      */
-    public function isLogEnable() {
-        if (array_key_exists("APPLICATION_LOG", $this->_config) && $this->_config["APPLICATION_LOG"] === '1') {
+    public function getServerTimezone() {
+        return $this->_config["SERVER_TIMEZONE"];
+    }
+
+    /**
+     * Whether Server Local File-caching is enabled / disabled
+     */
+    public function isLocalCacheEnable() {
+        if (array_key_exists("LOCAL_CACHE_FLAG", $this->_config) && $this->_config["LOCAL_CACHE_FLAG"] === '1') {
             return true;
         }
         return false;
@@ -119,18 +234,35 @@ class Config_Config {
     public function getLocalCachePath() {
         return $this->_config["LOCAL_CACHE_PATH"];
     }
+
+    /**
+     * Read Server Log File path
+     */
+    public function getLogFile() {
+        return $this->_config['LOG_FILE_PATH'];
+    }
+
+    /**
+     * Read Memcache Key Prefix
+     */
+    public function getMemcachePrefix() {
+        return $this->_config["MEMCACHE_PREFIX"];
+    }
+    
+    /**
+     * Whether the Local Cache mode ON or OFF
+     */
+    public function isLogEnable() {
+        if (array_key_exists("APPLICATION_LOG", $this->_config) && $this->_config["APPLICATION_LOG"] === '1') {
+            return true;
+        }
+        return false;
+    }
     /**
      * Local log file path
      */
     public function getAppLogPath() {
         return $this->_config["LOG_FILE_PATH"];
-    }
-
-    /*
-     * Whether production environment is live or not
-     */
-    public function checkProductionEnvironment() {
-        return $this->_config["PRODUCTION_ENV"];
     }
 
     protected $_memcachedServerInstance = null;
@@ -181,88 +313,6 @@ class Config_Config {
         self::$_memcachedClient = $memCachedClient;
 
         return $memCachedClient;
-    }
-
-    /**
-     * Read Memcache Key Prefix
-     */
-    public function getMemcachePrefix() {
-        return $this->_config["MEMCACHE_PREFIX"];
-    }
-
-    /**
-     * Whether to set the time zone or not
-     *
-     * @return boolean
-     */
-    public function isDbSetTimezone() {
-        if (array_key_exists("DB_SET_TIMEZONE", $this->_config) && $this->_config["DB_SET_TIMEZONE"] === '1') {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Set time zone
-     */
-    public function getDbTimezone() {
-        return $this->_config["DB_TIMEZONE"];
-    }
-
-    /**
-     * Read Server Environment 
-     */
-    public function getEnv() {
-        return $this->_config["ENV"];
-    }
-
-    /**
-     * Read Client Token Verification Secret Key
-     */
-    public function getClientTokenSecret() {
-        return $this->_setting["REQUEST_TOKEN_SECRET"];
-    }
-
-    public function isErrorDump() {
-        if (array_key_exists("ERROR_DUMP", $this->_config) && $this->_config["ERROR_DUMP"] === '1') {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Read Server Maintenance Mode
-     */
-    public function getMaintenance() {
-        return $this->_config["MAINTENANCE"];
-    }
-
-    /**
-     * Read Server Application Version
-     */
-    public function getClientVersion() {
-        return (int) $this->_config["CLIENT_VERSION"];
-    }
-
-    public function getClientUpdateLocation($clientEdition) {
-        $location = $this->_config["CLIENT_UPDATE_LOCATION"];
-
-        if (empty($location)) {
-            throw new System_ApiException(ResultCode::UNKNOWN_ERROR, 'Client location not found!');
-        }
-        return $location;
-    }
-
-    /**
-     * Check the request token verification flag
-     *
-     * @return boolean
-     */
-    public function checkRequestTokenFlag() {
-        if (array_key_exists("CHECK_REQUEST_TOKEN", $this->_config) && $this->_config["CHECK_REQUEST_TOKEN"] === '1') {
-            return true;
-        }
-        return false;
     }
     
     /*
