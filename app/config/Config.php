@@ -37,7 +37,7 @@ class Config_Config {
         $this->_config = Flight::get('app_config');
     }
         
-    /**
+    /** C:\xampp\htdocs\flight-v1\
      * Read Server Environment 
      */
     public function getEnv() {
@@ -181,7 +181,7 @@ class Config_Config {
     /**
      * Read Database Access Username
      */
-    public function getDatabaseUser() {
+    public function getDatabaseUsername() {
         return $this->_config['DB_USER'];
     }
 
@@ -323,4 +323,6 @@ class Config_Config {
     }
 
 }
+
+
 

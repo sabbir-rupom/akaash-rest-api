@@ -27,7 +27,7 @@ $db_user = $configArray['DB_USER'];
 $db_pass = $configArray['DB_PASSWORD'];
 $db_port = $configArray['DB_PORT'];
 
-define('DB_TIMEZONE', $configArray['DB_TIMEZONE']);
+define('DB_TIMEZONE', $configArray['SERVER_TIMEZONE']);
 define('DB_SET_TIMEZONE', (int) $configArray['DB_SET_TIMEZONE']);
 
 Flight::register('pdo', 'PDO', array("mysql:host={$db_host};dbname={$db_name};charset=utf8mb4;" . (!empty($db_port) ? "port={$db_port};" : ''), $db_user, $db_pass), function ($pdo) {
@@ -41,3 +41,4 @@ Flight::register('pdo', 'PDO', array("mysql:host={$db_host};dbname={$db_name};ch
     
     $pdo->exec("SET time_zone='{$db_timezone}';");
 });
+
