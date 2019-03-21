@@ -9,7 +9,7 @@ Configuration keys are explained below:
 
 - **ENV**
     - Server environment of deployed project application 
-    - e.g development, beta, alpha, production etc.
+    - e.g `development`, `beta`, `alpha`, `production` etc.
 - **PRODUCTION_ENV** 
     - Set project environment status. 
     - Purpose of this parameter is for testing features which are dependent on specific credential key's [ e.g. switch Stripe payment feature as sandbox test or live production etc. ]
@@ -26,3 +26,18 @@ Configuration keys are explained below:
 - **CLIENT_UPDATE_LOCATION_WindowsApp** 
     - Client application download link for Windows phone 
     - Add the microsoft-store path
+- **ERROR_DUMP** 
+    - Set error reporting status ON / OFF [ 0=OFF , 1=ON ] 
+    - If ON, specific error message will be added alongside the API JSON response 
+::
+
+	"error_dump": {
+            "code": 5,
+            "file": "C:\\xampp\\htdocs\\template-api\\flight-v1\\app\\api\\BaseClass.php",
+            "line": 279
+        }
+- **MAINTENANCE**
+    - Set server maintenance mode ON / OFF [ 0=OFF , 1=ON ] 
+- **SUPPORT_MAIL_TO** 
+    - Support mail address, where any project application related issues might be mailed at. 
+	
