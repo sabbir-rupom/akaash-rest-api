@@ -24,35 +24,21 @@
  */
 class Const_Application {
 
-    /**
+    /** Unknown client
      */
     const PLATFORM_TYPE_NONE = 0;
 
-    /**
+    /** iOS Client
      */
     const PLATFORM_TYPE_IOS = 1;
 
-    /**
+    /** Android Client
      */
     const PLATFORM_TYPE_ANDROID = 2;
-
-    /**
-     * Maintenance type (not the maintenance.)
-     * @var int
+ 
+    /** Windows Phone Client
      */
-    const MAINTENANCE_TYPE_NOT_MAINTENANCE = 0;
-
-    /**
-     * Maintenance type (normal maintenance)
-     * @var int
-     */
-    const MAINTENANCE_TYPE_NORMAL = 1;
-
-    /**
-     * Maintenance type (no RDB connection)
-     * @var int
-     */
-    const MAINTENANCE_TYPE_NONE_RDB_CONNECTION = 2;
+    const PLATFORM_TYPE_WINDOWS = 3;
     
     /*
      * JWT Token verification error codes
