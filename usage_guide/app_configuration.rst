@@ -16,7 +16,7 @@ Configuration keys are explained below:
 	$config = new Config_Config();
         echo $config->getEnv();
 - **PRODUCTION_ENV** 
-    - Set project environment status. 
+    - Set production / live status [ 0=OFF , 1=ON ]
     - Purpose of this parameter is for testing features which are dependent on specific credential key's [ e.g. switch Stripe payment feature as sandbox test or live production etc. ]
     ::
 
@@ -25,7 +25,7 @@ Configuration keys are explained below:
             // Do your staff
         }
 - **CLIENT_VERSION** 
-    - Current application version in Server. 
+    - Current application version in Server [ in Integer Number ]
     - Purpose of this parameter is to crosscheck the client request with the server application. 
     - If there exists multiple version of client software application, based on their client version parameter in API request, server application may decide whether the API request will be redirected to the proper url / directory path or disallow the request call  
     ::
@@ -113,7 +113,7 @@ Configuration keys are explained below:
     - Set server timezone set mode ON / OFF [ 0=OFF , 1=ON ] 
     - This flag refers to whether mysql **database timezone** will be set as same as the Server or not
 - **DB_TIMEZONE**
-    - Server timezone 
+    - Server timezone [ e.g Europe/Berlin ]
     ::
 
         $conn = { PDO Connection }
@@ -128,6 +128,21 @@ Configuration keys are explained below:
     - if enabled, caching will be done in local directory 
 - **LOCAL_CACHE_PATH**
     - Local file cache directory path
+    - Server will store cache data in this path if **LOCAL_CACHE_FLAG** is enabled
+    ::
+    
+        $config = new Config_Config();
+	if ($config->isLocalCacheEnable()) {
+
+            $cachePath = $config->getLocalCachePath();
+            if (is_dir($cachePath)) {
+                /*
+                 * store data in cache
+                 * retrieve data from cache
+                 * delete data from cache
+                 */ 
+            }
+        }
 - **MEMCACHE_PREFIX**
     - Cache key prefix for specific data caching
 - **MEMCACHED_HOST**
@@ -139,6 +154,20 @@ Configuration keys are explained below:
     - If enabled, any data / response will be written as log in local directory
 - **LOG_FILE_PATH**
     - Application log file path in local directory
+    ::
+    
+        $config = new Config_Config();
+	if ($config->isLogEnable()) {
+
+            $logPath = $config->getAppLogPath();
+            if (is_dir($logPath)) {
+                /*
+                 * store data in cache
+                 * retrieve data from cache
+                 * delete data from cache
+                 */ 
+            }
+        }
 
 
 
