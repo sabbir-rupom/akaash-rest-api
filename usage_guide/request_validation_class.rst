@@ -2,10 +2,10 @@
 Client Request Validation: *Base* class controller
 ##################################################
 
-**Base Class** controller, resided in `app/api` directory initializes and validates all necessary parameters and client request for **API Class** execution.
+**Base Class** controller, resided in ``app/api`` directory initializes and validates all necessary parameters and client request for **API Class** execution.
 Base class does the following things:
 
-- Checks and validates header token and session data as configured in `app/config/config_app.ini`
+- Checks and validates header token and session data as configured in ``app/config/config_app.ini``
 - Checks and validates any method request with valid data type as API defination
 - Checks and validates session user from cache as API definition
 - Checks and executes server code if maintenance mode is on

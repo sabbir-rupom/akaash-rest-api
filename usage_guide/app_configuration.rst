@@ -2,14 +2,14 @@
 Project Configuration
 #####################
 
-Project application settings is configured through the `config_app.ini` location in the `app/config` directory. Rename the file from `example.*.ini` 
+Project application settings is configured through the ``config_app.ini`` location in the ``app/config`` directory. Rename the file from ``example.*.ini``
 then **change the configuration parameters** suitable to your machine environment.   
 
 Configuration keys are explained below:
 
 - **ENV**
     - Server environment of deployed project application 
-    - e.g `development`, `beta`, `alpha`, `production` etc.
+    - e.g ``development``, ``beta``, ``alpha``, ``production`` etc.
     - Sample code for retrieving the environment value is given below:
     ::
 
