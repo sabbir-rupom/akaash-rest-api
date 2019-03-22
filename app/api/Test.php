@@ -99,14 +99,14 @@ class Test extends BaseClass {
              * Cache system test case
              */
             $key = 'app_test';
-            $memcache = Config_Config::getMemcachedClient();
+            $cache = Config_Config::getMemcachedClient();
             /*
              * clear all existing cache data
              */
-            $memcache->flush();
-            $memcache->set($key, 'Checking Data from Memcache', MEMCACHE_COMPRESSED, 120);  // set sample cache data
+            $cache->flush();
+            $cache->set($key, 'Checking Data from Memcache', MEMCACHE_COMPRESSED, 120);  // set sample cache data
 
-            $message = !empty($memcache->get($key)) ? 'Cache system is functional' : 'Cache system is not functional. Please check memcache settings.';
+            $message = !empty($cache->get($key)) ? 'Cache system is functional' : 'Cache system is not functional. Please check memcache settings.';
         }
         $responseArray['Cache'] = $message;
 
