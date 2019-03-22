@@ -221,7 +221,7 @@ This project does not include much features, but I have tried to add some to mak
 * Integration of **flight-microframework** - which is extremely light weight. To learn it's features, simply go to this [ ::learn flight-PHP:: ](http://flightphp.com/learn/)
 * A **Model-View-Controller** like system architecture [ ::view doc:: ](usage_guide/system_architecture.rst)
 * **Single Configuration** file with Config class [ ::view doc:: ](usage_guide/app_configuration.rst)
-* Base Controller class for **Client Request** validation
+* **Base Class** controller for Client Request validation [ ::view doc:: ](usage_guide/request_validation_class.rst)
 * MySQL database connection support with **PDO driver**
 * **Abstract Base Model** class for database **Query Builder Function** support
 * File upload, image masking and resizing function
