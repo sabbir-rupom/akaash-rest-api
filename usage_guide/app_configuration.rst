@@ -56,7 +56,7 @@ Configuration keys are explained below:
 - **ERROR_DUMP** 
     - Set error reporting status ON / OFF [ 0=OFF , 1=ON ] 
     - If ON, specific error message will be added alongside the API JSON response 
-::
+    ::
 
 	"error_dump": {
             "code": 5,
