@@ -222,14 +222,14 @@ This project does not include much features, but I have tried to add some to mak
 * A **Model-View-Controller** like system architecture [ ::view doc:: ](usage_guide/system_architecture.rst)
 * **Single Configuration** file with Config class [ ::view doc:: ](usage_guide/app_configuration.rst)
 * **Base Class** controller for Client Request validation [ ::view doc:: ](usage_guide/request_validation_class.rst)
-* MySQL database connection support with **PDO driver**
-* **Abstract Base Model** class for database **Query Builder Function** support
-* File upload, image masking and resizing function
+* MySQL database connection support with **PDO driver** . If you are not familiar with PDO, please visit and learn the basics [ ::pdo tutorial:: ](https://phpdelusions.net/pdo) 
+* **Abstract Base Model** class for database **Query Builder Function** support [ ::view doc:: ](usage_guide/query_builder_class.rst)
 * **Common Helper** classes: Array, Date, Log, Utils(Utility)
 * **System Library** classes: ApiException, FileCacheClient, JwtToken, MemcachedServer, Security
 * Application constant class
 * **Result-Code** class for supporting exception handle with necessary status codes
 * **Console** testing 
+* Others [ ::view doc:: ](usage_guide/other_features.rst)
 
 ## Running the tests
 
