@@ -13,15 +13,13 @@ The members of query builder class are described below:
     - declared as empty constant, can be override in child class to pass the correct table name for database query execution
     - sample code example::
 
-        abstract class Model_BaseModel 
-        {   
+        abstract class Model_BaseModel {   
             const TABLE_NAME='';
             public static function getAll() {
                 return "SELECT * FROM `" . static::TABLE_NAME. "`";
             }   
         }
-        class Model_User extends Model_BaseModel 
-        {
+        class Model_User extends Model_BaseModel {
             const TABLE_NAME='users';
         }
         echo Model_User::getAll();
@@ -77,6 +75,7 @@ The members of query builder class are described below:
     echo Model_User::printColumns();
 
 - 
+
 
 
 
