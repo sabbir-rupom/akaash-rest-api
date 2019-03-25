@@ -11,7 +11,8 @@ class Model_User extends Model_BaseModel {
     /* Table Name */
     const TABLE_NAME = "users";
 
-    protected static $columnDefs = array(
+    // Table column definitions
+    protected static $columnsOnDB = array(
         'id' => array(
             'type' => 'int',
             'json' => true

@@ -9,7 +9,8 @@ class Model_UserLoginSession extends Model_BaseModel {
 
     const TABLE_NAME = "user_login_sessions";
 
-    protected static $columnDefs = array(
+    // Table column definitions
+    protected static $columnsOnDB = array(
         'id' => array(
             'type' => 'int',
             'json' => FALSE

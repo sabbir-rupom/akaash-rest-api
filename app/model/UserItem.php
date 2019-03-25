@@ -13,9 +13,9 @@ class Model_UserItem extends Model_BaseModel {
     const TABLE_NAME = "user_items";
 
     /**
-     * Column Defination
+     * Table column definitions
      */
-    protected static $columnDefs = array(
+    protected static $columnsOnDB = array(
         'id' => array(
             'type' => 'int',
             'json' => TRUE

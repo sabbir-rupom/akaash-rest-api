@@ -24,11 +24,11 @@ abstract class Model_BaseModel {
     // Table name. Be overridden by the implementation class.
     const TABLE_NAME = "";
     
-    // Updated_at whether the column exists. Be overridden by the implementation class, if necessary.
-    const HAS_UPDATED_AT = TRUE;
-    
     // Created_at whether the column exists. Be overridden by the implementation class, if necessary.
     const HAS_CREATED_AT = TRUE;
+    
+    // Updated_at whether the column exists. Be overridden by the implementation class, if necessary.
+    const HAS_UPDATED_AT = TRUE;
     
     // Memcached Validity period
     const MEMCACHED_EXPIRE = 1800; // 30 minutes
@@ -43,10 +43,15 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query result
      * @return object Search result as an object of called class
      */
-    public static function find($id, $pdo = null, $forUpdate = FALSE) {
+    public static function find($id = NULL, $pdo = null, $forUpdate = FALSE) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
+        
+        if(!isset($id)) {
+             throw new System_ApiException(ResultCode::DATABASE_ERROR, '$id must be passed as argument');
+        }
+        
         $sql = "SELECT * FROM " . static::TABLE_NAME . " WHERE id = ?";
         if ($forUpdate) {
             $sql .= " FOR UPDATE";
@@ -66,7 +71,7 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query result
      * @return object Search result as an object of called class
      */
-    public static function findBy($params, $pdo = null, $forUpdate = FALSE) {
+    public static function findBy($params = [], $pdo = null, $forUpdate = FALSE) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -91,7 +96,7 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function findAllBy($params = array(), $order = null, $limitArgs = null, $pdo = null, $forUpdate = FALSE) {
+    public static function findAllBy($params = [], $order = null, $limitArgs = null, $pdo = null, $forUpdate = FALSE) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -112,7 +117,7 @@ abstract class Model_BaseModel {
      * @param bool $highPerformanceFlag to count the number of records in table
      * @return int Number of records
      */
-    public static function countBy($params = array(), $pdo = null, $highPerformanceFlag = false) {
+    public static function countBy($params = [], $pdo = null, $highPerformanceFlag = false) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -147,7 +152,7 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query.
      * @return array Constructed Query
      */
-    protected static function constructQuery($params, $order = array(), $limitArgs = null, $forUpdate = FALSE) {
+    protected static function constructQuery($params =[], $order = array(), $limitArgs = null, $forUpdate = FALSE) {
         $conditions = array();
         $values = array();
         foreach ($params as $k => $v) {
@@ -188,7 +193,7 @@ abstract class Model_BaseModel {
      * @param array $params $params[][0] for column-name, $params[][1] for value, $params[][1] for condition
      * @return array Constructed Query condition
      */
-    protected static function constructQueryCondition($params = array()) {
+    protected static function constructQueryCondition($params = []) {
         $condition = '';
         $values = array();
         foreach ($params as $v) {
@@ -320,10 +325,10 @@ abstract class Model_BaseModel {
      * Return the column name list.
      */
     protected static function getColumns() {
-        if (isset(static::$columnDefs)) {
-            return array_keys(static::$columnDefs);
+        if (isset(static::$columnsOnDB)) {
+            return array_keys(static::$columnsOnDB);
         } else {
-            return static::$columns;
+            return [];
         }
     }
 
@@ -391,7 +396,7 @@ abstract class Model_BaseModel {
      * @param String $ column target column name defined in model class
      */
     protected static function getColumnType($column) {
-        return static::$columnDefs[$column]['type'];
+        return static::$columnsOnDB[$column]['type'];
     }
 
     /**
@@ -399,7 +404,7 @@ abstract class Model_BaseModel {
      * @param String $ column target column name.
      */
     public static function isColumnIncludedInJson($column) {
-        $columnDef = static::$columnDefs[$column];
+        $columnDef = static::$columnsOnDB[$column];
         if (isset($columnDef['json'])) {
             return $columnDef['json'];
         }
