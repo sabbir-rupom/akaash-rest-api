@@ -39,42 +39,42 @@ The members of query builder class are described below:
 - **columnsOnDB**
     - Declared as private static member variable, can be override any access modifier below **private** from child class
     - Purpose is for defining db-table column structure of associated model class
-    - sample code example
-    ::
+    - sample code example::
 
-    abstract class Model_BaseModel {   
-        private static $columnsOnDB = null;
-        
-        public static function printColumns() {
-            print_r(static::$columnsOnDB);
-        }   
-    }
+        abstract class Model_BaseModel {   
+            private static $columnsOnDB = null;
 
-    class Model_User extends Model_BaseModel {
-        const TABLE_NAME='users';
-        protected static $columnsOnDB = array(
-            'id' => array(
-                'type' => 'int',
-                'json' => true
-            ),
-            'email' => array(
-                'type' => 'string',
-                'json' => true
-            ),
-            'created_at' => array(
-                'type' => 'string',
-                'json' => false
-            ),
-            'updated_at' => array(
-                'type' => 'string',
-                'json' => false
-            )
-        );
-    }
+            public static function printColumns() {
+                print_r(static::$columnsOnDB);
+            }   
+        }
 
-    echo Model_User::printColumns();
+        class Model_User extends Model_BaseModel {
+            const TABLE_NAME='users';
+            protected static $columnsOnDB = array(
+                'id' => array(
+                    'type' => 'int',
+                    'json' => true
+                ),
+                'email' => array(
+                    'type' => 'string',
+                    'json' => true
+                ),
+                'created_at' => array(
+                    'type' => 'string',
+                    'json' => false
+                ),
+                'updated_at' => array(
+                    'type' => 'string',
+                    'json' => false
+                )
+            );
+        }
+
+        echo Model_User::printColumns();
 
 - 
+
 
 
 
