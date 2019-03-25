@@ -11,7 +11,11 @@ The members of query builder class are described below:
 
 - **TABLE_NAME**
     - declared as empty constant, can be override in child class to pass the correct table name for database query execution
-    - sample code example
+    - sample code example\
+    ::
+
+	$config = new Config_Config();
+        echo $config->getEnv();
     ::
 
     abstract class Model_BaseModel {   
@@ -27,7 +31,6 @@ The members of query builder class are described below:
     }
 
     echo Model_User::getAll();
-
 - **HAS_CREATED_AT**
     - Declared as ``boolean TRUE`` constant, expecting the child model class has a db-table column structure with ``created_at`` column [ DB column to store the insert time ] 
     - if override as ``boolean FALSE`` in child class will indicate the associated db-table has no column as ``created_at``
