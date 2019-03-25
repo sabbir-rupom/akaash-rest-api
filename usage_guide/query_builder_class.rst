@@ -7,7 +7,7 @@ By extending this class with your custom model class will allow using its member
 insert, update, retrieve, delete with minimal scripting. There are also scope for escaping unwanted string for safer query execution. 
 Some additional helper function to set, retrieve and delete data from cache alongside the database query builder functions.
 
-The members of query builder class are described below:
+The members constants and variables are as follows:
 
 - **TABLE_NAME**
     - declared as empty constant, can be override in child class to pass the correct table name for database query execution
@@ -73,7 +73,14 @@ The members of query builder class are described below:
 
         echo Model_User::printColumns();
 
-- 
+For the ease of query execution I have included multiple query builder functions in *BaseModel* class:
+
+Data Selection
+==============
+
+- **find()
+
+
 
 
 
