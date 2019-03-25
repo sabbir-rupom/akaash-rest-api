@@ -14,22 +14,15 @@ The members of query builder class are described below:
     - sample code example\
     ::
 
-	$config = new Config_Config();
-        echo $config->getEnv();
-    ::
-
     abstract class Model_BaseModel {   
         const TABLE_NAME='';
-
         public static function getAll() {
             return "SELECT * FROM `" . static::TABLE_NAME. "`";
         }   
     }
-
     class Model_User extends Model_BaseModel {
         const TABLE_NAME='users';
     }
-
     echo Model_User::getAll();
 - **HAS_CREATED_AT**
     - Declared as ``boolean TRUE`` constant, expecting the child model class has a db-table column structure with ``created_at`` column [ DB column to store the insert time ] 
@@ -82,3 +75,4 @@ The members of query builder class are described below:
     echo Model_User::printColumns();
 
 - 
+
