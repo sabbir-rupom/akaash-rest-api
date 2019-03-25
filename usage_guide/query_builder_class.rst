@@ -77,8 +77,15 @@ For the ease of query execution I have included multiple query builder functions
 
 Data Selection
 ==============
+Following functions will help you executing **SELECT** SQL query
+ 
+- **find()**
+    - find function accepts 3 parameter
+        1. Table row ID, which is the primary key
+            - [*Note*] This function can only be used if the primary key of that table denoted as `id`
+        2. Database connection object [ Instance of PDO (optional) ]
+        3. Set locking read status `::learn more <https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html>`_
 
-- **find()
 
 
 
