@@ -83,8 +83,22 @@ Following functions will help you executing **SELECT** SQL query
     - find function accepts 3 parameter
         1. Table row ID, which is the primary key
             - [*Note*] This function can only be used if the primary key of that table denoted as `id`
+            - function will throw database error if ID is not passed as argument
         2. Database connection object [ Instance of PDO (optional) ]
-        3. Set locking read status `::learn more <https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html>`_
+        3. Set locking read status `::learn more:: <https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html>`_
+    - Returns table row as called class object::
+    
+        class Model_User extends Model_BaseModel {
+            const TABLE_NAME='users';
+
+            public static function getUser($userId = 1) {
+                $pdo = Flight::pdo();
+                $userObj = self::find($userId, $pdo, FALSE);
+            }
+        }
+
+        
+    
 
 
 
