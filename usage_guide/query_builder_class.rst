@@ -79,20 +79,16 @@ Data Selection
 ==============
 Following functions will help you executing **SELECT** SQL query
 
-- This is the first paragraph in the second item in the list.
+- **find()**
 
-  This is the second paragraph in the second item in the list.
-  The blank line above this paragraph is required.  The left edge
-  of this paragraph lines up with the paragraph above, both
-  indented relative to the bullet.
+  find function accepts upto three parameters
 
-  - This is a sublist.  The bullet lines up with the left edge of
-    the text blocks above.  A sublist is a new list so requires a
-    blank line above and below.
+  1. Table row ID, which is the primary key
 
-    Losip tagor maro
+     [*Note*] This function can only be used if the primary key of that table denoted as `id`
 
-    1. Mairala
+     function will throw database error if ID is not passed as argument
+
 
     
  
