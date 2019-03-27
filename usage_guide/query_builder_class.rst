@@ -79,13 +79,18 @@ Data Selection
 ==============
 Following functions will help you executing **SELECT** SQL query
 
-- **find()**
-    - find function accepts 3 parameter
-        1. Table row ID, which is the primary key
+- Indent sub-lists by the same amount as the item text;
+    this must be 4-7 spaces more than the symbol or number.
+
+    1.  if enumerated, always start them with 1.
+
+        + (the same rules apply to sub-sub-lists, etcetera)
+
+    
  
 - find()
 
- * find function accepts 3 parameter
+    - find function accepts 3 parameter
         1. Table row ID, which is the primary key
             - [*Note*] This function can only be used if the primary key of that table denoted as `id`
             - function will throw database error if ID is not passed as argument
