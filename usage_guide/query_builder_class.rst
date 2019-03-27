@@ -79,20 +79,9 @@ Data Selection
 ==============
 Following functions will help you executing **SELECT** SQL query
 
-1. Always put a blank line before the start of a list or sub-list.
+-  find()
 
-2. Use the same bullet symbol for all items in a bulleted list.
-
-3. Always start enumerated lists with 1.
-
-4.  Do not mix numbers and/or different bullet symbols at one level
-
-        * (but this is okay for different levels or separate sublists).
-
-5.  Indent sub-lists by the same amount as the item text;
-        this must be 4-7 spaces more than the symbol or number.
-
-    1.  if enumerated, always start them with 1.
+    1.  find function accepts 3 parameter
 
         + (the same rules apply to sub-sub-lists, etcetera)
 
