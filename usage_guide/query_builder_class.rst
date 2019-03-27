@@ -79,19 +79,19 @@ Data Selection
 ==============
 Following functions will help you executing **SELECT** SQL query
 
--  if enumerated, always start them with 1.
+- if enumerated, always start them with 1.
 
-    + (the same rules apply to sub-sub-lists, etcetera)
+ + (the same rules apply to sub-sub-lists, etcetera)
  
 - find()
 
-    * find function accepts 3 parameter
+ * find function accepts 3 parameter
         1. Table row ID, which is the primary key
             - [*Note*] This function can only be used if the primary key of that table denoted as `id`
             - function will throw database error if ID is not passed as argument
         2. Database connection object [ Instance of PDO (optional) ]
         3. Set locking read status `::learn more:: <https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html>`_
-    * Returns table row as called class object::
+ * Returns table row as called class object::
     
         class Model_User extends Model_BaseModel {
             const TABLE_NAME='users';
