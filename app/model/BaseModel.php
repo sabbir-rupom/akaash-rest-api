@@ -23,17 +23,15 @@ abstract class Model_BaseModel {
 
     // Table name. Be overridden by the implementation class.
     const TABLE_NAME = "";
-    
     // Created_at whether the column exists. Be overridden by the implementation class, if necessary.
     const HAS_CREATED_AT = TRUE;
-    
     // Updated_at whether the column exists. Be overridden by the implementation class, if necessary.
     const HAS_UPDATED_AT = TRUE;
-    
     // Memcached Validity period
     const MEMCACHED_EXPIRE = 1800; // 30 minutes
 
     // Cache the column name list on the db
+
     private static $columnsOnDB = null;
 
     /**
@@ -47,11 +45,11 @@ abstract class Model_BaseModel {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
-        
-        if(!isset($id)) {
-             throw new System_ApiException(ResultCode::DATABASE_ERROR, '$id must be passed as argument');
+
+        if (!isset($id)) {
+            throw new System_ApiException(ResultCode::DATABASE_ERROR, '$id must be passed as argument');
         }
-        
+
         $sql = "SELECT * FROM " . static::TABLE_NAME . " WHERE id = ?";
         if ($forUpdate) {
             $sql .= " FOR UPDATE";
@@ -121,9 +119,9 @@ abstract class Model_BaseModel {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
-        if (empty($params)) {
-            list($conditionSql, $values) = array('', array());
-        } else {
+        $conditionSql = '';
+        $values = [];
+        if (!empty($params)) {
             list($conditionSql, $values) = self::constructQuery($params);
         }
         $countSql = ' * ';
@@ -152,28 +150,28 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query.
      * @return array Constructed Query
      */
-    protected static function constructQuery($params =[], $order = array(), $limitArgs = null, $forUpdate = FALSE) {
-        $conditions = array();
-        $values = array();
-        foreach ($params as $k => $v) {
-            if (is_array($v)) {
-                $conditions[] = $k . ' IN (' . implode(',', array_fill(0, count($v), '?')) . ')';
-                $values = array_merge($values, $v);
-            } else {
-                $conditions[] = $k . '=?';
-                $values[] = $v;
-            }
-        }
+    protected static function constructQuery($params = [], $order = array(), $limitArgs = null, $forUpdate = FALSE) {
+        list($conditions, $values) = self::constructConditions($params);
+
+//        foreach ($params as $k => $v) {
+//            if (is_array($v)) {
+//                $conditions[] = $k . ' IN (' . implode(',', array_fill(0, count($v), '?')) . ')';
+//                $values = array_merge($values, $v);
+//            } else {
+//                $conditions[] = $k . '=?';
+//                $values[] = $v;
+//            }
+//        }
         $sql = "";
         if (!empty($conditions)) {
             $sql .= " WHERE " . join(' AND ', $conditions);
         }
         if (isset($order) && is_array($order) && !empty($order)) {
-            $sql .= " ORDER BY ";
+            $sqo = '';
             foreach ($order as $key => $val) {
-                $sql .= "{$key} {$val}";
-                break;
+                $sqo .= $sqo == '' ? "{$key} {$val}" : ", {$key} {$val}";
             }
+            $sql .= " ORDER BY " . $sqo;
         }
         if (isset($limitArgs) && array_key_exists('limit', $limitArgs)) {
             if (array_key_exists('offset', $limitArgs)) {
@@ -185,6 +183,7 @@ abstract class Model_BaseModel {
         if ($forUpdate) {
             $sql .= " FOR UPDATE";
         }
+
         return array($sql, $values);
     }
 
@@ -193,37 +192,44 @@ abstract class Model_BaseModel {
      * @param array $params $params[][0] for column-name, $params[][1] for value, $params[][1] for condition
      * @return array Constructed Query condition
      */
-    protected static function constructQueryCondition($params = []) {
-        $condition = '';
-        $values = array();
-        foreach ($params as $v) {
-            if (empty($v[1])) {
-                continue;
+    protected static function constructConditions($params = []) {
+        $conditions = $values = [];
+        foreach ($params as $k => $v) {
+
+            if (is_array($v)) {
+                $conditions[] = $k . ' IN (' . implode(',', array_fill(0, count($v), '?')) . ')';
+                $values = array_merge($values, $v);
+            } else {
+
+                $field = explode(' ', trim($k));
+
+                if (count($field) > 1) {
+                    $operator = $field[1];
+                } else {
+                    $operator = '=';
+                }
+                switch ($operator) {
+                    case '=':
+                    case '<>':
+                    case '!=':
+                    case '>=':
+                    case '<=':
+                    case '>':
+                    case '<':
+                        $conditions[] = $field[0] . " $operator ?";
+                        break;
+                    case '!':
+                        $conditions[] .= $field[0] . " !$operator ?";
+                        break;
+                    case 'like':
+                        $conditions[] .= $field[0] . " $operator ?";
+                        $v = ("%" . $v . "%");
+                        break;
+                }
+                $values[] = $v;
             }
-            $condition .= $condition != '' ? 'AND ' : '';
-            $operator = isset($v[2]) ? $v[2] : '=';
-            $value = $v[1];
-            switch ($operator) {
-                case '=':
-                case '<>':
-                case '!=':
-                case '>=':
-                case '<=':
-                case '>':
-                case '<':
-                    $condition .= $v[0] . " $operator ?";
-                    break;
-                case 'like':
-                    $condition .= $v[0] . " $operator ?";
-                    $value = ("%" . $value . "%");
-                    break;
-            }
-            $values[] = $value;
         }
-        if (empty($condition)) {
-            $condition = '1';
-        }
-        return array($condition, $values);
+        return array($conditions, $values);
     }
 
     /**
@@ -468,7 +474,7 @@ abstract class Model_BaseModel {
     protected static function getAllKey() {
         return Config_Config::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
     }
-    
+
     /**
      * To get all the data from Memcache.
      * If it's not registered to Memcache, it is set to Memcache to retrieve from the database.
