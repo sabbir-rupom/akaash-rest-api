@@ -80,8 +80,8 @@ Data Selection
 Following functions will help you executing **SELECT** SQL query
 
 * find()
-    1.  find function accepts 3 parameter
-        + (the same rules apply to sub-sub-lists, etcetera)
+    +  find function accepts 3 parameter
+        1. (the same rules apply to sub-sub-lists, etcetera)
 
     
  
