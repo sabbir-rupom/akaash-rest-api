@@ -79,12 +79,11 @@ Data Selection
 ==============
 Following functions will help you executing **SELECT** SQL query
 
-- Indent sub-lists by the same amount as the item text;
-    this must be 4-7 spaces more than the symbol or number.
+- find()
 
-    1.  if enumerated, always start them with 1.
+    *  find function accepts 3 parameter
 
-        + (the same rules apply to sub-sub-lists, etcetera)
+        1. (the same rules apply to sub-sub-lists, etcetera)
 
     
  
