@@ -81,6 +81,7 @@ Following functions will help you executing **SELECT** SQL query
 
 - **find()**
     - find function accepts 3 parameter
+        1. Table row ID, which is the primary key
  
 - find()
 
