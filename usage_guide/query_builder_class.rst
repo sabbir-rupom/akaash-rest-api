@@ -79,7 +79,7 @@ Data Selection
 ==============
 Following functions will help you executing **SELECT** SQL query
  
-- **find()**
+- find()
     - find function accepts 3 parameter
         1. Table row ID, which is the primary key
             - [*Note*] This function can only be used if the primary key of that table denoted as `id`
