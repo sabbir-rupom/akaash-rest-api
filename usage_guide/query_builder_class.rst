@@ -91,6 +91,19 @@ Following functions will help you executing **SELECT** SQL query
 
     2. Database connection object [ Instance of PDO (optional) ]
 
+    3. Set locking read status `::learn more:: <https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html>`_
+
+  - Returns table row as called class object::
+
+        class Model_User extends Model_BaseModel {
+            const TABLE_NAME='users';
+
+            public static function getUser($userId = 1) {
+                $pdo = Flight::pdo();
+                $userObj = self::find($userId, $pdo, FALSE);
+            }
+        }
+
 
     
  
