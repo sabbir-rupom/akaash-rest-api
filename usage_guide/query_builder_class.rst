@@ -81,13 +81,15 @@ Following functions will help you executing **SELECT** SQL query
 
 - **find()**
 
-  find function accepts upto three parameters
+  - find function accepts upto three parameters
 
-  1. Table row ID, which is the primary key
+    1. Table row ID, which is the primary key
 
-     [*Note*] This function can only be used if the primary key of that table denoted as `id`
+       [*Note*] This function can only be used if the primary key of that table denoted as `id`
 
-     function will throw database error if ID is not passed as argument
+       function will throw database error if ID is not passed as argument
+
+    2. Database connection object [ Instance of PDO (optional) ]
 
 
     
