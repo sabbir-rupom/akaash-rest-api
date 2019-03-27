@@ -90,6 +90,10 @@ Following functions will help you executing **SELECT** SQL query
     the text blocks above.  A sublist is a new list so requires a
     blank line above and below.
 
+    Losip tagor maro
+
+    1. Mairala
+
     
  
 - find()
