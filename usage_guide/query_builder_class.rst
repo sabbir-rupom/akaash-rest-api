@@ -216,15 +216,15 @@ Following functions will help you executing **SELECT** SQL query
 
 [ **Note** ] : 
 
-    To match the query condition, please set the condition array as follows:
+  To match the query condition, please set the condition array as follows:
    
-      - `array('id >=' 5)`
+    - `array('id >=' 5)`
 
-      - Following condition operations are accepted - `>`,`>=`, `<`, `<=`, `like`, `!=`, '<>'
+    - Following condition operations are accepted - `>`,`>=`, `<`, `<=`, `like`, `!=`, '<>'
+    
+    - To find result from array range simply add the array as condition value [ e.g  `array('id' => [1,2,3,4,5] )` ]
 
-      - To find result from array range simply add the array as condition value [ e.g  `array('id' => [1,2,3,4,5] )` ]
-
-      - Query condition for `OR` clause not implemented yet
+    - Query condition for `OR` clause not implemented yet
 
 
 
