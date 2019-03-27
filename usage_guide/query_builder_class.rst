@@ -79,7 +79,7 @@ Data Selection
 ==============
 Following functions will help you executing **SELECT** SQL query
 
--  find()
+*  find()
 
     1.  find function accepts 3 parameter
 
