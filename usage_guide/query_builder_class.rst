@@ -81,7 +81,9 @@ Following functions will help you executing **SELECT** SQL query
 
 - **find()**
 
-  - the function upto three parameters
+  - Find and returns one row [if found] after SQL execution 
+
+  - The function upto three parameters
 
     1. Table row ID, which is the primary key
 
@@ -106,7 +108,9 @@ Following functions will help you executing **SELECT** SQL query
 
 - **findBy()** 
 
-  - the function accepts upto three parameters
+  - Find and returns one row as result [if found] after SQL execution 
+
+  - The function accepts upto three parameters
     
     1. Array of conditions [key-value pair] for *WHERE* clause in SQL statement
 
@@ -129,7 +133,9 @@ Following functions will help you executing **SELECT** SQL query
 
 - **findAllBy()** 
 
-  - the function accepts about five parameters
+  - Find and returns multiple rows as result [if found] after SQL execution 
+
+  - The function accepts about five parameters
     
     1. Array of conditions [key-value pair] for *WHERE* clause in SQL statement
 
@@ -151,12 +157,36 @@ Following functions will help you executing **SELECT** SQL query
         class Model_User extends Model_BaseModel {
             const TABLE_NAME='users';
 
-            public static function getUser($userGender = 'male') {
+            public static function getUsers($userGender = 'male') {
                 $pdo = Flight::pdo();
                 $userObj = self::findAllBy([ 'gender' => $userGender ], [ 'id' => 'DESC' ], [ 'limit' => 5, 'offset' => 5 ], $pdo, FALSE);
             }
         }
 
+- **countBy()** 
+
+  - Counts the row of results after query execution
+
+  - the function accepts upto three parameters
+    
+    1. Array of conditions [key-value pair] for *WHERE* clause in SQL statement
+
+       [*Note*] if conditions are not passed in array function will return the 1st row of the table after SQL execution
+
+    2. Database connection object [ Instance of PDO (optional) ]
+
+    3. For faster query execution, counts all the rows in the table if set to boolean **TRUE** 
+
+  - Returns table row as called class object::
+
+        class Model_User extends Model_BaseModel {
+            const TABLE_NAME='users';
+
+            public static function countUsers($userGender = 'male') {
+                $pdo = Flight::pdo();
+                $userObj = self::countBy([ 'gender' => $userGender ], $pdo);
+            }
+        }
 
 
 
