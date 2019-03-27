@@ -81,7 +81,7 @@ Following functions will help you executing **SELECT** SQL query
 
 - **find()**
 
-  - find function accepts upto three parameters
+  - the function upto three parameters
 
     1. Table row ID, which is the primary key
 
@@ -104,32 +104,58 @@ Following functions will help you executing **SELECT** SQL query
             }
         }
 
+- **findBy()** 
 
+  - the function accepts upto three parameters
     
- 
-- find()
+    1. Array of conditions [key-value pair] for *WHERE* clause in SQL statement
 
-    - find function accepts 3 parameter
-        1. Table row ID, which is the primary key
-            - [*Note*] This function can only be used if the primary key of that table denoted as `id`
-            - function will throw database error if ID is not passed as argument
-        2. Database connection object [ Instance of PDO (optional) ]
-        3. Set locking read status `::learn more:: <https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html>`_
- * Returns table row as called class object::
-    
+       [*Note*] if conditions are not passed in array function will return the 1st row of the table after SQL execution
+
+    2. Database connection object [ Instance of PDO (optional) ]
+
+    3. Set locking read status `::learn more:: <https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html>`_
+
+  - Returns table row as called class object::
+
         class Model_User extends Model_BaseModel {
             const TABLE_NAME='users';
 
-            public static function getUser($userId = 1) {
+            public static function getUser($userEmail = 'x@gmail.com') {
                 $pdo = Flight::pdo();
-                $userObj = self::find($userId, $pdo, FALSE);
+                $userObj = self::findby([ 'email' => $userEmail ], $pdo, FALSE);
             }
         }
 
-        
+- **findAllBy()** 
+
+  - the function accepts about five parameters
     
+    1. Array of conditions [key-value pair] for *WHERE* clause in SQL statement
 
+       [*Note*] if conditions are not passed in array function will return the all rows inside the table after SQL execution
 
+    2. SQL ``ORDER BY`` column, expects an associative array whose value is Direction and key is Column
+    
+    3. Expects an array of two elements-
+       
+       * Query limit ``[ limit => 5 ]``
+       * Query offset ``[ offset => 10 ]`` ( after which table rows will be returned )
+    
+    4. Database connection object [ Instance of PDO (optional) ]
+
+    5. Set locking read status `::learn more:: <https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html>`_
+
+  - Returns table row as called class object::
+
+        class Model_User extends Model_BaseModel {
+            const TABLE_NAME='users';
+
+            public static function getUser($userGender = 'male') {
+                $pdo = Flight::pdo();
+                $userObj = self::findAllBy([ 'gender' => $userGender ], [ 'id' => 'DESC' ], [ 'limit' => 5, 'offset' => 5 ], $pdo, FALSE);
+            }
+        }
 
 
 
