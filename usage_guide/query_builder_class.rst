@@ -80,7 +80,6 @@ Data Selection
 Following functions will help you executing **SELECT** SQL query
 
 - if enumerated, always start them with 1.
-
  + (the same rules apply to sub-sub-lists, etcetera)
  
 - find()
