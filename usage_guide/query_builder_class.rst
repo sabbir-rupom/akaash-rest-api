@@ -79,8 +79,8 @@ Data Selection
 ==============
 Following functions will help you executing **SELECT** SQL query
 
-- **TABLE_NAME**
-    - declared as empty constant
+- **find()**
+    - find function accepts 3 parameter
  
 - find()
 
