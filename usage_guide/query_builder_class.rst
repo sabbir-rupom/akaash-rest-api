@@ -79,9 +79,16 @@ Data Selection
 ==============
 Following functions will help you executing **SELECT** SQL query
 
-* find()
-    +  find function accepts 3 parameter
-        1. (the same rules apply to sub-sub-lists, etcetera)
+- This is the first paragraph in the second item in the list.
+
+  This is the second paragraph in the second item in the list.
+  The blank line above this paragraph is required.  The left edge
+  of this paragraph lines up with the paragraph above, both
+  indented relative to the bullet.
+
+  - This is a sublist.  The bullet lines up with the left edge of
+    the text blocks above.  A sublist is a new list so requires a
+    blank line above and below.
 
     
  
