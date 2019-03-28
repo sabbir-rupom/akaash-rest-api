@@ -228,7 +228,7 @@ This project does not include much features, but I have tried to add some to mak
 * **System Library** classes: ApiException, FileCacheClient, JwtToken, MemcachedServer, Security
 * Application constant class
 * **Result-Code** class for supporting exception handle with necessary status codes
-* **Console** testing 
+* **Console** testing [ ::view doc:: ](usage_guide/test_console.rst)
 * Others [ ::view doc:: ](usage_guide/other_features.rst)
 
 ## Running the tests
