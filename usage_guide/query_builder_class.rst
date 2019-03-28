@@ -42,11 +42,7 @@ The members constants and variables are as follows:
     - sample code example::
 
         abstract class Model_BaseModel {   
-            private static $columnsOnDB = null;
-
-            public static function printColumns() {
-                print_r(static::$columnsOnDB);
-            }   
+            private static $columnsOnDB = null;  
         }
 
         class Model_User extends Model_BaseModel {
@@ -69,6 +65,10 @@ The members constants and variables are as follows:
                     'json' => false
                 )
             );
+
+            public static function printColumns() {
+                print_r(static::$columnsOnDB);
+            } 
         }
 
         echo Model_User::printColumns();
@@ -220,12 +220,57 @@ To match the query condition, please set the condition array as follows:
    
     - ``array('id >=' => 5)``
 
-    - Following condition operations are accepted - ``>``,``>=``, ``<``, ``<=``, ``like``, ``!=``, ``<>``
+    - Following condition operations are accepted - ``>``, ``>=``, ``<``, ``<=``, ``like``, ``!=``, ``<>``
     
     - To find result from array range simply add the array as condition value [ e.g  ``array('id' => [1,2,3,4,5] )`` ]
 
     - Query condition for ``OR`` clause not implemented yet
 
+
+- **create()** 
+
+  - Inserts row in the associated table
+
+  - Can be invoked by creating an instance of *Table Model Class*
+
+  - Table columns must be defined under **columnsOnDB** in *Table Model Class*
+
+  - Can pass database connection object [ Instance of PDO ] as argument (optional) 
+
+  - Returns inserted row as object [column,value pair] ::
+
+        class Model_User extends Model_BaseModel {
+            const TABLE_NAME='users';
+
+            const HAS_CREATED_AT = TRUE;
+            const HAS_UPDATED_AT = TRUE;
+
+            protected static $columnsOnDB = array(
+                'id' => array(
+                    'type' => 'int',
+                    'json' => true
+                ),
+                'email' => array(
+                    'type' => 'string',
+                    'json' => true
+                ),
+                'created_at' => array(
+                    'type' => 'string',
+                    'json' => false
+                ),
+                'updated_at' => array(
+                    'type' => 'string',
+                    'json' => false
+                )
+            );
+
+        }
+
+        $userObj = new Model_User();
+        $userObj->email = 'x@gmail.com';
+        $userObj->create();
+
+        print_r($userObj); // inserted row as result object
 
 
 
