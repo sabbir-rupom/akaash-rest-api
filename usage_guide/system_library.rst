@@ -6,8 +6,8 @@ System library classes reside under ``app/system`` directory.
 
 Library classes are as follows:
 
-Exception Library
-=================
+Exception Class
+===============
 
 ApiException class extends the **PHP Exception** class thus handles the exceptions inside API source code. Can be invoked as ``System_ApiException()``
 
@@ -34,8 +34,10 @@ Exception handling usage example::
     }
 
 
+JwtToken Class
+===============
 
-    
+This class is used for JWT token verfication [ if enabled from configuration ] by extending the `JWT library <https://github.com/firebase/php-jwt>`_
 
 
 
