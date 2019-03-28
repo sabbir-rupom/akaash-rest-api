@@ -107,6 +107,33 @@ abstract class Model_BaseModel {
         $objs = $stmt->fetchAll();
         return $objs;
     }
+    
+    
+    /**
+     * Based on specified criteria, returns specific items of the records from the database.
+     * @param array $columns Column names are values which will be returned in result only 
+     * @param array $params Column name the key, associative array whose value is the value to use for the search.
+     * @param string $order SQL ORDER BY column, associative array whose value is Direction and key is Column
+     * @param array $limitArgs SQL LIMIT value
+     * @param PDO $pdo Database connection object
+     * @param boolean $forUpdate Whether to update the query result
+     * @return PDO PDO fetch class object
+     */
+    public static function findColumnSpecificData($columns, $params, $order = null, $limitArgs = null, $pdo = null) {
+        if ($pdo == null) {
+            $pdo = Flight::pdo();
+        }
+
+        list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);
+
+        $sql = "SELECT " . implode(',', $columns) . " FROM " . static::TABLE_NAME . $conditionSql;
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute($values);
+        $objs = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        return $objs;
+    }
 
     /**
      * Returns the number of records matching the specified condition
@@ -352,32 +379,6 @@ abstract class Model_BaseModel {
             self::$columnsOnDB = array_keys($stmt->fetch(PDO::FETCH_ASSOC));
         }
         return self::$columnsOnDB;
-    }
-
-    /**
-     * Based on specified criteria, returns specific items of the records from the database.
-     * @param array $columns Column names are values which will be returned in result only 
-     * @param array $params Column name the key, associative array whose value is the value to use for the search.
-     * @param string $order SQL ORDER BY column, associative array whose value is Direction and key is Column
-     * @param array $limitArgs SQL LIMIT value
-     * @param PDO $pdo Database connection object
-     * @param boolean $forUpdate Whether to update the query result
-     * @return PDO PDO fetch class object
-     */
-    public static function getColumnSpecificData($columns, $params, $order = null, $limitArgs = null, $pdo = null) {
-        if ($pdo == null) {
-            $pdo = Flight::pdo();
-        }
-
-        list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);
-
-        $sql = "SELECT " . implode(',', $columns) . " FROM " . static::TABLE_NAME . $conditionSql;
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
-        $stmt->execute($values);
-        $objs = $stmt->fetchAll(PDO::FETCH_CLASS, get_called_class());
-        return $objs;
     }
 
     /**
