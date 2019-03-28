@@ -227,7 +227,7 @@ This project does not include much features, but I have tried to add some to mak
 * **Common Helper** classes: Array, Date, Log, Utils(Utility)
 * **System Library** classes: ApiException, FileCacheClient, JwtToken, MemcachedServer, Security
 * Application constant class
-* **Result-Code** class for supporting exception handle with necessary status codes
+* **Result-Code** class for supporting exception handle with necessary status codes [ ::view doc:: ](usage_guide/result_code.rst)
 * **Console** testing [ ::view doc:: ](usage_guide/test_console.rst)
 * Others [ ::view doc:: ](usage_guide/other_features.rst)
 
