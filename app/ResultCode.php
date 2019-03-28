@@ -60,7 +60,7 @@ class ResultCode {
         self::INVALID_JSON => array(
             'title' => 'INVALID JSON',
             'msg' => 'Invalid json found',
-            'http_status' => 404
+            'http_status' => 400
         ),
         self::SESSION_ERROR => array(
             'title' => 'SESSION ERROR',
