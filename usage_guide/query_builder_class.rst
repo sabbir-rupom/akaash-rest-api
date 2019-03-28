@@ -218,7 +218,7 @@ Following functions will help you executing **SELECT** SQL query
 
 To match the query condition, please set the condition array as follows:
    
-    - `array('id >=' 5)`
+    - `array('id >=' => 5)`
 
     - Following condition operations are accepted - `>`,`>=`, `<`, `<=`, `like`, `!=`, '<>'
     
