@@ -1,5 +1,6 @@
+#############
 Result Code
-===========
+#############
 
 The sole purpose of *ResultCode Class* is handling response of different types of error and exceptions with appropriate **Result Code** and **HTTP Status Code** during an API execution.
 
