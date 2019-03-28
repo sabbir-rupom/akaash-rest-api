@@ -163,30 +163,40 @@ Following functions will help you executing **SELECT** SQL query
             }
         }
 
-- **countBy()** 
+- **findColumnSpecificData()** 
 
-  - Counts the row of results after query execution
+  - Find and returns multiple rows with specific column values as result [if found] after SQL execution 
 
-  - the function accepts upto three parameters
+  - The function accepts about five parameters
+
+    1. Array of columns whose value will be returned from the table
     
-    1. Array of conditions [key-value pair] for *WHERE* clause in SQL statement
+    2. Array of conditions [key-value pair] for *WHERE* clause in SQL statement
 
-       [*Note*] if conditions are not passed in array function will return the 1st row of the table after SQL execution
+       [*Note*] if conditions are not passed in array function will return the all rows inside the table after SQL execution
 
-    2. Database connection object [ Instance of PDO (optional) ]
-
-    3. For faster query execution, counts all the rows in the table if set to boolean **TRUE** 
+    3. SQL ``ORDER BY`` column, expects an associative array whose value is Direction and key is Column
+    
+    4. Expects an array of two elements-
+       
+       * Query limit ``[ limit => 5 ]``
+       * Query offset ``[ offset => 10 ]`` ( after which table rows will be returned )
+    
+    5. Database connection object [ Instance of PDO (optional) ]
 
   - Returns table row as called class object::
 
         class Model_User extends Model_BaseModel {
             const TABLE_NAME='users';
 
-            public static function countUsers($userGender = 'male') {
+            public static function getUsers($userGender) {
                 $pdo = Flight::pdo();
-                $userObj = self::countBy([ 'gender' => $userGender ], $pdo);
+                $userObj = self::findColumnSpecificData([ 'id', 'email', 'first_name', 'last_name' ], [ 'gender' => $userGender ], [ 'id' => 'DESC' ], [ 'limit' => 5, 'offset' => 5 ], $pdo);
+                return $userObj;
             }
         }
+
+        print_r(Model_User::getUsers('male'));
 
 
 - **countBy()** 
@@ -229,7 +239,7 @@ To match the query condition, please set the condition array as follows:
 
 - **create()** 
 
-  - Inserts row in the associated table
+  - Inserts a row in the associated table
 
   - Can be invoked by creating an instance of *Table Model Class*
 
@@ -270,9 +280,150 @@ To match the query condition, please set the condition array as follows:
         $userObj->email = 'x@gmail.com';
         $userObj->create();
 
-        print_r($userObj); // inserted row as result object
+        print_r($userObj); //  result object of inserted row
+
+- **update()** 
+
+  - Updates a row in the associated table
+
+  - Table columns must be defined under **columnsOnDB** in *Table Model Class*
+
+  - Can pass database connection object [ Instance of PDO ] as argument (optional) 
+
+  - Returns number of updated record ::
+
+        class Model_User extends Model_BaseModel {
+            const TABLE_NAME='users';
+
+            const HAS_UPDATED_AT = TRUE;
+
+            protected static $columnsOnDB = array(
+                'id' => array(
+                    'type' => 'int',
+                    'json' => true
+                ),
+                'email' => array(
+                    'type' => 'string',
+                    'json' => true
+                ),
+                'created_at' => array(
+                    'type' => 'string',
+                    'json' => false
+                ),
+                'updated_at' => array(
+                    'type' => 'string',
+                    'json' => false
+                )
+            );
+
+        }
+        
+        $userId = 1;
+        $userObj = self::find($userId);
+        $userObj->email = 'x@gmail.com';
+
+        if($userObj->update() > 0) {
+            echo 'User updated successfully!';
+        }
+
+- **delete()** 
+
+  - Deletes a row by table ``id`` in the associated table
+
+  - Can pass database connection object [ Instance of PDO ] as argument (optional) 
+
+  - Sample code ::
+
+        class Model_User extends Model_BaseModel {
+            const TABLE_NAME='users';
+
+        }
+        
+        $userId = 1;
+        $userObj = self::find($userId);
+
+        $userObj->delete();  // Deletes record of ID 1
+
+- **hasColumn()** 
+
+  - Check if a column is defined in *Model Table Class* as well as exist in database table or not
+  
+  - Column name must be passed [ string or array ] as argument ::
+
+        class Model_User extends Model_BaseModel {
+            const TABLE_NAME='users';
+
+            protected static $columnsOnDB = array(
+                'id' => array(
+                    'type' => 'int',
+                    'json' => true
+                ),
+                'email' => array(
+                    'type' => 'string',
+                    'json' => true
+                ),
+                'created_at' => array(
+                    'type' => 'string',
+                    'json' => false
+                ),
+                'updated_at' => array(
+                    'type' => 'string',
+                    'json' => false
+                )
+            );
+
+        }
+
+        echo Model_User::hasColumn('email'); // prints 1 if exists
+        echo Model_User::hasColumn('name'); //  prints nothing if not exists
+
+- **hasColumnDefined()** 
+
+  - Check if a column is defined in *Model Table Class* or not
+  
+  - Column name must be passed [ string or array ] as argument ::
+
+        echo Model_User::hasColumnDefined('email'); // prints 1 if exists, or prints nothing
+
+- **toJsonHash()**
+
+  - This function prepares selected results from query to proper data-array for json response
+
+  - The result array is filtered with the column definitions [``columnsOnDB``] in the *Model Table Class*
+
+  - Sample code example::
+
+        $userId = 1;
+        $userObj = Model_user::find($userId);
+
+        $result = $userObj->toJsonHash();  
+        print_r($result);  // results are filtered with proper data type values
 
 
+Other than this, some other functions are included:
 
+- **getCache()**
 
+  - Retrieves data from cache by cache-key passed as argument::
 
+        echo Model_user::getCache('user_id_1'); // get result if exist
+
+- **setCache()**
+
+  - Store data in cache by 
+
+  - The function accepts two parameters
+
+    1. Cache key, by which the data will be stored in cache
+
+    2. Value ::
+
+        $userId = 1;
+        $userObj = self::find($userId);
+        Model_user::setCache('user_id_1', $userObj);
+
+- **deleteCache()**
+
+  - Deletes data from cache by cache-key passed as argument::
+
+        Model_user::deleteCache('user_id_1');
