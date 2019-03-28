@@ -12,9 +12,7 @@ A specific result code with appropriate HTTP Status code brings one more step to
 Client application may choose which action need to be done after checking the HTTP Status code, and based on the result code in json response client can switch between multiple 
 action for different case of similar exceptions. 
 
-The API developer will decide which code will be defined for which type of exception, and add appropriate HTTP Status code and messages for error specification.
-
-::
+The API developer will decide which code will be defined for which type of exception, and add appropriate HTTP Status code and messages for error specification::
 
     const SESSION_ERROR = 3;
 
@@ -52,52 +50,52 @@ ResultCode class has following functions:
 
   - Accepts error code as argument and returns corresponding *Error Title* defined in the class::
 
-    class ResultCode {
-        const USER_NOT_FOUND = 6;
-        const CODE_MESSAGE = array(
-            self::USER_NOT_FOUND => array(
-                'title' => 'USER NOT FOUND',
-                'msg' => 'User not found from database',
-                'http_status' => 404
-            )
-        );
-        ....
-        ....
-    }
-    echo ResultCode::getTitle(ResultCode::USER_NOT_FOUND); // prints 'USER NOT FOUND'
+        class ResultCode {
+            const USER_NOT_FOUND = 6;
+            const CODE_MESSAGE = array(
+                self::USER_NOT_FOUND => array(
+                    'title' => 'USER NOT FOUND',
+                    'msg' => 'User not found from database',
+                    'http_status' => 404
+                )
+            );
+            ....
+            ....
+        }
+        echo ResultCode::getTitle(ResultCode::USER_NOT_FOUND); // prints 'USER NOT FOUND'
 
 - **getMessage()**
 
   - Accepts error code as argument and returns corresponding *Error Message* defined in the class::
 
-    class ResultCode {
-        const USER_NOT_FOUND = 6;
-        const CODE_MESSAGE = array(
-            self::USER_NOT_FOUND => array(
-                'title' => 'USER NOT FOUND',
-                'msg' => 'User not found in database',
-                'http_status' => 404
-            )
-        );
-        ....
-        ....
-    }
-    echo ResultCode::getTitle(ResultCode::USER_NOT_FOUND); // prints 'User not found in database'
+        class ResultCode {
+            const USER_NOT_FOUND = 6;
+            const CODE_MESSAGE = array(
+                self::USER_NOT_FOUND => array(
+                    'title' => 'USER NOT FOUND',
+                    'msg' => 'User not found in database',
+                    'http_status' => 404
+                )
+            );
+            ....
+            ....
+        }
+        echo ResultCode::getTitle(ResultCode::USER_NOT_FOUND); // prints 'User not found in database'
 
 - **getHTTPstatusCode()**
 
   - Accepts error code as argument and returns corresponding *HTTP Status Code* defined in the class::
 
-    class ResultCode {
-        const USER_NOT_FOUND = 6;
-        const CODE_MESSAGE = array(
-            self::USER_NOT_FOUND => array(
-                'title' => 'USER NOT FOUND',
-                'msg' => 'User not found in database',
-                'http_status' => 404
-            )
-        );
-        ....
-        ....
-    }
-    echo ResultCode::getHTTPstatusCode(ResultCode::USER_NOT_FOUND); // prints '404'
+        class ResultCode {
+            const USER_NOT_FOUND = 6;
+            const CODE_MESSAGE = array(
+                self::USER_NOT_FOUND => array(
+                    'title' => 'USER NOT FOUND',
+                    'msg' => 'User not found in database',
+                    'http_status' => 404
+                )
+            );
+            ....
+            ....
+        }
+        echo ResultCode::getHTTPstatusCode(ResultCode::USER_NOT_FOUND); // prints '404'
