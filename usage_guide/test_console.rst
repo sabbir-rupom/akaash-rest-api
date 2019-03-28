@@ -1,5 +1,5 @@
 #####################
-Rest-API Test Console
+REST-API Test Console
 #####################
 
 Can be accessed through the link `http://rest-api.test/console`_
