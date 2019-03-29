@@ -34,8 +34,8 @@ class System_JwtToken {
         }
 
         try {
-            $decoded = JWT::decode($token, $key, array('HS256'));
-            JWT::$leeway = 600; // $leeway in seconds
+            JWT::$leeway = 60; // $leeway in seconds
+            $decoded = JWT::decode($token, $key, Const_Application::JWT_ENCODE_ALGORITHMS);
         } catch (\Exception $e) { // Also tried JwtException
             $result['error'] = 1;
             return $result;

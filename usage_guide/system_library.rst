@@ -39,6 +39,38 @@ JwtToken Class
 
 This class is used for JWT token verfication [ if enabled from configuration ] by extending the `JWT library <https://github.com/firebase/php-jwt>`_
 
+To change JWT verification algorithm, simply modify the constant array value ``JWT_ENCODE_ALGORITHMS`` 
+
+The library class has following functions:
+
+- **verifyToken()**
+
+  - Verifies the JWT token by passing the following arguments:
+
+    - Token value [ received from HTTP request header ] 
+
+    - Secret key [ stored in server ]
+
+    - Function returns array with error code and payload-data [ if found inside the token ]
+  
+  :: 
+
+        System_JwtToken::verifyToken($requestToken, $secretKey);
+
+- **createToken()**
+
+  - Creates JWT token with payload data [ if passed as argument ] and secret key [ stored in server ]
+
+  ::
+
+        System_JwtToken::createToken($payload = [], $secretKey);
+
+JWT token verification is an essential feature for client authentication, so that unknown / improper client won't able to receive data through API request 
+
+In my test console, I have used ``HS256`` encode algorithm to create JWT token for API request. 
+
+
+
 
 
 

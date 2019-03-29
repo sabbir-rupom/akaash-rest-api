@@ -1,17 +1,18 @@
-# REST-API (flight-PHP)
-A RESTful API template based on flight-PHP framework 
-
-### What is Flight?
-
-Flight is a fast, simple, extensible framework for PHP. Flight enables you to quickly and easily build RESTful web applications. [Learn more about Flight-PHP](http://flightphp.com/)
+# REST-API PHP-Template
+A RESTful API template driven by flight-PHP framework 
 
 **NOTE:** This template is based on my recent API development experiences. I will not boast that its a very good template, 
 this project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
 along with some help with third party PHP libraries so that young developers may find this project helpful to their Rest-API development and learning curve. 
 
+### What is flight-PHP?
+
+Flight is a fast, simple, extensible framework for PHP. Flight enables you to quickly and easily build RESTful web applications. 
+[Learn more about Flight-PHP](http://flightphp.com/)
+
 ## Getting Started
 
-This project includes both file cache system and memcache system, along with JWT authentication process.
+This project includes both file cache system and memcache system, along with simple JWT authentication process.
 
 For testing purposes, I have added some database sample in `/resource` folder; 
 and added some custom API along with a `/console` webform to communicate those API.
@@ -29,7 +30,7 @@ pdo memcache/memcached pdo_mysql gd gmp
 
 **For windows (version 10)**
 
-if you have xampp installed, steps are as follows
+if you have xampp installed, steps are as follows:
 
 * Clone the repository or download zip then extract in a folder [e.g rest-api] under htdocs 
 * Use [Composer](https://getcomposer.org/) to install or update dependencies and autoload required class directories. Make sure `composer.json` file is always present in root directory
@@ -47,11 +48,11 @@ $ composer update
 	</Directory>
 </VirtualHost>
 ```
-* Add your vhost information and point to the localhost IP. Go to `Windows\System32\drivers\etc` and open file `hosts` with admin permission. Then append a similar line as follows:
+* Add your virtual-host information and point to the localhost IP. Go to `Windows\System32\drivers\etc` and open file `hosts` with admin permission. Then append a similar line as follows:
 ```
 127.0.0.1	rest-api.test
 ```
-* Restart your apache server [Note: *change your php.ini file if any module is missing. Check the apache logs if you get any unknown error*]
+* Restart your apache server [Note: *update your php.ini file if any module is missing. Check the apache logs if you get any unknown error*]
 * [**NOTE**] If you are having trouble installing memcache in your system, simply follow [ this guide ](https://commaster.net/content/installing-memcached-windows) 
   * If your windows is 64bit and PHP version 7.2, use the ts version of `php-7.2.x_memcache.dll` as module extension
   * Use the binary version of `memcached-win64-1.4.*.zip` to install memcache server. Follow the instructions accordingly.
@@ -74,9 +75,22 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 ```
 * Go to the `app/config` directory inside your project folder. Rename the existing `example.*` file to `config_app.ini`. 
-* Open your `config_app.ini` file and **change the configuration** parameters suitable to your machine environment.
+* Open your `config_app.ini` file and **change the configuration** parameters suitable to your host environment.
 
 That's it. You are ready to develop and test your API server. 
+
+### Why use this?
+
+RESTful APIs used in distributed client/server interaction, like mobile application to server communication. If the REST structure in server is light
+and robust, it can generate response fast and authentic client can retrieve the desired data quickly and process accordingly. And user always love to use those application 
+which can communicate with server and show respective data without delay. I have tried my best to implement as much essential feature as possible without making
+the overall structure *complex* to understand. 
+
+And this template is for those developers, who loves PHP. And a microframework is always faster than normal MVC framework like laravel, codeigniter etc.
+
+You can follow my presentation slide on '[RESTApi Design & Develop](https://www.slideshare.net/rpm_ruoma/restapi-design-develop)'. 
+I have tried to implement many features in this project mentioned in my slide tutorial, and I will continue working on this more ... 
+
 
 ## Skeleton Architecture
 
@@ -111,18 +125,6 @@ Application system classes are initialized in `app/system` directory. These clas
 Server constant class definitions in `app/const` directory 
 
 The *ResultCode* class is defined to modify messages from exception class with appropriate result-code and http-status-code for clients
-
-### Why use this?
-
-REST or RESTful APIs used in distributed client/server interaction, like mobile application to server communication. If the REST structure in server is light
-and robust, it can generate response fast and authentic client can retrieve the desired data quickly and process accordingly. And user always love to use those server 
-dependant application which can show respective data without delay. I have tried my best to implement as much essential feature as possible without making
-the overall structure *complex* to understand. 
-
-And this template is for those developers, who loves PHP. And a microframework is always faster than normal MVC framework like laravel, codeigniter etc.
-
-You can follow my presentation slide on '[RESTApi Design & Develop](https://www.slideshare.net/rpm_ruoma/restapi-design-develop)'. 
-I have tried to implement many features in this project mentioned in my slide tutorial, and I will continue working on this more ... 
 
 ## Development Guide
 

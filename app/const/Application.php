@@ -57,5 +57,10 @@ class Const_Application {
      */
     const MOBILE_IMAGE_WIDTH = 256;
     const MOBILE_IMAGE_HEIGHT = 256;
+    
+    /*
+     * Allowed encoded algorithms for JWT
+     */
+    const JWT_ENCODE_ALGORITHMS = [ 'HS256', 'HS512' ];
 
 }
