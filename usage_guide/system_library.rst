@@ -69,8 +69,30 @@ JWT token verification is an essential feature for client authentication, so tha
 
 In my test console, I have used ``HS256`` encode algorithm to create JWT token for API request. 
 
+FileCacheClient Class
+=====================
 
+System class FileCacheClient inherits the library **PhpFileCache**, a library class for caching data in local file in server.
 
+The local cache path is provided to the class constructor allowing the access of file-cache properties of the library.
+
+By default, cache-expiration time is set to one hour.
+
+The member functions are as follows:
+
+- **get()**
+
+  - Retrieves value from cache by key name, passed as argument ::
+
+    $cacheObj = new System_FileCacheClient(Config_Config::getInstance()->getLocalCachePath());
+    echo $cacheObj->get('key'); // prints 'value' stored with 'key' name if exist in filecache
+
+- **put()**
+
+  - Replace stored key-value only when it's time expires::
+
+    $cacheObj = new System_FileCacheClient(Config_Config::getInstance()->getLocalCachePath());
+    $cacheObj->put('key', 'value'); // stores 'value' against 'key' name if not exist or expires in filecache
 
 
 
