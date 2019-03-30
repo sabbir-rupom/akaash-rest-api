@@ -118,8 +118,8 @@ The *helper* classes are defined in `app/common` directory. Available helper cla
 
 Application system classes are initialized in `app/system` directory. These classes are:
 * ApiException : API Exception class extends the default PHP *Exception Class* for common & user-defined exception messages for REST-APi
-* FileCacheClient : File cache class extending PhpFileCache library package [source link](https://github.com/Wruczek/PHP-File-Cache)
-* JwtToken : Implementing JWT token features from extending JWT library package [source link](https://jwt.io/)
+* FileCacheClient : File cache class extending PhpFileCache library package ( [source link](https://github.com/Wruczek/PHP-File-Cache) )
+* JwtToken : Implementing JWT token features from extending JWT library package ( [source link](https://jwt.io/) )
 * MemcachedServer : Memcache implementation class
 * Security : Security class consists of some common sanitization function for input handling from xss-attack
 
@@ -272,6 +272,7 @@ Following third party libraries are used in Application system
 ## Author
 
 * **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
+
 
 
 
