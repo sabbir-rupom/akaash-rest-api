@@ -89,10 +89,47 @@ The member functions are as follows:
 
 - **put()**
 
-  - Replace stored key-value only when it's time expires::
+  - Replace stored key-value only when it's expiry time is over::
 
     $cacheObj = new System_FileCacheClient(Config_Config::getInstance()->getLocalCachePath());
     $cacheObj->put('key', 'value'); // stores 'value' against 'key' name if not exist or expires in filecache
 
+- **set()**
+
+  - Store or replace value with provided key name::
+
+    $cacheObj = new System_FileCacheClient(Config_Config::getInstance()->getLocalCachePath());
+    $cacheObj->set('key', 'value', 1800); // sets 'value' under 'key' name with expiry time 1800 seconds
+
+
+- **delete()**
+
+  - Deletes value from cache by key name::
+
+    $cacheObj = new System_FileCacheClient(Config_Config::getInstance()->getLocalCachePath());
+    $cacheObj->delete('key'); // deletes 'key' along with 'value'
+ 
+- **flush()**
+
+  - Deletes all cache data from file::
+
+    $cacheObj = new System_FileCacheClient(Config_Config::getInstance()->getLocalCachePath());
+    $cacheObj->flush(); // deletes every cache data
+
+
+MemcachedServer Class
+=====================
+
+MemcachedServer is the library class for caching data in memcache.
+
+The REST application's cache system will be connected to memcache server if ``LOCAL_CACHE_FLAG`` is disabled from ``config``.
+
+Function definitions are same as above [ *FileCacheClient* ]
+
+
+Security Class
+=====================
+
+[[ Will be discussed soon ]]
 
 
