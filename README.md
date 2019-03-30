@@ -247,17 +247,20 @@ this REST-API template, it will show the following results as success:
 ```json
 {
   "result_code": 0,
-  "time": "2019-03-14 09:55:52",
+  "time": "2019-03-31 00:10:20",
   "data": {
     "DB": "Database to user table connection is functional",
     "JWT": "JWT verification system is functional",
     "Log": "System application log is functional",
-    "Cache": "Cache system is functional",
-    "testImagUrl": "http://flight-api-v1.sol/uploads/profile_images/profiletest_1552535752.png",
-    "Upload": "File upload system is functional"
+    "Cache": {
+      "filecache": "Local filecache system is functional",
+      "memcache": "Memcache system is functional"
+    },
+    "Upload": "File upload system is functional",
+    "TestImagUrl": "http://flight-api-v1.test/uploads/profile_images/profiletest_1553974673.png"
   },
   "error": [],
-  "execution_time": 0.05903311347961426
+  "execution_time": 0.03506016731262207
 }
 ```
 * To populate your console page with you own API, edit `api-list.json` page with appropriate API information
@@ -272,6 +275,7 @@ Following third party libraries are used in Application system
 ## Author
 
 * **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
+
 
 
 

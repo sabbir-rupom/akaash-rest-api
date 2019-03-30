@@ -34,7 +34,6 @@ if (!file_exists(CONFIG_DIR . "/config_app.ini")) {
 
 Flight::set('app_config', parse_ini_file(CONFIG_DIR . "/config_app.ini"));
 
-
 /* 
  * Register the flight server with app configuration
  */
@@ -54,10 +53,12 @@ if(empty($configArray['ENV'])) {
 /*
  * Set server timezone acording to Configuration
  */
-if(!empty($configArray['DB_TIMEZONE']) 
+if(!empty($configArray['SERVER_TIMEZONE']) 
         && !empty($configArray['DB_SET_TIMEZONE'])
         && $configArray['DB_SET_TIMEZONE'] == 1) {
-    if(!date_default_timezone_set($configArray['DB_TIMEZONE'])) {
+    
+    
+    if(!date_default_timezone_set($configArray['SERVER_TIMEZONE'])) {
         /*
          * Set error condition if server timezone is set wrongly
          */
@@ -71,3 +72,9 @@ require_once CONFIG_DIR . '/db.php';
 
 //load basic routes
 require_once APP_DIR . '/route/route.php';
+
+
+
+
+
+
