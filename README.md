@@ -1,8 +1,8 @@
 # REST-API PHP-Template
 A RESTful API template driven by flight-PHP framework 
 
-**NOTE:** This template is based on my recent API development experiences. I will not boast that its a very good template, 
-this project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
+**NOTE:** This template is based on my recent API development experiences. I will not boast that its a very good template. 
+This project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
 along with some help with third party PHP libraries so that young developers may find this project helpful to their Rest-API development and learning curve. 
 
 ### What is flight-PHP?
@@ -14,8 +14,9 @@ Flight is a fast, simple, extensible framework for PHP. Flight enables you to qu
 
 This project includes both file cache system and memcache system, along with simple JWT authentication process.
 
-For testing purposes, I have added a database sample with some tables in `/resource` folder; 
-and added some custom API along with a `/console` webform to communicate those API.
+For testing purposes, I have added a database sample with some tables in `/resource` folder. 
+
+I have also added some custom API along with a `/console` form as webpage to communicate those API.
 
 ### System Requirements
 
@@ -33,7 +34,7 @@ pdo memcache/memcached pdo_mysql gd gmp
 if you have xampp installed, steps are as follows:
 
 * Clone the repository or download zip then extract in a folder [e.g rest-api] under htdocs 
-* Use [Composer](https://getcomposer.org/) to install or update dependencies and autoload required class directories. Make sure `composer.json` file is always present in root directory
+* Use [Composer](https://getcomposer.org/) to install or update library dependencies. Make sure `composer.json` file is always present in root directory
 ```bash
 $ composer update
 ```
@@ -67,7 +68,7 @@ If you are using fresh ubuntu server, you may follow *My Project installation Gu
 
 **Web Server Configuration**
 
-* For *Apache*, edit your `.htaccess` file with the following:
+* For *Apache*, add or edit `.htaccess` file in your host root directory with the following:
 ```
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -271,6 +272,8 @@ Following third party libraries are used in Application system
 ## Author
 
 * **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
+
+
 
 
 
