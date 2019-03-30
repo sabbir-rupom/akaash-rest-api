@@ -265,15 +265,13 @@ class Config_Config {
         return $this->_config["LOG_FILE_PATH"];
     }
 
-    protected $_memcachedServerInstance = null;
-
     /**
      * Load Memcache configuration
      */
     public function getMemcachedServer() {
-        // If it exists, return it as is.
-        if (!is_null($this->_memcachedServerInstance)) {
-            return $this->_memcachedServerInstance;
+        // If it exists, return as it is
+        if (!is_null(System_MemcachedServer::$memcachedServerInstance)) {
+            return System_MemcachedServer::$memcachedServerInstance;
         }
 
         $memcachedServerDto = new System_MemcachedServer();
@@ -283,8 +281,8 @@ class Config_Config {
         if (isset($this->_config['MEMCACHED_PORT'])) {
             $memcachedServerDto->port = $this->_config['MEMCACHED_PORT'];
         }
-        $this->_memcachedServerInstance = $memcachedServerDto;
-        return $this->_memcachedServerInstance;
+        System_MemcachedServer::$memcachedServerInstance = $memcachedServerDto;
+        return System_MemcachedServer::$memcachedServerInstance;
     }
 
     /**
@@ -323,6 +321,9 @@ class Config_Config {
     }
 
 }
+
+
+
 
 
 

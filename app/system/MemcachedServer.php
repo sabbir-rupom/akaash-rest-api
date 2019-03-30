@@ -23,11 +23,13 @@ class System_MemcachedServer {
 
     private $connection;
     
+    public static $memcachedServerInstance = NULL;
+    
     function __construct() {
         $this->connection = new Memcache();
     }
     
-    public function _getRawConnection() {
+    public function getConnection() {
         return $this->connection;
     }
 
@@ -70,3 +72,7 @@ class System_MemcachedServer {
     }
 
 }
+
+
+
+

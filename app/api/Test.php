@@ -97,14 +97,20 @@ class Test extends BaseClass {
          * Memcache system test case
          */
         $key = 'app_test';
-        $cache = Config_Config::getMemcachedClient();
-        /*
-         * clear all existing cache data
-         */
-        $cache->flush();
-        $cache->set($key, 'Checking Data from Memcache', MEMCACHE_COMPRESSED, 120);  // set sample cache data
 
-        $message2 = !empty($cache->get($key)) ? 'Memcache system is functional' : 'Memcache system is not functional. Please check memcache settings.';
+        if (!extension_loaded('memcache')) {
+            $message2 = 'Memcache module is not installed';
+        } else {
+
+            $cache = Config_Config::getMemcachedClient();
+            /*
+             * clear all existing cache data
+             */
+            $cache->flush();
+            $cache->set($key, 'Checking Data from Memcache', MEMCACHE_COMPRESSED, 120);  // set sample cache data
+
+            $message2 = !empty($cache->get($key)) ? 'Memcache system is functional' : 'Memcache system is not functional. Please check memcache settings.';
+        }
         $responseArray['Cache'] = [
             'filecache' => $message1,
             'memcache' => $message2
@@ -138,3 +144,5 @@ class Test extends BaseClass {
     }
 
 }
+
+
