@@ -87,7 +87,7 @@ and robust, it can generate response fast and authentic client can retrieve the 
 which can communicate with server and show respective data without delay. I have tried my best to implement as much essential feature as possible without making
 the overall structure *complex* to understand. 
 
-And this template is for those developers, who loves PHP. And a microframework is always faster than normal MVC framework like laravel, codeigniter etc.
+And this template is for those developers, who loves to code in PHP. And a microframework is always faster than normal MVC framework like laravel, codeigniter etc.
 
 You can follow my presentation slide on '[RESTApi Design & Develop](https://www.slideshare.net/rpm_ruoma/restapi-design-develop)'. 
 I have tried to implement many features in this project mentioned in my slide tutorial, and I will continue working on this more ... 
@@ -272,6 +272,7 @@ Following third party libraries are used in Application system
 ## Author
 
 * **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
+
 
 
 
