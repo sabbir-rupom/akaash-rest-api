@@ -215,7 +215,7 @@ Try to add separate model classes for each tables in your database.
 Table Column Definitions will help you organize your table data with desired data-type in JSON response as well as handles data insertion in table through the base model functions
 
 * Check the existing API classes for further study
-* If you get any error like `"Class '' not found"` during development, you may need to run the `composer update` command from root directory (*if any new class files not loaded*)
+<!-- If you get any error like `"Class '' not found"` during development, you may need to run the `composer update` command from root directory (*if any new class files not loaded*) -->
 
 ## Features
 
@@ -272,6 +272,7 @@ Following third party libraries are used in Application system
 ## Author
 
 * **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
+
 
 
 
