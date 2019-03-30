@@ -244,7 +244,7 @@ you may need change the *Base URL* path in the form / console.js - whatever is s
 * To check your system is fully cope with the project or not, simply goto the `Test API` from Sidebar, click the underlining anchor-link, then click **Submit** button 
 from the right form section. The results and header parameters will be available in Response/ Header tabs under the form page. If your server is fully coped with 
 this REST-API template, it will show the following results as success:
-```json
+```javascript
 {
   "result_code": 0,
   "time": "2019-03-31 00:10:20",
@@ -275,6 +275,7 @@ Following third party libraries are used in Application system
 ## Author
 
 * **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
+
 
 
 
