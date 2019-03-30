@@ -14,7 +14,7 @@ Flight is a fast, simple, extensible framework for PHP. Flight enables you to qu
 
 This project includes both file cache system and memcache system, along with simple JWT authentication process.
 
-For testing purposes, I have added some database sample in `/resource` folder; 
+For testing purposes, I have added a database sample with some tables in `/resource` folder; 
 and added some custom API along with a `/console` webform to communicate those API.
 
 ### System Requirements
@@ -271,6 +271,7 @@ Following third party libraries are used in Application system
 ## Author
 
 * **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
+
 
 
 
