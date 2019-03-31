@@ -1,5 +1,5 @@
 # REST-API PHP-Template
-A RESTful API template driven by flight-PHP framework 
+A RESTful API template in PHP driven by *flight microframework* 
 
 **NOTE:** This template is based on my recent API development experiences. I will not boast that its a very good template. 
 This project may have some serious design flaws- which I may need to overcome in recent days. But I have tried my best to include some basic functionalities 
@@ -209,6 +209,10 @@ This project does not include much features, but I have tried to add some to mak
 * **Console** testing [ ::view doc:: ](usage_guide/test_console.rst)
 
 * Others [ ::view doc:: ](usage_guide/other_features.rst)
+
+## Changelog and Updates
+
+You can find a list of all changes for each release/version in the [change log](https://github.com/sabbir-rupom/rest-api-flight-PHP/blob/master/changelog.rst) 
 
 ## Running the tests
 
