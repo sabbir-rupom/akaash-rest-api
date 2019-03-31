@@ -1,4 +1,4 @@
-# REST-API PHP-Template
+# REST-API PHP Template
 A RESTful API template in PHP driven by *flight microframework* 
 
 **NOTE:** This template is based on my recent API development experiences. I will not boast that its a very good template. 
