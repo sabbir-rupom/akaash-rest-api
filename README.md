@@ -92,41 +92,6 @@ And this template is for those developers, who loves to code in PHP. And a micro
 You can follow my presentation slide on '[RESTApi Design & Develop](https://www.slideshare.net/rpm_ruoma/restapi-design-develop)'. 
 I have tried to implement many features in this project mentioned in my slide tutorial, and I will continue working on this more ... 
 
-
-## Skeleton Architecture
-
-The Rest-API project's skeleton is driven by the *Flight microframework*
-
-All necessary routing is done in `app/route/route.php` and pointed to `app/api/Controller.php`
-
-The *Controller* class receive the request method and search corresponding api Class inside the `app/api/` directory.
-
-The called api path is camelized [*The 1st letter of the string and letter/s next to underscore `_` / Hypen `-` is camelized and underscore / hypen is removed*] 
-before searching the *API Class*
-
-The database query related functions been defined inside the `app/model` directory. 
-All the DB Table model has to be extended with *Base Model Class* to inherit some basic query builder functions. 
-
-The *Config* Class in `app/config` directory handles most of the major server configurations.
-
-For MySQL Database connectivity `PDO Driver` is used. If you are not familiar with PDO, please visit and learn the basics [ PDO Tutorial ](https://phpdelusions.net/pdo) 
- 
-The *helper* classes are defined in `app/common` directory. Available helper classes are:
-* ArrayUtil : Custom class for various array manipulations 
-* DateUtil : Custom class for various date/time manipulations
-* Utils : Custom utility class for frequently used helper functions
-
-Application system classes are initialized in `app/system` directory. These classes are:
-* ApiException : API Exception class extends the default PHP *Exception Class* for common & user-defined exception messages for REST-APi
-* FileCacheClient : File cache class extending PhpFileCache library package ( [source link](https://github.com/Wruczek/PHP-File-Cache) )
-* JwtToken : Implementing JWT token features from extending JWT library package ( [source link](https://jwt.io/) )
-* MemcachedServer : Memcache implementation class
-* Security : Security class consists of some common sanitization function for input handling from xss-attack
-
-Server constant class definitions in `app/const` directory 
-
-The *ResultCode* class is defined to modify messages from exception class with appropriate result-code and http-status-code for clients
-
 ## Development Guide
 
 * Write your api class controller in `app/api/` directory
@@ -222,16 +187,27 @@ Table Column Definitions will help you organize your table data with desired dat
 This project does not include much features, but I have tried to add some to make the application more user-friendly. Let's see these features:
 
 * Integration of **flight-microframework** - which is extremely light weight. To learn it's features, simply go to this [ ::learn flight-PHP:: ](http://flightphp.com/learn/)
+
 * A **Model-View-Controller** like system architecture [ ::view doc:: ](usage_guide/system_architecture.rst)
+
 * **Single Configuration** file with Config class [ ::view doc:: ](usage_guide/app_configuration.rst)
+
 * **Base Class** controller for Client Request validation [ ::view doc:: ](usage_guide/request_validation_class.rst)
+
 * MySQL database connection support with **PDO driver** . If you are not familiar with PDO, please visit and learn the basics [ ::pdo tutorial:: ](https://phpdelusions.net/pdo) 
+
 * **Abstract Base Model** class for database **Query Builder Function** support [ ::view doc:: ](usage_guide/query_builder_class.rst)
+
 * **Common Helper** classes: Array, Date, Log, Utils(Utility)
+
 * **System Library** classes: ApiException, FileCacheClient, JwtToken, MemcachedServer, Security [ ::view doc:: ](usage_guide/system_library.rst)
+
 * **Application Constant** class [ ::view doc:: ](usage_guide/application_constant.rst)
+
 * **Result-Code** class for supporting exception handle with necessary status codes [ ::view doc:: ](usage_guide/result_code.rst)
+
 * **Console** testing [ ::view doc:: ](usage_guide/test_console.rst)
+
 * Others [ ::view doc:: ](usage_guide/other_features.rst)
 
 ## Running the tests
