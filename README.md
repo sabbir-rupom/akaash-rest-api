@@ -256,6 +256,10 @@ Following third party libraries are used in Application system
 
 * **Sabbir Hossain (Rupom)** - *Web Developer* - [https://sabbirrupom.com/](https://sabbirrupom.com/)
 
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
 
 
 
