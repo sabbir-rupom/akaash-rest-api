@@ -19,8 +19,7 @@
 /**
  * Abstract Base Model Class
  */
-abstract class Model_BaseModel
-{
+abstract class Model_BaseModel {
 
     // Table name. Be overridden by the implementation class.
     const TABLE_NAME = "";
@@ -42,8 +41,7 @@ abstract class Model_BaseModel
      * @param boolean $forUpdate Whether to update the query result
      * @return object Search result as an object of called class
      */
-    public static function find($id = null, $pdo = null, $forUpdate = false)
-    {
+    public static function find($id = null, $pdo = null, $forUpdate = false) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -71,8 +69,7 @@ abstract class Model_BaseModel
      * @param boolean $forUpdate Whether to update the query result
      * @return object Search result as an object of called class
      */
-    public static function findBy($params = [], $pdo = null, $forUpdate = false)
-    {
+    public static function findBy($params = [], $pdo = null, $forUpdate = false) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -97,8 +94,7 @@ abstract class Model_BaseModel
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function findAllBy($params = [], $order = null, $limitArgs = null, $pdo = null, $forUpdate = false)
-    {
+    public static function findAllBy($params = [], $order = null, $limitArgs = null, $pdo = null, $forUpdate = false) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -123,8 +119,7 @@ abstract class Model_BaseModel
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function findColumnSpecificData($columns, $params, $order = null, $limitArgs = null, $pdo = null)
-    {
+    public static function findColumnSpecificData($columns, $params, $order = null, $limitArgs = null, $pdo = null) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -147,8 +142,7 @@ abstract class Model_BaseModel
      * @param bool $highPerformanceFlag to count the number of records in table
      * @return int Number of records
      */
-    public static function countBy($params = [], $pdo = null, $highPerformanceFlag = false)
-    {
+    public static function countBy($params = [], $pdo = null, $highPerformanceFlag = false) {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -183,8 +177,7 @@ abstract class Model_BaseModel
      * @param boolean $forUpdate Whether to update the query.
      * @return array Constructed Query
      */
-    protected static function constructQuery($params = [], $order = array(), $limitArgs = null, $forUpdate = false)
-    {
+    protected static function constructQuery($params = [], $order = array(), $limitArgs = null, $forUpdate = false) {
         list($conditions, $values) = self::constructConditions($params);
 
 //        foreach ($params as $k => $v) {
@@ -226,8 +219,7 @@ abstract class Model_BaseModel
      * @param array $params $params[][0] for column-name, $params[][1] for value, $params[][1] for condition
      * @return array Constructed Query condition
      */
-    protected static function constructConditions($params = [])
-    {
+    protected static function constructConditions($params = []) {
         $conditions = $values = [];
         foreach ($params as $k => $v) {
             if (is_array($v)) {
@@ -270,8 +262,7 @@ abstract class Model_BaseModel
      * @param PDO $pdo
      * @return PDO object.
      */
-    public function create($pdo = null)
-    {
+    public function create($pdo = null) {
         if (is_null($pdo)) {
             $pdo = Flight::pdo();
         }
@@ -297,8 +288,7 @@ abstract class Model_BaseModel
      * To update the object.
      * @param PDO $pdo DB connection Object PDO
      */
-    public function update($pdo = null)
-    {
+    public function update($pdo = null) {
         if (!isset($this->id)) {
             throw new Exception('The ' . get_called_class() . ' is not saved yet.');
         }
@@ -330,8 +320,7 @@ abstract class Model_BaseModel
      * @param PDO $pdo DB connection Object PDO
      * @return obj PDO query execution result
      */
-    public function delete($pdo = null)
-    {
+    public function delete($pdo = null) {
         if (!isset($this->id)) {
             throw new Exception('The ' . get_called_class() . ' is not initiated properly.');
         }
@@ -351,8 +340,7 @@ abstract class Model_BaseModel
      * [ id model class does not include attributes in the DB column definition, they will not be executed, only default values will be ]
      * @return array An array consisting of an array of columns, an array of values
      */
-    protected function getValues()
-    {
+    protected function getValues() {
         $values = array();
         $columns = array();
         foreach (static::getColumns() as $column) {
@@ -367,8 +355,7 @@ abstract class Model_BaseModel
     /**
      * Return the column name list.
      */
-    protected static function getColumns()
-    {
+    protected static function getColumns() {
         if (isset(static::$columnsOnDB)) {
             return array_keys(static::$columnsOnDB);
         } else {
@@ -379,8 +366,7 @@ abstract class Model_BaseModel
     /**
      * To get the column list of the database table
      */
-    protected static function getColumnsOnDB($pdo = null)
-    {
+    protected static function getColumnsOnDB($pdo = null) {
         if (self::$columnsOnDB == null) {
             if ($pdo == null) {
                 $pdo = Flight::pdo();
@@ -396,8 +382,7 @@ abstract class Model_BaseModel
     /**
      * To check whether there is a column name both in database and model class definition
      * */
-    public static function hasColumn($name)
-    {
+    public static function hasColumn($name) {
         return (in_array($name, static::getColumnsOnDB()) &&
                 in_array($name, static::getColumns()));
     }
@@ -405,8 +390,7 @@ abstract class Model_BaseModel
     /**
      * To check whether there is a column in model class column definition
      * */
-    public static function hasColumnDefined($name)
-    {
+    public static function hasColumnDefined($name) {
         return (in_array($name, static::getColumns()));
     }
 
@@ -414,8 +398,7 @@ abstract class Model_BaseModel
      * Returns the type of column.
      * @param String $ column target column name defined in model class
      */
-    protected static function getColumnType($column)
-    {
+    protected static function getColumnType($column) {
         return static::$columnsOnDB[$column]['type'];
     }
 
@@ -423,8 +406,7 @@ abstract class Model_BaseModel
      * Return to the specified column whether or not to include in JSON.
      * @param String $ column target column name.
      */
-    public static function isColumnIncludedInJson($column)
-    {
+    public static function isColumnIncludedInJson($column) {
         $columnDef = static::$columnsOnDB[$column];
         if (isset($columnDef['json'])) {
             return $columnDef['json'];
@@ -436,8 +418,7 @@ abstract class Model_BaseModel
     /**
      * Return an associative array for JSON.
      */
-    public function toJsonHash()
-    {
+    public function toJsonHash() {
         foreach (static::getColumns() as $column) {
             if (static::isColumnIncludedInJson($column)) {
                 if ('int' === static::getColumnType($column) && isset($this->$column)) {
@@ -458,8 +439,7 @@ abstract class Model_BaseModel
      * Get the cache data.
      * @param unknown_type $key
      */
-    public static function getCache($cacheKey)
-    {
+    public static function getCache($cacheKey) {
         $memcache = Config_Config::getMemcachedClient();
         return $memcache->get($cacheKey);
     }
@@ -469,8 +449,7 @@ abstract class Model_BaseModel
      * @param unknown_type $key
      * @param unknown_type $value
      */
-    public static function setCache($cacheKey, $value)
-    {
+    public static function setCache($cacheKey, $value) {
         $memcache = Config_Config::getMemcachedClient();
         $call_class = get_called_class();
         $ret_value = $memcache->set($cacheKey, $value, MEMCACHE_COMPRESSED, $call_class::MEMCACHED_EXPIRE);
@@ -481,8 +460,7 @@ abstract class Model_BaseModel
      * Delete the cache.
      * @param unknown_type $key
      */
-    public static function deleteCache($cacheKey)
-    {
+    public static function deleteCache($cacheKey) {
         $memcache = Config_Config::getMemcachedClient();
         $memcache->delete($cacheKey);
     }
@@ -490,8 +468,7 @@ abstract class Model_BaseModel
     /**
      * Returns the key for setting all records in memcache.
      */
-    protected static function getAllKey()
-    {
+    protected static function getAllKey() {
         return Config_Config::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
     }
 
@@ -501,8 +478,7 @@ abstract class Model_BaseModel
      *
      * @return array Array of model objects.
      */
-    public static function getAll()
-    {
+    public static function getAll() {
         $key = static::getAllKey();
         // To connect to Memcached, to get the value.
         $memcache = Config_Config::getMemcachedClient();

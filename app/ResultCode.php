@@ -23,8 +23,7 @@
  *
  * @author sabbir-hossain
  */
-class ResultCode
-{
+class ResultCode {
     /*
      * USER DEFINED
      */
@@ -141,8 +140,7 @@ class ResultCode
      * @param int $code
      * @return string Return message against result code.
      */
-    public static function getTitle($code)
-    {
+    public static function getTitle($code) {
         return self::CODE_MESSAGE[$code]['title'];
     }
 
@@ -151,8 +149,7 @@ class ResultCode
      * @param int $code
      * @return string Return message against result code.
      */
-    public static function getMessage($code)
-    {
+    public static function getMessage($code) {
         return self::CODE_MESSAGE[$code]['msg'];
     }
 
@@ -161,8 +158,7 @@ class ResultCode
      * @param int $code
      * @return int Return HTTP Status code against result code.
      */
-    public static function getHTTPstatusCode($code)
-    {
+    public static function getHTTPstatusCode($code) {
         return self::CODE_MESSAGE[$code]['http_status'];
     }
 }

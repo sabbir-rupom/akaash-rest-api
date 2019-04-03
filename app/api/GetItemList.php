@@ -5,8 +5,7 @@
 /**
  * Get all other registered user list
  */
-class GetItemList extends BaseClass
-{
+class GetItemList extends BaseClass {
 
     /**
      * Login required or not
@@ -19,8 +18,7 @@ class GetItemList extends BaseClass
     /**
      * Validation of request
      */
-    public function validate()
-    {
+    public function validate() {
         parent::validate();
         
         $this->itemName = $this->getValueFromJSON('item_name', 'string');
@@ -34,8 +32,7 @@ class GetItemList extends BaseClass
     /**
      * Process API request
      */
-    public function action()
-    {
+    public function action() {
         /*
          * Find items from database
          */

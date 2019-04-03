@@ -22,16 +22,14 @@
  * Developer may use this custom function to write different API logs
  * Or they can use any existing PHP log library [ e.g Monolog Logger ] for better development friendly situation
  */
-class Common_Log
-{
+class Common_Log {
 
     /**
      * Write log file
      *
      * @param unknown_type $arrMsg message or array of message
      */
-    public static function log($arrMsg)
-    {
+    public static function log($arrMsg) {
         if (Config_Config::getInstance()->isLogEnable() == false || empty($arrMsg)) {
             return;
         }

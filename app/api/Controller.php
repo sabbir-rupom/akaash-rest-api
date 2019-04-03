@@ -22,8 +22,7 @@
  * @property BaseClass $action BaseClass
  * @author sabbir-hossain
  */
-class Controller
-{
+class Controller {
     protected static $apiName;
     protected static $getParams;
     protected static $headers;
@@ -35,8 +34,7 @@ class Controller
      * @param string $name REST API name
      * @param string $method Application request Method
      */
-    public static function init($name, $method)
-    {
+    public static function init($name, $method) {
         $data = null;
         try {
             self::$apiName = Common_Utils::camelize($name); // prepare api controller from request url call
@@ -168,8 +166,7 @@ class Controller
      * Initialize application for GET method
      * @param type $name Api name
      */
-    public static function initGet($name)
-    {
+    public static function initGet($name) {
         self::init($name, 'GET');
     }
 
@@ -177,8 +174,7 @@ class Controller
      * Initialize application for POST method
      * @param type $name Api name
      */
-    public static function initPost($name)
-    {
+    public static function initPost($name) {
         self::init($name, 'POST');
     }
 
@@ -186,8 +182,7 @@ class Controller
      * Initialize application for PUT method
      * @param type $name Api name
      */
-    public static function initPut($name)
-    {
+    public static function initPut($name) {
         self::init($name, 'PUT');
     }
 
@@ -195,8 +190,7 @@ class Controller
      * Initialize application for PATCH method
      * @param type $name Api name
      */
-    public static function initPatch($name)
-    {
+    public static function initPatch($name) {
         self::init($name, 'PATCH');
     }
 
@@ -204,8 +198,7 @@ class Controller
      * Initialize application for DELETE method
      * @param type $name Api name
      */
-    public static function initDelete($name)
-    {
+    public static function initDelete($name) {
         self::init($name, 'DELETE');
     }
 }

@@ -22,8 +22,7 @@
  *
  * @author sabbir-hossain
  */
-class Const_Application
-{
+class Const_Application {
 
     /** Unknown client
      */
