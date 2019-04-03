@@ -18,8 +18,7 @@
 
 use \Firebase\JWT\JWT;
 
-class System_JwtToken
-{
+class System_JwtToken {
 
     /**
      * Verify JWT Token with secret key
@@ -27,8 +26,7 @@ class System_JwtToken
      * @param string $key secret key to sign the JWT token
      * @return array Token verification result
      */
-    public static function verifyToken($token = '', $key = '')
-    {
+    public static function verifyToken($token = '', $key = '') {
         $result = array('error' => 0, 'data' => array());
         if ($token == '') {
             $result['error'] = 5;
@@ -54,8 +52,7 @@ class System_JwtToken
      * @param string $key secret key to sign the JWT token
      * @return array Token creation result
      */
-    public static function createToken($payload = array(), $key = '')
-    {
+    public static function createToken($payload = array(), $key = '') {
         $result = array('error' => 0, 'token' => '');
         try {
             $jwt = JWT::encode($payload, $key);

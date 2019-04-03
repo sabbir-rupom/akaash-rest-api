@@ -7,8 +7,7 @@
  *
  * @author sabbir-hossain
  */
-class UserLogout extends BaseClass
-{
+class UserLogout extends BaseClass {
 
     // Login Required.
     const LOGIN_REQUIRED = true;
@@ -16,16 +15,14 @@ class UserLogout extends BaseClass
     /**
      * Validating Login Request
      */
-    public function validate()
-    {
+    public function validate() {
         parent::validate();
     }
 
     /**
      * Processing API script execution
      */
-    public function action()
-    {
+    public function action() {
         /*
          * Delete user data from cache
          */

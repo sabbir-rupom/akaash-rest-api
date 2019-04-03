@@ -5,8 +5,7 @@
 /**
  * User Item model class.
  */
-class Model_UserItem extends Model_BaseModel
-{
+class Model_UserItem extends Model_BaseModel {
 
     /**
      * Table Name
@@ -48,8 +47,7 @@ class Model_UserItem extends Model_BaseModel
      * @throws System_Exception
      * @return obj $userItemObj Model_UserItem object
      */
-    public static function addUserItem($userId, $itemName, $pdo = null)
-    {
+    public static function addUserItem($userId, $itemName, $pdo = null) {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
@@ -76,8 +74,7 @@ class Model_UserItem extends Model_BaseModel
      * @param obj $pdo DB connection Object PDO
      * @return array $result Array of item list
      */
-    public static function getAllItems($itemName = '', $userId = null, $pdo = null)
-    {
+    public static function getAllItems($itemName = '', $userId = null, $pdo = null) {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }

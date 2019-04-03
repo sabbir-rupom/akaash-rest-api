@@ -5,8 +5,7 @@
 /**
  * Save user's updated information
  */
-class SaveUserInfo extends BaseClass
-{
+class SaveUserInfo extends BaseClass {
 
     // Required Login or not
     const LOGIN_REQUIRED = true;
@@ -18,8 +17,7 @@ class SaveUserInfo extends BaseClass
      * Verification of the request.
      */
 
-    public function validate()
-    {
+    public function validate() {
         parent::validate();
 
         $this->user = $this->cache_user;
@@ -126,8 +124,7 @@ class SaveUserInfo extends BaseClass
     /**
      * Process execution
      */
-    public function action()
-    {
+    public function action() {
         if ($this->update_user) {
             $this->user->update($this->pdo);
             Model_User::setCache(Model_CacheKey::getUserKey($this->user->id), $this->user);

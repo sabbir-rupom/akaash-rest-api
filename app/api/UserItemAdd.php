@@ -5,8 +5,7 @@
 /**
  * User data acquisition actions.
  */
-class UserItemAdd extends BaseClass
-{
+class UserItemAdd extends BaseClass {
 
     /**
      * User Login required or not
@@ -18,8 +17,7 @@ class UserItemAdd extends BaseClass
     /**
      * Validation of request
      */
-    public function validate()
-    {
+    public function validate() {
         parent::validate();
 
         // Acquiring item name from json request
@@ -29,8 +27,7 @@ class UserItemAdd extends BaseClass
     /**
      * Process API request
      */
-    public function action()
-    {
+    public function action() {
         $userItemObj = Model_UserItem::addUserItem($this->userId, $this->item_name, $this->pdo);
         
         if (empty($userItemObj->id)) {

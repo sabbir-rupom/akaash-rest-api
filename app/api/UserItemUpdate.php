@@ -5,8 +5,7 @@
 /**
  * User data acquisition actions.
  */
-class UserItemUpdate extends BaseClass
-{
+class UserItemUpdate extends BaseClass {
 
     /**
      * User Login required or not
@@ -19,8 +18,7 @@ class UserItemUpdate extends BaseClass
     /**
      * Validation of request
      */
-    public function validate()
-    {
+    public function validate() {
         parent::validate();
 
         // Acquiring item information from json request
@@ -31,8 +29,7 @@ class UserItemUpdate extends BaseClass
     /**
      * Process API request
      */
-    public function action()
-    {
+    public function action() {
         $userItemObj = Model_UserItem::findBy(array('user_id' => $this->userId, 'id' => $this->item_id), $this->pdo, true);
         
         if (empty($userItemObj)) {

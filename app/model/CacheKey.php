@@ -21,8 +21,7 @@
  *
  * @author sabbir-hossain
  */
-class Model_CacheKey
-{
+class Model_CacheKey {
 
     /**
      * Session storage cache key acquisition
@@ -30,8 +29,7 @@ class Model_CacheKey
      * @param int $userId
      * @return Cache key
      */
-    public static function getUserSessionKey($userId)
-    {
+    public static function getUserSessionKey($userId) {
         return Config_Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
     }
 
@@ -51,8 +49,7 @@ class Model_CacheKey
      * @param int $userId
      * @return Cache key
      */
-    public static function getUserKey($userId)
-    {
+    public static function getUserKey($userId) {
         return Config_Config::getInstance()->getMemcachePrefix() . 'users_' . $userId;
     }
 }
