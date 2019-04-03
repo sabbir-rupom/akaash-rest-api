@@ -20,14 +20,14 @@ class System_MemcachedServer {
     public $host;
     public $port;
 
-    private $connection;
-    
     public static $memcachedServerInstance = null;
-    
+
+    private $connection;
+
     public function __construct() {
         $this->connection = new Memcache();
     }
-    
+
     public function getConnection() {
         return $this->connection;
     }
@@ -56,7 +56,6 @@ class System_MemcachedServer {
     public function remove($key) {
         $this->connection->delete($key, 0);
     }
-
 
     public function add($value, $limit = 0) {
         $key = uniqid(rand(), true);

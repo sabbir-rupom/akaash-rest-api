@@ -3,21 +3,20 @@
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * Description of UserSignUp API class
+ * Description of UserSignUp API class.
  *
  * @author sabbir-hossain
  */
 class UserSignUp extends BaseClass {
-
     // Login Required.
     const LOGIN_REQUIRED = false;
 
-    private $_user_email = null;
-    private $_user_password = null;
-    private $_user_name = null;
+    private $_user_email;
+    private $_user_password;
+    private $_user_name;
 
     /**
-     * Validating Login Request
+     * Validating Login Request.
      */
     public function validate() {
         parent::validate();
@@ -26,16 +25,16 @@ class UserSignUp extends BaseClass {
         $this->_user_password = $this->getValueFromJSON('password', 'string', true);
         $this->_user_name = $this->getValueFromJSON('user_name', 'string', true);
 
-        if (filter_var($this->_user_email, FILTER_VALIDATE_EMAIL) === false) {
+        if (false === filter_var($this->_user_email, FILTER_VALIDATE_EMAIL)) {
             throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
         }
-        if (Model_User::countBy(array('email' => $this->_user_email), $this->pdo) > 0) {
+        if (Model_User::countBy(['email' => $this->_user_email], $this->pdo) > 0) {
             throw new System_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'Another user is registered with this email!');
         }
     }
 
     /**
-     * Processing API script execution
+     * Processing API script execution.
      */
     public function action() {
         $this->pdo->beginTransaction();
@@ -67,11 +66,9 @@ class UserSignUp extends BaseClass {
             if (property_exists($this->json, 'latitude')) {
                 $user->latitude = $this->getValueFromJSON('latitude', 'string', true);
             }
-            
+
             if (property_exists($this->json, 'profile_image')) {
-                /*
-                 * If image data is provided in base64 string
-                 */
+                // If image data is provided in base64 string
                 $profile_image = $this->getValueFromJSON('profile_image', 'string'); // nullable
                 if (!empty($profile_image)) {
                     if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $profile_image)) { // checking if data is in base64 formatted or not
@@ -79,26 +76,27 @@ class UserSignUp extends BaseClass {
                     }
                 }
             }
-            
-            $user->password = password_hash(trim($this->_user_password), PASSWORD_BCRYPT, array('cost' => 10));
+
+            $user->password = password_hash(trim($this->_user_password), PASSWORD_BCRYPT, ['cost' => 10]);
             $user->user_name = $this->_user_name;
             $user->email = $this->_user_email;
-            
+
             $user->create($this->pdo);
 
             $this->pdo->commit();
         } catch (PDOException $e) {
             $this->pdo->rollback();
+
             throw $e;
         }
 
-        return array(
+        return [
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => array(
+            'data' => [
                 'user_info' => $user->toJsonHash(),
-            ),
-            'error' => []
-        );
+            ],
+            'error' => [],
+        ];
     }
 }

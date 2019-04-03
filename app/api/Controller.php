@@ -17,9 +17,10 @@
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * Controller for application
+ * Controller for application.
  *
  * @property BaseClass $action BaseClass
+ *
  * @author sabbir-hossain
  */
 class Controller {
@@ -29,105 +30,92 @@ class Controller {
     protected static $json;
 
     /**
-     * Initialize application
+     * Initialize application.
      *
-     * @param string $name REST API name
+     * @param string $name   REST API name
      * @param string $method Application request Method
      */
     public static function init($name, $method) {
         $data = null;
+
         try {
             self::$apiName = Common_Utils::camelize($name); // prepare api controller from request url call
             self::$getParams = $_GET;
             self::$headers = getallheaders();
 
-            if (in_array($method, array('POST', 'PUT', 'PATCH', 'DELETE'))) {
-                /*
-                 * Fetch all requested parameters
-                 */
+            if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
+                // Fetch all requested parameters
                 $data = file_get_contents('php://input');
 
                 self::$json = json_decode($data);
 
-                /*
-                 * Check if requested parameters are in json format or not
-                 */
-                if (!empty($data) && json_last_error() != JSON_ERROR_NONE && empty($_FILES)) {
-                    throw new System_ApiException(ResultCode::INVALID_JSON, "Invalid JSON: $data");
+                // Check if requested parameters are in json format or not
+                if (!empty($data) && JSON_ERROR_NONE != json_last_error() && empty($_FILES)) {
+                    throw new System_ApiException(ResultCode::INVALID_JSON, "Invalid JSON: ${data}");
                 }
             } else {
-                self::$json = array();
+                self::$json = [];
             }
 
-            /*
-             * Check if requested API controller exist in server
-             */
+            // Check if requested API controller exist in server
             if (!class_exists(self::$apiName)) {
-                throw new System_ApiException(ResultCode::UNKNOWN_ERROR, "No such api: " . $name);
+                throw new System_ApiException(ResultCode::UNKNOWN_ERROR, 'No such api: '.$name);
             }
 
             /**
-             * Call Base Controller to Retrieve Instance of API Controller
+             * Call Base Controller to Retrieve Instance of API Controller.
              */
             $action = new self::$apiName(self::$headers, self::$getParams, self::$json, self::$apiName);
             $result = $action->process();
         } catch (Exception $e) {
-            /*
-             * Handle all exception messages
-             */
+            // Handle all exception messages
 
             if ($e instanceof System_ApiException) {
-                /*
-                 * Handle all application error messages
-                 */
-                header("HTTP/1.1 " . ResultCode::getHTTPstatusCode($e->getCode()) . " " . ResultCode::getTitle($e->getCode()));
+                // Handle all application error messages
+                header('HTTP/1.1 '.ResultCode::getHTTPstatusCode($e->getCode()).' '.ResultCode::getTitle($e->getCode()));
                 $errMsg = empty($e->getMessage()) ? ResultCode::getMessage($e->getCode()) : $e->getMessage();
-                $result = array(
+                $result = [
                     'result_code' => $e->getCode(),
                     'time' => Common_DateUtil::getToday(),
-                    'error' => array(
+                    'error' => [
                         'title' => ResultCode::getTitle($e->getCode()),
-                        'msg' => $errMsg
-                    )
-                );
+                        'msg' => $errMsg,
+                    ],
+                ];
 
-                Common_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
+                Common_Log::log(self::$apiName.' ('.ResultCode::DATABASE_ERROR.'): '.$errMsg);
             } elseif ($e instanceof PDOException) {
-                /*
-                 * Handle all database related error messages
-                 */
-                header("HTTP/1.1 " . ResultCode::getHTTPstatusCode(ResultCode::DATABASE_ERROR) . " " . ResultCode::getTitle(ResultCode::DATABASE_ERROR));
-                $errMsg = empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::DATABASE_ERROR) . ': check connection' : $e->getMessage();
-                $result = array(
+                // Handle all database related error messages
+                header('HTTP/1.1 '.ResultCode::getHTTPstatusCode(ResultCode::DATABASE_ERROR).' '.ResultCode::getTitle(ResultCode::DATABASE_ERROR));
+                $errMsg = empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::DATABASE_ERROR).': check connection' : $e->getMessage();
+                $result = [
                     'result_code' => ResultCode::DATABASE_ERROR,
                     'time' => Common_DateUtil::getToday(),
-                    'error' => array(
+                    'error' => [
                         'title' => ResultCode::getTitle(ResultCode::DATABASE_ERROR),
-                        'msg' => $errMsg
-                    )
-                );
+                        'msg' => $errMsg,
+                    ],
+                ];
 
-                Common_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
+                Common_Log::log(self::$apiName.' ('.ResultCode::DATABASE_ERROR.'): '.$errMsg);
             } else {
-                /*
-                 * Handle all system error messages
-                 */
-                header("HTTP/1.1 " . ResultCode::getHTTPstatusCode(ResultCode::UNKNOWN_ERROR) . " " . ResultCode::getTitle(ResultCode::UNKNOWN_ERROR));
+                // Handle all system error messages
+                header('HTTP/1.1 '.ResultCode::getHTTPstatusCode(ResultCode::UNKNOWN_ERROR).' '.ResultCode::getTitle(ResultCode::UNKNOWN_ERROR));
                 $errMsg = empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::UNKNOWN_ERROR) : $e->getMessage();
-                $result = array(
+                $result = [
                     'result_code' => ResultCode::UNKNOWN_ERROR,
                     'time' => Common_DateUtil::getToday(),
-                    'error' => array(
+                    'error' => [
                         'title' => ResultCode::getTitle(ResultCode::UNKNOWN_ERROR),
-                        'msg' => $errMsg
-                    )
-                );
+                        'msg' => $errMsg,
+                    ],
+                ];
 
-                Common_Log::log(array(
-                    'message' => self::$apiName . ' (' . ResultCode::UNKNOWN_ERROR . '): ' . $errMsg,
+                Common_Log::log([
+                    'message' => self::$apiName.' ('.ResultCode::UNKNOWN_ERROR.'): '.$errMsg,
                     'file_name' => $e->getFile(),
-                    'line_number' => $e->getLine()
-                ));
+                    'line_number' => $e->getLine(),
+                ]);
             }
 
             if (Config_Config::getInstance()->isErrorDump()) {
@@ -135,22 +123,21 @@ class Controller {
                  * Additional error messages
                  * For developers debug purpose
                  */
-                $result['error_dump'] = array(
+                $result['error_dump'] = [
                     'code' => $e->getCode(),
                     'file' => $e->getFile(),
-                    'line' => $e->getLine()
-                );
+                    'line' => $e->getLine(),
+                ];
             }
         }
         $json_array = $result;
-        
 
-        if (strtoupper(Flight::get('env')) != 'PRODUCTION') {
+        if ('PRODUCTION' != strtoupper(Flight::get('env'))) {
             /*
              * Calculate server execution time for running API script [ For developers only ]
              * And add to output result
              */
-            $json_array['execution_time'] = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
+            $json_array['execution_time'] = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
 
 //            $sql = "INSERT INTO `api_exec_time` (`api_name`, `exec_time`) VALUES ('" . self::$apiName . "', {$json_array['execution_time']});";
 //            $pdo = Flight::pdo();
@@ -163,7 +150,8 @@ class Controller {
     }
 
     /**
-     * Initialize application for GET method
+     * Initialize application for GET method.
+     *
      * @param type $name Api name
      */
     public static function initGet($name) {
@@ -171,7 +159,8 @@ class Controller {
     }
 
     /**
-     * Initialize application for POST method
+     * Initialize application for POST method.
+     *
      * @param type $name Api name
      */
     public static function initPost($name) {
@@ -179,7 +168,8 @@ class Controller {
     }
 
     /**
-     * Initialize application for PUT method
+     * Initialize application for PUT method.
+     *
      * @param type $name Api name
      */
     public static function initPut($name) {
@@ -187,7 +177,8 @@ class Controller {
     }
 
     /**
-     * Initialize application for PATCH method
+     * Initialize application for PATCH method.
+     *
      * @param type $name Api name
      */
     public static function initPatch($name) {
@@ -195,7 +186,8 @@ class Controller {
     }
 
     /**
-     * Initialize application for DELETE method
+     * Initialize application for DELETE method.
+     *
      * @param type $name Api name
      */
     public static function initDelete($name) {

@@ -7,97 +7,96 @@ class Model_User extends Model_BaseModel {
     const SESSION_DURATION_SEC = 3600; // 1 hour
     const SESSION_RESOLVE_DURATION_SEC = 0; // No limit
 
-    /* Table Name */
-    const TABLE_NAME = "users";
+    // Table Name
+    const TABLE_NAME = 'users';
 
     // Table column definitions
-    protected static $columnsOnDB = array(
-        'id' => array(
+    protected static $columnsOnDB = [
+        'id' => [
             'type' => 'int',
-            'json' => true
-        ),
-        'user_name' => array(
+            'json' => true,
+        ],
+        'user_name' => [
             'type' => 'string',
-            'json' => true
-        ),
-        'profile_image' => array(
+            'json' => true,
+        ],
+        'profile_image' => [
             'type' => 'string',
-            'json' => true
-        ),
-        'gender' => array(
+            'json' => true,
+        ],
+        'gender' => [
             'type' => 'string',
-            'json' => true
-        ),
-        'first_name' => array(
+            'json' => true,
+        ],
+        'first_name' => [
             'type' => 'string',
-            'json' => true
-        ),
-        'last_name' => array(
+            'json' => true,
+        ],
+        'last_name' => [
             'type' => 'string',
-            'json' => true
-        ),
-        'email' => array(
+            'json' => true,
+        ],
+        'email' => [
             'type' => 'string',
-            'json' => true
-        ),
-        'password' => array(
+            'json' => true,
+        ],
+        'password' => [
             'type' => 'string',
-            'json' => false
-        ),
-        'personal_info' => array(
+            'json' => false,
+        ],
+        'personal_info' => [
             'type' => 'string',
-            'json' => true
-        ),
-        'latitude' => array(
+            'json' => true,
+        ],
+        'latitude' => [
             'type' => 'float',
-            'json' => true
-        ),
-        'longitude' => array(
+            'json' => true,
+        ],
+        'longitude' => [
             'type' => 'float',
-            'json' => true
-        ),
-        'last_api_time' => array(
+            'json' => true,
+        ],
+        'last_api_time' => [
             'type' => 'string',
-            'json' => false
-        ),
-        'device_token' => array(
+            'json' => false,
+        ],
+        'device_token' => [
             'type' => 'string',
-            'json' => false
-        ),
-        'device_model' => array(
+            'json' => false,
+        ],
+        'device_model' => [
             'type' => 'string',
-            'json' => false
-        ),
-        'created_at' => array(
+            'json' => false,
+        ],
+        'created_at' => [
             'type' => 'string',
-            'json' => false
-        ),
-        'updated_at' => array(
+            'json' => false,
+        ],
+        'updated_at' => [
             'type' => 'string',
-            'json' => false
-        )
-    );
+            'json' => false,
+        ],
+    ];
 
     /**
      * Registration process execution.
      *
-     * @return User object.
+     * @param mixed      $dataArray
+     * @param null|mixed $pdo
+     *
      * @throws System_ApiException
+     *
+     * @return User object.
      */
-
     public function createUser($dataArray, $pdo = null) {
-
         // Get User data by uuid
-        $user = Model_User::findBy(array('email' => $dataArray['email']), $pdo);
-
+        $user = Model_User::findBy(['email' => $dataArray['email']], $pdo);
 
         // Checke User exist or not
         if (null === $user || empty($user)) {
-
-
             // User Data Collection
             $this->user_name = $dataArray['username'];
-            $this->password = password_hash($dataArray['password'], PASSWORD_BCRYPT, array('cost' => 12));
+            $this->password = password_hash($dataArray['password'], PASSWORD_BCRYPT, ['cost' => 12]);
             $this->email = $dataArray['email'];
             $this->personal_info = $dataArray['personal_info'];
             $this->first_name = $dataArray['firstname'];
@@ -115,11 +114,13 @@ class Model_User extends Model_BaseModel {
         } else {
             throw new System_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
         }
+
         return $user;
     }
 
     /**
-     * Update user's last active time
+     * Update user's last active time.
+     *
      * @param PDO $pdo
      */
     public function updateUserLastActiveTime($pdo = null) {
@@ -131,15 +132,17 @@ class Model_User extends Model_BaseModel {
             $this->update($pdo);
         }
     }
-    
+
     /**
      * Return from the session to get a user ID.
+     *
+     * @param mixed $userId
      */
     public static function retrieveSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
         $memcache = Config_Config::getMemcachedClient();
-        $sessionId = $memcache->get($sessionKey);
-        return $sessionId;
+
+        return $memcache->get($sessionKey);
     }
 
     /**
@@ -149,12 +152,14 @@ class Model_User extends Model_BaseModel {
         session_regenerate_id();
         $sessionId = session_id();
         self::cacheSession($sessionId, $this->id);
-        
+
         return $sessionId;
     }
 
     /**
      * Delete old session.
+     *
+     * @param mixed $userId
      */
     public function removeSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
@@ -164,6 +169,9 @@ class Model_User extends Model_BaseModel {
 
     /**
      * Save the user ID to Memcache to the session ID as a key.
+     *
+     * @param mixed $sessionId
+     * @param mixed $userId
      */
     public static function cacheSession($sessionId, $userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
@@ -173,13 +181,15 @@ class Model_User extends Model_BaseModel {
 
     /**
      * Return an associative array for JSON.
+     *
+     * @param mixed $additionalData
      */
-    public function toJsonHash($additionalData = array()) {
+    public function toJsonHash($additionalData = []) {
         $userId = intval($this->id);
         $hash = parent::toJsonHash();
 
-        if ($hash['profile_image'] != '') {
-            $hash['profile_image'] = SERVER_HOST . '/image/user-profile/' . $userId . '?ref=' . md5($hash['profile_image']);
+        if ('' != $hash['profile_image']) {
+            $hash['profile_image'] = SERVER_HOST.'/image/user-profile/'.$userId.'?ref='.md5($hash['profile_image']);
         }
 
         if (!empty($additionalData)) {
@@ -187,40 +197,48 @@ class Model_User extends Model_BaseModel {
                 $hash[$key] = $value;
             }
         }
+
         return $hash;
     }
 
     /**
-     * Find User form cache
+     * Find User form cache.
+     *
      * @param int $userId User ID
-     * @param obj $pdo DB connection Object PDO
+     * @param obj $pdo    DB connection Object PDO
+     *
      * @return obj array object Model_User
      */
     public static function cache_or_find($userId, $pdo = null) {
         $user = parent::getCache(Model_CacheKey::getUserKey($userId));
-        
-        if ($user == false) {
+
+        if (false == $user) {
             //user not in cache, refreshing cache
             $user = self::refreshCache($userId, $pdo);
         }
+
         return $user;
     }
 
     /**
-     * Refresh Cache
+     * Refresh Cache.
+     *
      * @param int $userId User ID
-     * @param obj $pdo DB connection Object PDO
+     * @param obj $pdo    DB connection Object PDO
+     *
      * @return obj array object Model_User
      */
     public static function refreshCache($userId, $pdo = null) {
         $user = self::find($userId, $pdo, true);
         parent::setCache(Model_CacheKey::getUserKey($userId), $user);
+
         return $user;
     }
 
     /**
-     * Before Update Deleting Cache
-     * @param obj $pdo DB connection Object PDO
+     * Before Update Deleting Cache.
+     *
+     * @param obj  $pdo         DB connection Object PDO
      * @param bool $cacheDelete [optional] Delete data from cache if exist
      */
     public function update($pdo = null, $cacheDelete = true) {

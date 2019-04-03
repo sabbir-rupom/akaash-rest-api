@@ -6,52 +6,54 @@
  * User login log model.
  */
 class Model_UserLoginSession extends Model_BaseModel {
-    const TABLE_NAME = "user_login_sessions";
+    const TABLE_NAME = 'user_login_sessions';
 
     // Table column definitions
-    protected static $columnsOnDB = array(
-        'id' => array(
+    protected static $columnsOnDB = [
+        'id' => [
             'type' => 'int',
-            'json' => false
-        ),
-        'user_id' => array(
+            'json' => false,
+        ],
+        'user_id' => [
             'type' => 'int',
-            'json' => false
-        ),
-        'session_id' => array(
+            'json' => false,
+        ],
+        'session_id' => [
             'type' => 'string',
-            'json' => false
-        ),
-        'login_type' => array(
+            'json' => false,
+        ],
+        'login_type' => [
             'type' => 'int',
-            'json' => false
-        ),
-        'login_count' => array(
+            'json' => false,
+        ],
+        'login_count' => [
             'type' => 'int',
-            'json' => false
-        ),
-        'time' => array(
+            'json' => false,
+        ],
+        'time' => [
             'type' => 'int',
-            'json' => false
-        ),
-        'created_at' => array(
+            'json' => false,
+        ],
+        'created_at' => [
             'type' => 'datetime',
-            'json' => false
-        ),
-        'updated_at' => array(
+            'json' => false,
+        ],
+        'updated_at' => [
             'type' => 'datetime',
-            'json' => false
-        )
-    );
+            'json' => false,
+        ],
+    ];
 
     /**
-     * Insert / Update user session for each day
+     * Insert / Update user session for each day.
      *
-     * @param int $userId User ID
+     * @param int    $userId    User ID
      * @param string $sessionId User's session ID
-     * @param int $loginType Type of login
-     * @param obj $pdo DB connection Object PDO
+     * @param int    $loginType Type of login
+     * @param obj    $pdo       DB connection Object PDO
+     *
      * @throws System_ApiException
+     *
      * @return bool Success [TRUE]
      */
     public static function updateSession($userId, $sessionId, $loginType, $pdo = null) {
@@ -59,7 +61,7 @@ class Model_UserLoginSession extends Model_BaseModel {
             $pdo = Flight::pdo();
         }
 
-        $userSession = self::findBy(array('user_id' => $userId, 'DATE(created_at)' => Common_DateUtil::getToday('Y-m-d')), $pdo, true);
+        $userSession = self::findBy(['user_id' => $userId, 'DATE(created_at)' => Common_DateUtil::getToday('Y-m-d')], $pdo, true);
 
         if (empty($userSession)) {
             $userSession = new Model_UserLoginSession();

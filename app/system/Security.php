@@ -17,12 +17,12 @@
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 class System_Security {
-
     /**
-     * List of never allowed strings
-     * @var	array
+     * List of never allowed strings.
+     *
+     * @var array
      */
-    protected $_never_allowed_str = array(
+    protected $_never_allowed_str = [
         'document.cookie' => '[removed]',
         '(document).cookie' => '[removed]',
         'document.write' => '[removed]',
@@ -34,12 +34,12 @@ class System_Security {
         '-->' => '--&gt;',
         '<![CDATA[' => '&lt;![CDATA[',
         '<comment>' => '&lt;comment&gt;',
-        '<%' => '&lt;&#37;'
-    );
+        '<%' => '&lt;&#37;',
+    ];
     protected $security;
 
     /**
-     * constructor
+     * constructor.
      */
     public function __construct() {
         // get class instance
@@ -50,14 +50,16 @@ class System_Security {
     // --------------------------------------------------------------------
 
     /**
-     * XSS Clean
+     * XSS Clean.
      *
      * Sanitizes data so that Cross Site Scripting Hacks can be
      * prevented.  This method is not 100% foolproof,
      * source suggestions are picked from CodeIgniter Security class
      *
-     * @param	string|string[]	$str		Input data
-     * @return	string
+     * @param string|string[] $str      Input data
+     * @param mixed           $is_image
+     *
+     * @return string
      */
     public static function xss_clean($str, $is_image = false) {
         // Is the string an array?
@@ -80,11 +82,11 @@ class System_Security {
          *
          * Note: Use rawurldecode() so it does not remove plus signs
          */
-        if (stripos($str, '%') !== false) {
+        if (false !== stripos($str, '%')) {
             do {
                 $oldstr = $str;
                 $str = rawurldecode($str);
-                $str = preg_replace_callback('#%(?:\s*[0-9a-f]){2,}#i', array($this, '_urldecodespaces'), $str);
+                $str = preg_replace_callback('#%(?:\s*[0-9a-f]){2,}#i', [$this, '_urldecodespaces'], $str);
             } while ($oldstr !== $str);
             unset($oldstr);
         }
@@ -96,8 +98,8 @@ class System_Security {
          * We only convert entities that are within tags since
          * these are the ones that will pose security problems.
          */
-        $str = preg_replace_callback("/[^a-z0-9>]+[a-z0-9]+=([\'\"]).*?\\1/si", array($this, '_convert_attribute'), $str);
-        $str = preg_replace_callback('/<\w+.*/si', array($this, '_decode_entity'), $str);
+        $str = preg_replace_callback("/[^a-z0-9>]+[a-z0-9]+=([\\'\"]).*?\\1/si", [$this, '_convert_attribute'], $str);
+        $str = preg_replace_callback('/<\w+.*/si', [$this, '_decode_entity'], $str);
 
         // Remove Invisible Characters Again!
         $str = remove_invisible_characters($str);
@@ -127,7 +129,7 @@ class System_Security {
          *
          * But it doesn't seem to pose a problem.
          */
-        $str = str_replace(array('<?', '?' . '>'), array('&lt;?', '?&gt;'), $str);
+        $str = str_replace(['<?', '?'.'>'], ['&lt;?', '?&gt;'], $str);
 
         /*
          * Compact any exploded words
@@ -135,18 +137,18 @@ class System_Security {
          * This corrects words like:  j a v a s c r i p t
          * These words are compacted back to their correct state.
          */
-        $words = array(
+        $words = [
             'javascript', 'expression', 'vbscript', 'jscript', 'wscript',
             'vbs', 'script', 'base64', 'applet', 'alert', 'document',
-            'write', 'cookie', 'window', 'confirm', 'prompt', 'eval'
-        );
+            'write', 'cookie', 'window', 'confirm', 'prompt', 'eval',
+        ];
 
         foreach ($words as $word) {
-            $word = implode('\s*', str_split($word)) . '\s*';
+            $word = implode('\s*', str_split($word)).'\s*';
 
             // We only want to do this when it is followed by a non-word character
             // That way valid stuff like "dealer to" does not become "dealerto"
-            $str = preg_replace_callback('#(' . substr($word, 0, -3) . ')(\W)#is', array($this, '_compact_exploded_words'), $str);
+            $str = preg_replace_callback('#('.substr($word, 0, -3).')(\W)#is', [$this, '_compact_exploded_words'], $str);
         }
 
         /*
@@ -165,11 +167,11 @@ class System_Security {
             $original = $str;
 
             if (preg_match('/<a/i', $str)) {
-                $str = preg_replace_callback('#<a(?:rea)?[^a-z0-9>]+([^>]*?)(?:>|$)#si', array($this, '_js_link_removal'), $str);
+                $str = preg_replace_callback('#<a(?:rea)?[^a-z0-9>]+([^>]*?)(?:>|$)#si', [$this, '_js_link_removal'], $str);
             }
 
             if (preg_match('/<img/i', $str)) {
-                $str = preg_replace_callback('#<img[^a-z0-9]+([^>]*?)(?:\s?/?>|$)#si', array($this, '_js_img_removal'), $str);
+                $str = preg_replace_callback('#<img[^a-z0-9]+([^>]*?)(?:\s?/?>|$)#si', [$this, '_js_img_removal'], $str);
             }
 
             if (preg_match('/script|xss/i', $str)) {
@@ -188,24 +190,24 @@ class System_Security {
          * Becomes: &lt;blink&gt;
          */
         $pattern = '#'
-                . '<((?<slash>/*\s*)((?<tagName>[a-z0-9]+)(?=[^a-z0-9]|$)|.+)' // tag start and name, followed by a non-tag character
-                . '[^\s\042\047a-z0-9>/=]*' // a valid attribute character immediately after the tag would count as a separator
+                .'<((?<slash>/*\s*)((?<tagName>[a-z0-9]+)(?=[^a-z0-9]|$)|.+)' // tag start and name, followed by a non-tag character
+                .'[^\s\042\047a-z0-9>/=]*' // a valid attribute character immediately after the tag would count as a separator
                 // optional attributes
-                . '(?<attributes>(?:[\s\042\047/=]*' // non-attribute characters, excluding > (tag close) for obvious reasons
-                . '[^\s\042\047>/=]+' // attribute characters
+                .'(?<attributes>(?:[\s\042\047/=]*' // non-attribute characters, excluding > (tag close) for obvious reasons
+                .'[^\s\042\047>/=]+' // attribute characters
                 // optional attribute-value
-                . '(?:\s*=' // attribute-value separator
-                . '(?:[^\s\042\047=><`]+|\s*\042[^\042]*\042|\s*\047[^\047]*\047|\s*(?U:[^\s\042\047=><`]*))' // single, double or non-quoted value
-                . ')?' // end optional attribute-value group
-                . ')*)' // end optional attributes group
-                . '[^>]*)(?<closeTag>\>)?#isS';
+                .'(?:\s*=' // attribute-value separator
+                .'(?:[^\s\042\047=><`]+|\s*\042[^\042]*\042|\s*\047[^\047]*\047|\s*(?U:[^\s\042\047=><`]*))' // single, double or non-quoted value
+                .')?' // end optional attribute-value group
+                .')*)' // end optional attributes group
+                .'[^>]*)(?<closeTag>\>)?#isS';
 
         // Note: It would be nice to optimize this for speed, BUT
         //       only matching the naughty elements here results in
         //       false positives and in turn - vulnerabilities!
         do {
             $old_str = $str;
-            $str = preg_replace_callback($pattern, array($this, '_sanitize_naughty_html'), $str);
+            $str = preg_replace_callback($pattern, [$this, '_sanitize_naughty_html'], $str);
         } while ($old_str !== $str);
         unset($old_str);
 
@@ -244,17 +246,20 @@ class System_Security {
     }
 
     /**
-     * Remove Invisible Characters
+     * Remove Invisible Characters.
      *
      * This prevents sandwiching null characters
      * between ascii characters, like Java\0script.
      *
      * @param	string
      * @param	bool
-     * @return	string
+     * @param mixed $str
+     * @param mixed $url_encoded
+     *
+     * @return string
      */
     protected function remove_invisible_characters($str, $url_encoded = true) {
-        $non_displayables = array();
+        $non_displayables = [];
 
         // every control character except newline (dec 10),
         // carriage return (dec 13) and horizontal tab (dec 09)
@@ -274,16 +279,18 @@ class System_Security {
     }
 
     /**
-     * Do Never Allowed
+     * Do Never Allowed.
      *
      * @param 	string
-     * @return 	string
+     * @param mixed $str
+     *
+     * @return string
      */
     protected function do_never_allowed($str) {
         $str = str_replace(array_keys($this->_never_allowed_str), $this->_never_allowed_str, $str);
 
         foreach ($this->_never_allowed_regex as $regex) {
-            $str = preg_replace('#' . $regex . '#is', '[removed]', $str);
+            $str = preg_replace('#'.$regex.'#is', '[removed]', $str);
         }
 
         return $str;

@@ -3,22 +3,21 @@
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * Description of UserLogin
+ * Description of UserLogin.
  *
  * @author sabbir-hossain
  */
 class UserLogin extends BaseClass {
-
     // Login Required.
     const LOGIN_REQUIRED = false;
 
-    private $_user_email = null;
-    private $_user_password = null;
-    private $_user_id = null;
-    private $_login_type = null;
+    private $_user_email;
+    private $_user_password;
+    private $_user_id;
+    private $_login_type;
 
     /**
-     * Validating Login Request
+     * Validating Login Request.
      */
     public function validate() {
         parent::validate();
@@ -32,23 +31,24 @@ class UserLogin extends BaseClass {
                 $this->_user_email = $this->getValueFromJSON('email', 'string', true);
                 $this->_user_password = $this->getValueFromJSON('password', 'string', true);
 
-
                 if (empty($this->_user_password)) {
                     throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Password is empty');
                 }
 
-                if (filter_var($this->_user_email, FILTER_VALIDATE_EMAIL) === false) {
+                if (false === filter_var($this->_user_email, FILTER_VALIDATE_EMAIL)) {
                     throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
                 }
+
                 break;
             default:
                 throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
+
                 break;
         }
     }
 
     /**
-     * Processing API script execution
+     * Processing API script execution.
      */
     public function action() {
         $this->pdo->beginTransaction();
@@ -57,26 +57,24 @@ class UserLogin extends BaseClass {
             $user = null;
             switch ($this->_login_type) {
                 case 1:
-                    $user = Model_User::findBy(array('email' => $this->_user_email), $this->pdo, true);
+                    $user = Model_User::findBy(['email' => $this->_user_email], $this->pdo, true);
                     if (null === $user || empty($user)) {
                         throw new System_ApiException(ResultCode::USER_NOT_FOUND);
                     }
-                    if (password_verify($this->_user_password, $user->password) === false) {
+                    if (false === password_verify($this->_user_password, $user->password)) {
                         throw new System_ApiException(ResultCode::PASSWORD_MISMATCHED);
                     }
+
                     break;
                 default:
                     throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
+
                     break;
             }
 
-            /*
-             *  Delete old session data from cache
-             */
+            // Delete old session data from cache
             $user->removeSessionFromUserId($user->id);
-            /*
-             *  Save DB session data in cache
-             */
+            // Save DB session data in cache
 
             $sessionId = $user->setSession();
 
@@ -106,34 +104,31 @@ class UserLogin extends BaseClass {
 
             Model_UserLoginSession::updateSession($user->id, $sessionId, $this->_login_type, $this->pdo);
 
-            /*
-             * Update User data in cache
-             */
+            // Update User data in cache
 
             Model_User::setCache(Model_CacheKey::getUserKey($user->id), $user);
 
             $this->pdo->commit();
         } catch (PDOException $e) {
             $this->pdo->rollback();
+
             throw $e;
         }
-        
-        /*
-         * Encode session data for client
-         */
-        $encodeUserSession = base64_encode(serialize(array(
+
+        // Encode session data for client
+        $encodeUserSession = base64_encode(serialize([
             'session_id' => $sessionId,
-            'user_id' => $user->id
-        )));
-        
-        return array(
+            'user_id' => $user->id,
+        ]));
+
+        return [
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => array(
+            'data' => [
                 'session_id' => $encodeUserSession,
                 'user_info' => $user->toJsonHash(),
-            ),
-            'error' => []
-        );
+            ],
+            'error' => [],
+        ];
     }
 }

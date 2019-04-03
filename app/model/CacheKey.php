@@ -17,26 +17,28 @@
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * 　Cache key generation Model class
+ * 　Cache key generation Model class.
  *
  * @author sabbir-hossain
  */
 class Model_CacheKey {
-
     /**
-     * Session storage cache key acquisition
+     * Session storage cache key acquisition.
      *
      * @param int $userId
+     *
      * @return Cache key
      */
     public static function getUserSessionKey($userId) {
-        return Config_Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
+        return Config_Config::getInstance()->getMemcachePrefix().'user_ses_'.$userId;
     }
 
     /**
-     * Session storage cache key acquisition
+     * Session storage cache key acquisition.
      *
      * @param string $sessionId
+     * @param mixed  $userId
+     *
      * @return Cache key
      */
 //    public static function getSessionResolveKey($sessionId) {
@@ -44,12 +46,13 @@ class Model_CacheKey {
 //    }
 
     /**
-     * User ID storage cache key acquisition
+     * User ID storage cache key acquisition.
      *
      * @param int $userId
+     *
      * @return Cache key
      */
     public static function getUserKey($userId) {
-        return Config_Config::getInstance()->getMemcachePrefix() . 'users_' . $userId;
+        return Config_Config::getInstance()->getMemcachePrefix().'users_'.$userId;
     }
 }

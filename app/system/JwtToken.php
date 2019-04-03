@@ -16,20 +16,22 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 class System_JwtToken {
-
     /**
-     * Verify JWT Token with secret key
+     * Verify JWT Token with secret key.
+     *
      * @param string $token JWT Token
-     * @param string $key secret key to sign the JWT token
+     * @param string $key   secret key to sign the JWT token
+     *
      * @return array Token verification result
      */
     public static function verifyToken($token = '', $key = '') {
-        $result = array('error' => 0, 'data' => array());
-        if ($token == '') {
+        $result = ['error' => 0, 'data' => []];
+        if ('' == $token) {
             $result['error'] = 5;
+
             return $result;
         }
 
@@ -38,6 +40,7 @@ class System_JwtToken {
             $decoded = JWT::decode($token, $key, Const_Application::JWT_ENCODE_ALGORITHMS);
         } catch (\Exception $e) { // Also tried JwtException
             $result['error'] = 1;
+
             return $result;
         }
 
@@ -47,19 +50,23 @@ class System_JwtToken {
     }
 
     /**
-     * Create JWT Token from given key and payload
-     * @param array $payload sensitive data as payload
-     * @param string $key secret key to sign the JWT token
+     * Create JWT Token from given key and payload.
+     *
+     * @param array  $payload sensitive data as payload
+     * @param string $key     secret key to sign the JWT token
+     *
      * @return array Token creation result
      */
-    public static function createToken($payload = array(), $key = '') {
-        $result = array('error' => 0, 'token' => '');
+    public static function createToken($payload = [], $key = '') {
+        $result = ['error' => 0, 'token' => ''];
+
         try {
             $jwt = JWT::encode($payload, $key);
             $result['token'] = $jwt;
         } catch (\Exception $e) {
             // Also tried JwtException
             $result['error'] = 1;
+
             return $result;
         }
 

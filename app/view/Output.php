@@ -14,26 +14,25 @@
  * @filesource
  */
 
-
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Output class
- * This class views all the responses after API execution
+ * This class views all the responses after API execution.
  *
  * @author sabbir-hossain
  */
-
 class View_Output {
-
     /**
-     * class constructor
+     * class constructor.
      */
     public function __construct() {
     }
 
     /**
-     * Server Response in JSON
+     * Server Response in JSON.
+     *
+     * @param mixed $json_array
      */
     public static function responseJson($json_array) {
         $jsonResult = self::safe_json_encode($json_array);
@@ -43,7 +42,7 @@ class View_Output {
          * ------------- $arr = array_map('utf8_encode', $json_array);
          * ------------- Flight::json($arr);
          */
-        
+
         header('Content-type:application/json;charset=utf-8');
         echo $jsonResult;
         exit;
@@ -62,18 +61,19 @@ class View_Output {
             case JSON_ERROR_NONE:
                 return $encoded;
             case JSON_ERROR_DEPTH:
-                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, "Maximum stack depth exceeded");
+                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, 'Maximum stack depth exceeded');
             case JSON_ERROR_STATE_MISMATCH:
-                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, "Underflow or the modes mismatch");
+                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, 'Underflow or the modes mismatch');
             case JSON_ERROR_CTRL_CHAR:
-                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, "Unexpected control character found");
+                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, 'Unexpected control character found');
             case JSON_ERROR_SYNTAX:
-                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, "Syntax error, malformed JSON");
+                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, 'Syntax error, malformed JSON');
             case JSON_ERROR_UTF8:
                 $clean = self::utf8ize($data);
+
                 return self::safe_json_encode($clean);
             default:
-                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, "Unknown error");
+                throw new System_ApiException(ResultCode::JSON_OUTPUT_ERROR, 'Unknown error');
         }
     }
 
@@ -91,6 +91,7 @@ class View_Output {
         } elseif (is_string($mixed)) {
             return utf8_encode($mixed);
         }
+
         return $mixed;
     }
 }
