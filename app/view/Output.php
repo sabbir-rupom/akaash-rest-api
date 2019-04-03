@@ -2,43 +2,47 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Output class
  * This class views all the responses after API execution
- * 
+ *
  * @author sabbir-hossain
  */
 
-class View_Output {
+class View_Output
+{
 
     /**
      * class constructor
      */
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     /**
      * Server Response in JSON
      */
-    public static function responseJson($json_array) {
+    public static function responseJson($json_array)
+    {
         $jsonResult = self::safe_json_encode($json_array);
         /*
-         * Flight JSON encode feature is not used 
-         * to avoid JSON_ERROR_UTF8 
+         * Flight JSON encode feature is not used
+         * to avoid JSON_ERROR_UTF8
          * ------------- $arr = array_map('utf8_encode', $json_array);
          * ------------- Flight::json($arr);
          */
@@ -54,7 +58,8 @@ class View_Output {
      * Convert result to JSON Object for output result
      */
 
-    public static function safe_json_encode($data) {
+    public static function safe_json_encode($data)
+    {
         $encoded = json_encode($data, JSON_PRETTY_PRINT);
 
         switch (json_last_error()) {
@@ -77,20 +82,20 @@ class View_Output {
     }
 
     /*
-     * utf8 error correction from result array 
+     * utf8 error correction from result array
      * @param array $mixed array of result from API
      * Correct all utf-8 related errors for proper JSON output
      */
 
-    public static function utf8ize($mixed) {
+    public static function utf8ize($mixed)
+    {
         if (is_array($mixed)) {
             foreach ($mixed as $key => $value) {
                 $mixed[$key] = self::utf8ize($value);
             }
-        } else if (is_string($mixed)) {
+        } elseif (is_string($mixed)) {
             return utf8_encode($mixed);
         }
         return $mixed;
     }
-
 }

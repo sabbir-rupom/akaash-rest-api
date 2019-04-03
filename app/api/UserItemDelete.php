@@ -1,38 +1,40 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * User data acquisition actions.
  */
-class UserItemDelete extends BaseClass {
+class UserItemDelete extends BaseClass
+{
 
     /**
      * User Login required or not
      */
-    const LOGIN_REQUIRED = TRUE; 
+    const LOGIN_REQUIRED = true;
 
     protected $item_id;
 
     /**
      * Validation of request
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         // Acquiring item id from json request
-        $this->item_id = $this->getValueFromJSON('item_id', 'int', TRUE);
+        $this->item_id = $this->getValueFromJSON('item_id', 'int', true);
     }
 
     /**
      * Process API request
      */
-    public function action() {
+    public function action()
+    {
+        $userItemObj = Model_UserItem::findBy(array('user_id' => $this->userId, 'id' => $this->item_id), $this->pdo, true);
         
-        $userItemObj = Model_UserItem::findBy(array('user_id' => $this->userId, 'id' => $this->item_id), $this->pdo, TRUE);
         
-        
-        if(empty($userItemObj)) {
+        if (empty($userItemObj)) {
             throw new System_ApiException(ResultCode::NOT_FOUND, 'User does not have this item!');
         }
         
@@ -48,5 +50,4 @@ class UserItemDelete extends BaseClass {
             'error' => []
         );
     }
-
 }

@@ -2,27 +2,28 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Application constant class
  * This class provides all constant values required throughout this application
- * 
+ *
  * @author sabbir-hossain
  */
-class Const_Application {
+class Const_Application
+{
 
     /** Unknown client
      */
@@ -62,5 +63,4 @@ class Const_Application {
      * Allowed encoded algorithms for JWT
      */
     const JWT_ENCODE_ALGORITHMS = [ 'HS256', 'HS512' ];
-
 }

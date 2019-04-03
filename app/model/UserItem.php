@@ -1,11 +1,12 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * User Item model class.
  */
-class Model_UserItem extends Model_BaseModel {
+class Model_UserItem extends Model_BaseModel
+{
 
     /**
      * Table Name
@@ -18,23 +19,23 @@ class Model_UserItem extends Model_BaseModel {
     protected static $columnsOnDB = array(
         'id' => array(
             'type' => 'int',
-            'json' => TRUE
+            'json' => true
         ),
         'user_id' => array(
             'type' => 'int',
-            'json' => FALSE
+            'json' => false
         ),
         'item_name' => array(
             'type' => 'string',
-            'json' => TRUE
+            'json' => true
         ),
         'created_at' => array(
             'type' => 'string',
-            'json' => FALSE
+            'json' => false
         ),
         'updated_at' => array(
             'type' => 'string',
-            'json' => FALSE
+            'json' => false
         )
     );
 
@@ -45,9 +46,10 @@ class Model_UserItem extends Model_BaseModel {
      * @param string $itemName Name of user item
      * @param obj $pdo DB connection Object PDO
      * @throws System_Exception
-     * @return obj $userItemObj Model_UserItem object 
+     * @return obj $userItemObj Model_UserItem object
      */
-    public static function addUserItem($userId, $itemName, $pdo = null) {
+    public static function addUserItem($userId, $itemName, $pdo = null)
+    {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
@@ -74,15 +76,16 @@ class Model_UserItem extends Model_BaseModel {
      * @param obj $pdo DB connection Object PDO
      * @return array $result Array of item list
      */
-    public static function getAllItems($itemName = '', $userId = null, $pdo = null) {
+    public static function getAllItems($itemName = '', $userId = null, $pdo = null)
+    {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
         $sql = "SELECT item_name, count(item_name) AS count FROM " . self::TABLE_NAME . " WHERE ";
 
         list($condition, $values) = self::constructQueryCondition(
-                        array(
-                            array('item_name', $itemName, 'like'), 
+            array(
+                            array('item_name', $itemName, 'like'),
                             array('user_id', $userId, '=')
                         )
         );
@@ -97,5 +100,4 @@ class Model_UserItem extends Model_BaseModel {
 
         return $result;
     }
-
 }

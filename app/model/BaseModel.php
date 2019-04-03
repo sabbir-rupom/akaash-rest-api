@@ -2,31 +2,32 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * Abstract Base Model Class 
+ * Abstract Base Model Class
  */
-abstract class Model_BaseModel {
+abstract class Model_BaseModel
+{
 
     // Table name. Be overridden by the implementation class.
     const TABLE_NAME = "";
     // Created_at whether the column exists. Be overridden by the implementation class, if necessary.
-    const HAS_CREATED_AT = TRUE;
+    const HAS_CREATED_AT = true;
     // Updated_at whether the column exists. Be overridden by the implementation class, if necessary.
-    const HAS_UPDATED_AT = TRUE;
+    const HAS_UPDATED_AT = true;
     // Memcached Validity period
     const MEMCACHED_EXPIRE = 1800; // 30 minutes
 
@@ -41,7 +42,8 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query result
      * @return object Search result as an object of called class
      */
-    public static function find($id = NULL, $pdo = null, $forUpdate = FALSE) {
+    public static function find($id = null, $pdo = null, $forUpdate = false)
+    {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -69,7 +71,8 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query result
      * @return object Search result as an object of called class
      */
-    public static function findBy($params = [], $pdo = null, $forUpdate = FALSE) {
+    public static function findBy($params = [], $pdo = null, $forUpdate = false)
+    {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -94,7 +97,8 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function findAllBy($params = [], $order = null, $limitArgs = null, $pdo = null, $forUpdate = FALSE) {
+    public static function findAllBy($params = [], $order = null, $limitArgs = null, $pdo = null, $forUpdate = false)
+    {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -111,7 +115,7 @@ abstract class Model_BaseModel {
     
     /**
      * Based on specified criteria, returns specific items of the records from the database.
-     * @param array $columns Column names are values which will be returned in result only 
+     * @param array $columns Column names are values which will be returned in result only
      * @param array $params Column name the key, associative array whose value is the value to use for the search.
      * @param string $order SQL ORDER BY column, associative array whose value is Direction and key is Column
      * @param array $limitArgs SQL LIMIT value
@@ -119,7 +123,8 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function findColumnSpecificData($columns, $params, $order = null, $limitArgs = null, $pdo = null) {
+    public static function findColumnSpecificData($columns, $params, $order = null, $limitArgs = null, $pdo = null)
+    {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -142,7 +147,8 @@ abstract class Model_BaseModel {
      * @param bool $highPerformanceFlag to count the number of records in table
      * @return int Number of records
      */
-    public static function countBy($params = [], $pdo = null, $highPerformanceFlag = false) {
+    public static function countBy($params = [], $pdo = null, $highPerformanceFlag = false)
+    {
         if ($pdo == null) {
             $pdo = Flight::pdo();
         }
@@ -177,7 +183,8 @@ abstract class Model_BaseModel {
      * @param boolean $forUpdate Whether to update the query.
      * @return array Constructed Query
      */
-    protected static function constructQuery($params = [], $order = array(), $limitArgs = null, $forUpdate = FALSE) {
+    protected static function constructQuery($params = [], $order = array(), $limitArgs = null, $forUpdate = false)
+    {
         list($conditions, $values) = self::constructConditions($params);
 
 //        foreach ($params as $k => $v) {
@@ -219,15 +226,14 @@ abstract class Model_BaseModel {
      * @param array $params $params[][0] for column-name, $params[][1] for value, $params[][1] for condition
      * @return array Constructed Query condition
      */
-    protected static function constructConditions($params = []) {
+    protected static function constructConditions($params = [])
+    {
         $conditions = $values = [];
         foreach ($params as $k => $v) {
-
             if (is_array($v)) {
                 $conditions[] = $k . ' IN (' . implode(',', array_fill(0, count($v), '?')) . ')';
                 $values = array_merge($values, $v);
             } else {
-
                 $field = explode(' ', trim($k));
 
                 if (count($field) > 1) {
@@ -264,7 +270,8 @@ abstract class Model_BaseModel {
      * @param PDO $pdo
      * @return PDO object.
      */
-    public function create($pdo = null) {
+    public function create($pdo = null)
+    {
         if (is_null($pdo)) {
             $pdo = Flight::pdo();
         }
@@ -273,11 +280,11 @@ abstract class Model_BaseModel {
 
         $now = Common_DateUtil::getToday();
         $sql = 'INSERT INTO ' . static::TABLE_NAME . ' (' . join(',', $columns);
-        $sql .= (static::HAS_CREATED_AT === TRUE ? ',created_at' : '');
-        $sql .= (static::HAS_UPDATED_AT === TRUE ? ',updated_at' : '');
+        $sql .= (static::HAS_CREATED_AT === true ? ',created_at' : '');
+        $sql .= (static::HAS_UPDATED_AT === true ? ',updated_at' : '');
         $sql .= ') VALUES (' . str_repeat('?,', count($columns) - 1) . '?';
-        $sql .= (static::HAS_CREATED_AT === TRUE ? ",'" . $now . "'" : '');
-        $sql .= (static::HAS_UPDATED_AT === TRUE ? ",'" . $now . "'" : '');
+        $sql .= (static::HAS_CREATED_AT === true ? ",'" . $now . "'" : '');
+        $sql .= (static::HAS_UPDATED_AT === true ? ",'" . $now . "'" : '');
         $sql .= ')';
         // INSERT data
         $stmt = $pdo->prepare($sql);
@@ -290,7 +297,8 @@ abstract class Model_BaseModel {
      * To update the object.
      * @param PDO $pdo DB connection Object PDO
      */
-    public function update($pdo = null) {
+    public function update($pdo = null)
+    {
         if (!isset($this->id)) {
             throw new Exception('The ' . get_called_class() . ' is not saved yet.');
         }
@@ -305,7 +313,7 @@ abstract class Model_BaseModel {
             $setStmts[] = $column . '=?';
         }
         $sql .= join(',', $setStmts);
-        if (static::HAS_UPDATED_AT === TRUE) {
+        if (static::HAS_UPDATED_AT === true) {
             $sql .= ",updated_at='" . Common_DateUtil::getToday() . "'";
         }
         $sql .= ' WHERE id = ?';
@@ -322,7 +330,8 @@ abstract class Model_BaseModel {
      * @param PDO $pdo DB connection Object PDO
      * @return obj PDO query execution result
      */
-    public function delete($pdo = null) {
+    public function delete($pdo = null)
+    {
         if (!isset($this->id)) {
             throw new Exception('The ' . get_called_class() . ' is not initiated properly.');
         }
@@ -338,11 +347,12 @@ abstract class Model_BaseModel {
 
     /**
      * $columns Return an array of values corresponding to
-     * Do not include attributes that are not set in the instance 
+     * Do not include attributes that are not set in the instance
      * [ id model class does not include attributes in the DB column definition, they will not be executed, only default values will be ]
      * @return array An array consisting of an array of columns, an array of values
      */
-    protected function getValues() {
+    protected function getValues()
+    {
         $values = array();
         $columns = array();
         foreach (static::getColumns() as $column) {
@@ -357,7 +367,8 @@ abstract class Model_BaseModel {
     /**
      * Return the column name list.
      */
-    protected static function getColumns() {
+    protected static function getColumns()
+    {
         if (isset(static::$columnsOnDB)) {
             return array_keys(static::$columnsOnDB);
         } else {
@@ -368,7 +379,8 @@ abstract class Model_BaseModel {
     /**
      * To get the column list of the database table
      */
-    protected static function getColumnsOnDB($pdo = null) {
+    protected static function getColumnsOnDB($pdo = null)
+    {
         if (self::$columnsOnDB == null) {
             if ($pdo == null) {
                 $pdo = Flight::pdo();
@@ -384,8 +396,8 @@ abstract class Model_BaseModel {
     /**
      * To check whether there is a column name both in database and model class definition
      * */
-    public static function hasColumn($name) {
-
+    public static function hasColumn($name)
+    {
         return (in_array($name, static::getColumnsOnDB()) &&
                 in_array($name, static::getColumns()));
     }
@@ -393,8 +405,8 @@ abstract class Model_BaseModel {
     /**
      * To check whether there is a column in model class column definition
      * */
-    public static function hasColumnDefined($name) {
-
+    public static function hasColumnDefined($name)
+    {
         return (in_array($name, static::getColumns()));
     }
 
@@ -402,7 +414,8 @@ abstract class Model_BaseModel {
      * Returns the type of column.
      * @param String $ column target column name defined in model class
      */
-    protected static function getColumnType($column) {
+    protected static function getColumnType($column)
+    {
         return static::$columnsOnDB[$column]['type'];
     }
 
@@ -410,26 +423,28 @@ abstract class Model_BaseModel {
      * Return to the specified column whether or not to include in JSON.
      * @param String $ column target column name.
      */
-    public static function isColumnIncludedInJson($column) {
+    public static function isColumnIncludedInJson($column)
+    {
         $columnDef = static::$columnsOnDB[$column];
         if (isset($columnDef['json'])) {
             return $columnDef['json'];
         }
         // The default is TRUE.
-        return TRUE;
+        return true;
     }
 
     /**
      * Return an associative array for JSON.
      */
-    public function toJsonHash() {
+    public function toJsonHash()
+    {
         foreach (static::getColumns() as $column) {
             if (static::isColumnIncludedInJson($column)) {
                 if ('int' === static::getColumnType($column) && isset($this->$column)) {
                     $hash[$column] = (int) $this->$column;
-                } else if ('float' === static::getColumnType($column) && isset($this->$column)) {
+                } elseif ('float' === static::getColumnType($column) && isset($this->$column)) {
                     $hash[$column] = floatval($this->$column);
-                } else if ('bool' === static::getColumnType($column) && isset($this->$column) && !is_null($this->$column)) {
+                } elseif ('bool' === static::getColumnType($column) && isset($this->$column) && !is_null($this->$column)) {
                     $hash[$column] = (bool) $this->$column;
                 } else {
                     $hash[$column] = (!isset($this->$column) || is_null($this->$column)) ? "" : $this->$column;
@@ -443,7 +458,8 @@ abstract class Model_BaseModel {
      * Get the cache data.
      * @param unknown_type $key
      */
-    public static function getCache($cacheKey) {
+    public static function getCache($cacheKey)
+    {
         $memcache = Config_Config::getMemcachedClient();
         return $memcache->get($cacheKey);
     }
@@ -453,7 +469,8 @@ abstract class Model_BaseModel {
      * @param unknown_type $key
      * @param unknown_type $value
      */
-    public static function setCache($cacheKey, $value) {
+    public static function setCache($cacheKey, $value)
+    {
         $memcache = Config_Config::getMemcachedClient();
         $call_class = get_called_class();
         $ret_value = $memcache->set($cacheKey, $value, MEMCACHE_COMPRESSED, $call_class::MEMCACHED_EXPIRE);
@@ -464,7 +481,8 @@ abstract class Model_BaseModel {
      * Delete the cache.
      * @param unknown_type $key
      */
-    public static function deleteCache($cacheKey) {
+    public static function deleteCache($cacheKey)
+    {
         $memcache = Config_Config::getMemcachedClient();
         $memcache->delete($cacheKey);
     }
@@ -472,7 +490,8 @@ abstract class Model_BaseModel {
     /**
      * Returns the key for setting all records in memcache.
      */
-    protected static function getAllKey() {
+    protected static function getAllKey()
+    {
         return Config_Config::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
     }
 
@@ -482,12 +501,13 @@ abstract class Model_BaseModel {
      *
      * @return array Array of model objects.
      */
-    public static function getAll() {
+    public static function getAll()
+    {
         $key = static::getAllKey();
         // To connect to Memcached, to get the value.
         $memcache = Config_Config::getMemcachedClient();
         $value = $memcache->get($key);
-        if (FALSE === $value) {
+        if (false === $value) {
             // If the value has been set to Memcached, it is set to Memcached to retrieve from the database.
             $value = self::findAllBy(array());
             if ($value) {
@@ -496,5 +516,4 @@ abstract class Model_BaseModel {
         }
         return $value;
     }
-
 }

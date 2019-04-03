@@ -2,25 +2,26 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * A utility class that summarizes processing related to arrays
  */
-class Common_ArrayUtil {
+class Common_ArrayUtil
+{
 
     /**
      * Specify elements of the array and acquire data
@@ -31,14 +32,16 @@ class Common_ArrayUtil {
      * @param array $array
      * @param unknown_type $defaultValue
      */
-    public static function getArrayValue($key, $array, $defaultValue = null) {
+    public static function getArrayValue($key, $array, $defaultValue = null)
+    {
         if (!array_key_exists($key, $array)) {
             return $defaultValue;
         }
         return $array[$key];
     }
 
-    public static function searchPrefixValue($prefix, array $array) {
+    public static function searchPrefixValue($prefix, array $array)
+    {
         foreach ($array as $key => $value) {
             if (strpos($value, $prefix) !== false) {
                 return $key;
@@ -54,7 +57,8 @@ class Common_ArrayUtil {
      * @access public
      * @param array $arrayData Target sequence
      */
-    public static function trimArray($arrayData) {
+    public static function trimArray($arrayData)
+    {
         // If the target array is empty or null, return it as it is
         if (empty($arrayData)) {
             return $arrayData;
@@ -81,8 +85,8 @@ class Common_ArrayUtil {
      * @param int $index
      * @return array
      */
-    public static function add(array &$array, array $element, $index = null) {
-
+    public static function add(array &$array, array $element, $index = null)
+    {
         if ($index === null) {
             $index = count($array);
         }
@@ -91,5 +95,4 @@ class Common_ArrayUtil {
 
         return true;
     }
-
 }

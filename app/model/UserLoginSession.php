@@ -1,47 +1,47 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * User login log model.
  */
-class Model_UserLoginSession extends Model_BaseModel {
-
+class Model_UserLoginSession extends Model_BaseModel
+{
     const TABLE_NAME = "user_login_sessions";
 
     // Table column definitions
     protected static $columnsOnDB = array(
         'id' => array(
             'type' => 'int',
-            'json' => FALSE
+            'json' => false
         ),
         'user_id' => array(
             'type' => 'int',
-            'json' => FALSE
+            'json' => false
         ),
         'session_id' => array(
             'type' => 'string',
-            'json' => FALSE
+            'json' => false
         ),
         'login_type' => array(
             'type' => 'int',
-            'json' => FALSE
+            'json' => false
         ),
         'login_count' => array(
             'type' => 'int',
-            'json' => FALSE
+            'json' => false
         ),
         'time' => array(
             'type' => 'int',
-            'json' => FALSE
+            'json' => false
         ),
         'created_at' => array(
             'type' => 'datetime',
-            'json' => FALSE
+            'json' => false
         ),
         'updated_at' => array(
             'type' => 'datetime',
-            'json' => FALSE
+            'json' => false
         )
     );
 
@@ -55,12 +55,13 @@ class Model_UserLoginSession extends Model_BaseModel {
      * @throws System_ApiException
      * @return bool Success [TRUE]
      */
-    public static function updateSession($userId, $sessionId, $loginType, $pdo = null) {
+    public static function updateSession($userId, $sessionId, $loginType, $pdo = null)
+    {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
 
-        $userSession = self::findBy(array('user_id' => $userId, 'DATE(created_at)' => Common_DateUtil::getToday('Y-m-d')), $pdo, TRUE);
+        $userSession = self::findBy(array('user_id' => $userId, 'DATE(created_at)' => Common_DateUtil::getToday('Y-m-d')), $pdo, true);
 
         if (empty($userSession)) {
             $userSession = new Model_UserLoginSession();
@@ -79,7 +80,6 @@ class Model_UserLoginSession extends Model_BaseModel {
             $userSession->update($pdo);
         }
 
-        return TRUE;
+        return true;
     }
-
 }

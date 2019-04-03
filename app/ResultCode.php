@@ -2,28 +2,29 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * ResultCode Class
- * This class represents the state of API during / after the execution 
+ * This class represents the state of API during / after the execution
  * Points out the type of exception along with user-defined messages to handle all error exceptions
- * 
+ *
  * @author sabbir-hossain
  */
-class ResultCode {
+class ResultCode
+{
     /*
      * USER DEFINED
      */
@@ -39,13 +40,14 @@ class ResultCode {
     const DATA_NOT_ALLOWED = 8;    // Provided data not allowed in server
     const DUPLICATE_DATA = 9;    // Provided data not allowed in server
     const FILE_UPLOAD_ERROR = 10;    // File upload error
-    const DATABASE_ERROR = 11;    // File upload error
-    const JSON_OUTPUT_ERROR = 20;     //Another user connected to google play
+    const DATABASE_ERROR = 11;    // Database error
+    const PASSWORD_MISMATCHED = 15;    // Password does not match with saved one
+    const JSON_OUTPUT_ERROR = 20;     // Failed to generate JSON data
     const ACCESS_FORBIDDEN = 100;     //Forbidden access error
     const NOT_FOUND = 404;     // Data not found
 
-    
     const USER_BLACKLIST = 1000; // User is blacklisted / blocked error
+    
     const CODE_MESSAGE = array(
         self::SUCCESS => array(
             'title' => 'SUCCESS',
@@ -102,6 +104,11 @@ class ResultCode {
             'msg' => 'Access forbidden',
             'http_status' => 403
         ),
+        self::PASSWORD_MISMATCHED => array(
+            'title' => 'PASSWORD MISMATCHED',
+            'msg' => 'Password did not matched',
+            'http_status' => 406
+        ),
         self::DATA_NOT_ALLOWED => array(
             'title' => 'DATA NOT ALLOWED',
             'msg' => 'Provided data is not acceptable',
@@ -134,7 +141,8 @@ class ResultCode {
      * @param int $code
      * @return string Return message against result code.
      */
-    public static function getTitle($code) {
+    public static function getTitle($code)
+    {
         return self::CODE_MESSAGE[$code]['title'];
     }
 
@@ -143,7 +151,8 @@ class ResultCode {
      * @param int $code
      * @return string Return message against result code.
      */
-    public static function getMessage($code) {
+    public static function getMessage($code)
+    {
         return self::CODE_MESSAGE[$code]['msg'];
     }
 
@@ -152,8 +161,8 @@ class ResultCode {
      * @param int $code
      * @return int Return HTTP Status code against result code.
      */
-    public static function getHTTPstatusCode($code) {
+    public static function getHTTPstatusCode($code)
+    {
         return self::CODE_MESSAGE[$code]['http_status'];
     }
-
 }

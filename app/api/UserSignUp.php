@@ -1,16 +1,17 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Description of UserSignUp API class
  *
  * @author sabbir-hossain
  */
-class UserSignUp extends BaseClass {
+class UserSignUp extends BaseClass
+{
 
     // Login Required.
-    const LOGIN_REQUIRED = FALSE;
+    const LOGIN_REQUIRED = false;
 
     private $_user_email = null;
     private $_user_password = null;
@@ -19,17 +20,18 @@ class UserSignUp extends BaseClass {
     /**
      * Validating Login Request
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
-        $this->_user_email = $this->getValueFromJSON('email', 'string', TRUE);
-        $this->_user_password = $this->getValueFromJSON('password', 'string', TRUE);
-        $this->_user_name = $this->getValueFromJSON('user_name', 'string', TRUE);
+        $this->_user_email = $this->getValueFromJSON('email', 'string', true);
+        $this->_user_password = $this->getValueFromJSON('password', 'string', true);
+        $this->_user_name = $this->getValueFromJSON('user_name', 'string', true);
 
         if (filter_var($this->_user_email, FILTER_VALIDATE_EMAIL) === false) {
             throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
-        } 
-        if(Model_User::countBy(array('email' => $this->_user_email), $this->pdo) > 0) {
+        }
+        if (Model_User::countBy(array('email' => $this->_user_email), $this->pdo) > 0) {
             throw new System_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'Another user is registered with this email!');
         }
     }
@@ -37,7 +39,8 @@ class UserSignUp extends BaseClass {
     /**
      * Processing API script execution
      */
-    public function action() {
+    public function action()
+    {
         $this->pdo->beginTransaction();
 
         try {
@@ -62,10 +65,10 @@ class UserSignUp extends BaseClass {
 //            }
 
             if (property_exists($this->json, 'longitude')) {
-                $user->longitude = $this->getValueFromJSON('longitude', 'string', TRUE);
+                $user->longitude = $this->getValueFromJSON('longitude', 'string', true);
             }
             if (property_exists($this->json, 'latitude')) {
-                $user->latitude = $this->getValueFromJSON('latitude', 'string', TRUE);
+                $user->latitude = $this->getValueFromJSON('latitude', 'string', true);
             }
             
             if (property_exists($this->json, 'profile_image')) {
@@ -101,5 +104,4 @@ class UserSignUp extends BaseClass {
             'error' => []
         );
     }
-
 }

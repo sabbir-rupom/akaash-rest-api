@@ -2,24 +2,25 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Utility helper class
  */
-class Common_Utils {
+class Common_Utils
+{
 
     /**
      * Convert a string to CamelCase
@@ -28,7 +29,8 @@ class Common_Utils {
      * @param boolean $ucfirst
      * @return CamelCase of string, underscore is removed
      */
-    public static function camelize($str, $ucfirst = TRUE) {
+    public static function camelize($str, $ucfirst = true)
+    {
         if (stristr($str, '-')) {
             $elements = explode('-', $str);
         } else {
@@ -50,7 +52,8 @@ class Common_Utils {
      * @param mixed $var Value to be checked
      * @return boolean Check result
      */
-    public static function isInt($var) {
+    public static function isInt($var)
+    {
         if (is_int($var)) {
             return true;
         }
@@ -64,7 +67,8 @@ class Common_Utils {
      * @param mixed $object
      * @return string Var_dump content text column
      */
-    public static function dump($object) {
+    public static function dump($object)
+    {
         ob_start();
         var_dump($object);
         $dumpStdOut = ob_get_contents();
@@ -80,9 +84,10 @@ class Common_Utils {
      * @param object Any object
      * @return array Conversion hash representation
      */
-    public static function objToJsonHash($obj) {
+    public static function objToJsonHash($obj)
+    {
         $str = json_encode($obj);
-        $hash = json_decode($str, TRUE);
+        $hash = json_decode($str, true);
         return $hash;
     }
 
@@ -92,9 +97,10 @@ class Common_Utils {
      * @param array JSON hash representation
      * @return object Converted object representation
      */
-    public static function objFromJsonHash($hash) {
+    public static function objFromJsonHash($hash)
+    {
         $str = json_encode($hash);
-        $obj = json_decode($str, FALSE);
+        $obj = json_decode($str, false);
         return $obj;
     }
 
@@ -102,7 +108,8 @@ class Common_Utils {
      * String parameter sent with HTTP POST
      * @return string
      */
-    public static function getPostStringParameter() {
+    public static function getPostStringParameter()
+    {
         $handle = fopen('php://input', 'r');
         $string = fgets($handle);
 
@@ -116,11 +123,12 @@ class Common_Utils {
      *
      * @return int $platformType Type of client platform
      */
-    public static function getHttpRequestPlatformType() {
+    public static function getHttpRequestPlatformType()
+    {
 
         // Unable to acquire OS type None
         if (false == array_key_exists('platform_type', $_GET)) {
-            if (TRUE == array_key_exists('client_type', $_GET)) {
+            if (true == array_key_exists('client_type', $_GET)) {
                 $client = intval($_GET['client_type']);
                 if ($client === 2) {
                     return Const_Application::PLATFORM_TYPE_ANDROID;
@@ -138,5 +146,4 @@ class Common_Utils {
 
         return $platformType;
     }
-
 }
