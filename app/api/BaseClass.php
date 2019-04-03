@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * RESTful API Template
  *
  * A RESTful API template based on flight-PHP framework
@@ -13,7 +13,6 @@
  * @since	Version 1.0.0
  * @filesource
  */
-
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
@@ -22,12 +21,11 @@
  * @author sabbir-hossain
  */
 class BaseClass {
-    /**
-     * User Authentication variable defined.
-     */
-    const LOGIN_REQUIRED = false;
 
-    // Token Verification bypass config
+    # User Authentication variable defined.
+    const LOGIN_REQUIRED = false;
+    
+    # Token Verification bypass config
     const TEST_ENV = false;
 
     protected $headers;
@@ -39,21 +37,15 @@ class BaseClass {
     protected $userId;
     protected $cache_user;
 
-    /**
-     * Client Type, Version.
-     */
+    # Declaring Client type & version variable
     protected $client_type;
     protected $client_version;
     protected $actionName;
 
-    /**
-     * Database PDO.
-     */
+    # Database PDO.
     protected $pdo;
 
-    /**
-     * Server Configuration Parameters.
-     */
+    # Server Configuration Parameters.
     protected $config;
 
     /**
@@ -73,16 +65,16 @@ class BaseClass {
         $this->json = $json;
         $this->actionName = $actionName;
 
-        /*
+        /**
          * Get Configuration Parameters
          * template_api_user_ses_2 template_api_users_2
          */
         $this->config = Flight::get('app_config');
 
-        // Get DB Connection object
+        # Get DB Connection object
         $this->pdo = Flight::pdo();
 
-        /*
+        /**
          * Retrive the session ID
          * Retrive request token
          * From HTTP Header
@@ -106,7 +98,7 @@ class BaseClass {
      * Request processing execution.
      */
     public function process() {
-        // Check and verify client request call / User session
+        # Check and verify client request call / User session
         $this->_filter();
 
         if (static::LOGIN_REQUIRED) {
@@ -117,13 +109,13 @@ class BaseClass {
             }
 
             $this->cache_user->last_api_time = Common_DateUtil::getToday();
-            // Update user's active time without updating cache
+            # Update user's active time without updating cache
             $this->cache_user->update($this->pdo, false);
         }
-        // Fetch and check GET query strings
+        # Fetch and check GET query strings
         $this->validate();
 
-        // Execute API Action Controller
+        # Execute API Action Controller
         $response = $this->action();
 
         return $response;
@@ -144,10 +136,10 @@ class BaseClass {
      * It verifies the value.
      */
     public function validate() {
-        // Client Type [1 = Android, 2 = iOS, 0 = Other]
+        # Client Type [1 = Android, 2 = iOS, 0 = Other]
         $this->client_type = $this->getValueFromQuery('client_type', 'int');
 
-        // Applicaion version
+        # Applicaion version
         $this->client_version = $this->getValueFromQuery('client_version', 'int');
     }
 
@@ -157,12 +149,12 @@ class BaseClass {
      * @throws Exception
      */
     protected function _filter() {
-        // Check Server Maintenance Status
+        # Check Server Maintenance Status
         $this->_checkMaintenance();
 
-        // Check & Verify Request Token
+        # Check & Verify Request Token
         $this->_checkRequestToken();
-        // Check & Verify User Login
+        # Check & Verify User Login
         if (static::LOGIN_REQUIRED) {
             $this->isLoggedIn();
 
@@ -178,7 +170,7 @@ class BaseClass {
      * @throws System_ApiException
      */
     protected function _checkMaintenance() {
-        // Maintenance check parameter
+        # Maintenance check parameter
         $maintainance_check = false;
 
         if ($maintainance_check) {
@@ -212,13 +204,13 @@ class BaseClass {
                         break;
                 }
             } else {
-                // Retrieve session ID from payload if exist
+                # Retrieve session ID from payload if exist
                 if (!empty($result['data']->sessionToken)) {
                     $this->sessionId = $result['data']->sessionToken;
                 }
-                // Get client API request time
+                # Get client API request time
                 if (!empty($result['data']->iat)) {
-                    // convert request time to Server time assuming client request time format is in UTC milisecond
+                    # convert request time to Server time assuming client request time format is in UTC milisecond
                     $this->requestTime = intval($result['data']->reqAt) + (date('Z') * 1000);
                 } else {
                     $this->requestTime = time();
@@ -340,39 +332,39 @@ class BaseClass {
             return true;
         }
         switch ($type) {
-                case 'int':
-                    $result = Common_Utils::isInt($value);
+            case 'int':
+                $result = Common_Utils::isInt($value);
 
-                    break;
-                case 'bool':
-                    $result = is_bool($value);
+                break;
+            case 'bool':
+                $result = is_bool($value);
 
-                    break;
-                case 'string':
-                    $result = is_string($value);
+                break;
+            case 'string':
+                $result = is_string($value);
 
-                    break;
-                case 'float':
-                    $result = is_float($value) || is_int($value);
+                break;
+            case 'float':
+                $result = is_float($value) || is_int($value);
 
-                    break;
-                case 'json':
-                    $result = $this->is_json($value);
+                break;
+            case 'json':
+                $result = $this->is_json($value);
 
-                    break;
-                case 'binary':
-                    $result = is_binary($value);
+                break;
+            case 'binary':
+                $result = is_binary($value);
 
-                    break;
-                case 'array':
-                    $result = is_array($value);
+                break;
+            case 'array':
+                $result = is_array($value);
 
-                    break;
-                default:
-                    $result = true;
+                break;
+            default:
+                $result = true;
 
-                    break;
-            }
+                break;
+        }
 
         return $result;
     }
@@ -383,9 +375,9 @@ class BaseClass {
      * @return bool In the case of maintenance mode, true. Otherwise, false.
      */
     protected function isMaintenance() {
-        // In the case of maintenance state
+        # In the case of maintenance state
         if (Config_Config::getInstance()->checkMaintenance()) {
-            // If it is not in the test user
+            # If it is not in the test user
             if (false == $this->isTestUser()) {
                 return true;
             }
@@ -400,9 +392,9 @@ class BaseClass {
      * @return bool If it has been tested user registration, true. Others are false.
      */
     protected function isTestUser() {
-        // If you are already logged in
+        # If you are already logged in
         if (true == $this->isLoggedIn()) {
-            // Check if session user ID matches the tester ID
+            # Check if session user ID matches the tester ID
             return $this->userId == Config_Config::getInstance()->getTestUserID();
         }
 
@@ -434,15 +426,15 @@ class BaseClass {
         $capNdigitRegex = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         switch ($type) {
-            case 'num': // All NUMERIC
+            case 'num': # All NUMERIC
                 $regex = $intRegex;
 
                 break;
-            case 'cap': // All CAPITAL
+            case 'cap': # All CAPITAL
                 $regex = $capNdigitRegex;
 
                 break;
-            default: // Any Character Combination
+            default: # Any Character Combination
                 $regex = $stringRegex;
 
                 break;
@@ -468,29 +460,29 @@ class BaseClass {
      * @return string $image_name Return uploaded image name
      */
     protected function process_binary_image($ID, $binary_image, $type = '', $old_image_delete = true) {
-        $base64_string = 'data:image/png;base64,'.$binary_image;
+        $base64_string = 'data:image/png;base64,' . $binary_image;
 
         $curr_time = time();
-        $image_prefix = $type.$ID.'_';
-        $image_name = $image_prefix.$curr_time.'.png';
-        $mask = $image_prefix.'*.*';
+        $image_prefix = $type . $ID . '_';
+        $image_name = $image_prefix . $curr_time . '.png';
+        $mask = $image_prefix . '*.*';
 
         if (!file_exists(Const_Application::UPLOAD_PROFILE_IMAGE_PATH)) {
-            // If upload directory not exist, create
+            # If upload directory not exist, create
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
         } elseif ($old_image_delete) {
-            // Delete all previous profile image
-            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH.$mask));
+            # Delete all previous profile image
+            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH . $mask));
         }
 
         if (!file_exists(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE)) {
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE, 0777, true);
         } else {
-            // Delete all previous profile (mobile size) image
-            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE.$mask));
+            # Delete all previous profile (mobile size) image
+            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $mask));
         }
 
-        $output_file = Const_Application::UPLOAD_PROFILE_IMAGE_PATH.$image_name;
+        $output_file = Const_Application::UPLOAD_PROFILE_IMAGE_PATH . $image_name;
 
         $ifp = fopen($output_file, 'wb');
         $data = explode(',', $base64_string);
@@ -498,7 +490,7 @@ class BaseClass {
         fwrite($ifp, base64_decode($data[1]));
         fclose($ifp);
 
-        // Resize uploaded image for mobile view
+        # Resize uploaded image for mobile view
         $this->resize_image($output_file, $image_name, Const_Application::MOBILE_IMAGE_WIDTH, Const_Application::MOBILE_IMAGE_HEIGHT, $type);
 
         return $image_name;
@@ -522,26 +514,26 @@ class BaseClass {
         }
 
         $curr_time = time();
-        $image_prefix = $type.$ID.'_';
-        $image_name = $image_prefix.$curr_time.'.png';
-        $mask = $image_prefix.'*.*';
+        $image_prefix = $type . $ID . '_';
+        $image_name = $image_prefix . $curr_time . '.png';
+        $mask = $image_prefix . '*.*';
 
         if (!file_exists(Const_Application::UPLOAD_PROFILE_IMAGE_PATH)) {
-            // If upload directory not exist, create
+            # If upload directory not exist, create
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
         } elseif ($old_image_delete) {
-            // Delete all previous profile image
-            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH.$mask));
+            # Delete all previous profile image
+            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH . $mask));
         }
 
         if (!file_exists(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE)) {
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE, 0777, true);
         } else {
-            // Delete all previous profile (mobile size) image
-            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE.$mask));
+            # Delete all previous profile (mobile size) image
+            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $mask));
         }
 
-        $output_file = Const_Application::UPLOAD_PROFILE_IMAGE_PATH.$image_name;
+        $output_file = Const_Application::UPLOAD_PROFILE_IMAGE_PATH . $image_name;
 
         if (move_uploaded_file($image_file['tmp_name'], $output_file)) {
             $this->resize_image($output_file, $image_name, Const_Application::MOBILE_IMAGE_WIDTH, Const_Application::MOBILE_IMAGE_HEIGHT, $type);
@@ -564,7 +556,7 @@ class BaseClass {
      * @return string $randomString
      */
     protected function resize_image($image_src, $image_name, $maxDimW, $maxDimH, $type) {
-        $destinationImage = Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE.$image_name;
+        $destinationImage = Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $image_name;
         copy($image_src, $destinationImage);
 
         $target_filename = '';
@@ -572,7 +564,7 @@ class BaseClass {
         if ($width > $maxDimW || $height > $maxDimH) {
             $target_filename = $destinationImage;
             $size = getimagesize($destinationImage);
-            $ratio = $size[0] / $size[1]; // width/height
+            $ratio = $size[0] / $size[1]; # width/height
             if ($ratio > 1) {
                 $width = $maxDimW;
                 $height = $maxDimH / $ratio;
@@ -584,7 +576,7 @@ class BaseClass {
             $dst = imagecreatetruecolor($width, $height);
             imagecopyresampled($dst, $src, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
 
-            imagejpeg($dst, $target_filename); // adjust format as needed
+            imagejpeg($dst, $target_filename); # adjust format as needed
         }
 
         if ('' == $target_filename) {
@@ -606,7 +598,7 @@ class BaseClass {
             if ($cacheSessionId == $sessionArray['session_id']) {
                 $this->userId = (int) $sessionArray['user_id'];
 
-                // Re-set of the session time limit
+                # Re-set of the session time limit
                 Model_User::cacheSession($cacheSessionId, $this->userId);
 
                 return true;
@@ -615,4 +607,5 @@ class BaseClass {
 
         return false;
     }
+
 }
