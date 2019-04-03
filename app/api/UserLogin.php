@@ -7,7 +7,8 @@
  *
  * @author sabbir-hossain
  */
-class UserLogin extends BaseClass {
+class UserLogin extends BaseClass
+{
     // Login Required.
     const LOGIN_REQUIRED = false;
 
@@ -19,7 +20,8 @@ class UserLogin extends BaseClass {
     /**
      * Validating Login Request.
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         $this->_login_type = $this->getValueFromJSON('login_type', 'int');
@@ -50,7 +52,8 @@ class UserLogin extends BaseClass {
     /**
      * Processing API script execution.
      */
-    public function action() {
+    public function action()
+    {
         $this->pdo->beginTransaction();
 
         try {

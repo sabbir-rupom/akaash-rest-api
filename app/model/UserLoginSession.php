@@ -5,7 +5,8 @@
 /**
  * User login log model.
  */
-class Model_UserLoginSession extends Model_BaseModel {
+class Model_UserLoginSession extends Model_BaseModel
+{
     const TABLE_NAME = 'user_login_sessions';
 
     // Table column definitions
@@ -56,7 +57,8 @@ class Model_UserLoginSession extends Model_BaseModel {
      *
      * @return bool Success [TRUE]
      */
-    public static function updateSession($userId, $sessionId, $loginType, $pdo = null) {
+    public static function updateSession($userId, $sessionId, $loginType, $pdo = null)
+    {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }

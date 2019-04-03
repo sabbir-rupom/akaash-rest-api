@@ -21,8 +21,10 @@
  *
  * @author sabbir-hossain
  */
-class System_ApiException extends Exception {
-    public function __construct($code = 0, $message = '', $previous = null) {
+class System_ApiException extends Exception
+{
+    public function __construct($code = 0, $message = '', $previous = null)
+    {
         parent::__construct($message, $code, $previous);
     }
 }

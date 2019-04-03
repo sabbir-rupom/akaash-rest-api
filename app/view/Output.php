@@ -22,11 +22,13 @@
  *
  * @author sabbir-hossain
  */
-class View_Output {
+class View_Output
+{
     /**
      * class constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
 
     /**
@@ -34,7 +36,8 @@ class View_Output {
      *
      * @param mixed $json_array
      */
-    public static function responseJson($json_array) {
+    public static function responseJson($json_array)
+    {
         $jsonResult = self::safe_json_encode($json_array);
         /*
          * Flight JSON encode feature is not used
@@ -54,7 +57,8 @@ class View_Output {
      * Convert result to JSON Object for output result
      */
 
-    public static function safe_json_encode($data) {
+    public static function safe_json_encode($data)
+    {
         $encoded = json_encode($data, JSON_PRETTY_PRINT);
 
         switch (json_last_error()) {
@@ -83,7 +87,8 @@ class View_Output {
      * Correct all utf-8 related errors for proper JSON output
      */
 
-    public static function utf8ize($mixed) {
+    public static function utf8ize($mixed)
+    {
         if (is_array($mixed)) {
             foreach ($mixed as $key => $value) {
                 $mixed[$key] = self::utf8ize($value);

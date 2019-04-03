@@ -6,3 +6,4 @@ nbproject/
 vendor/
 *.dist
 *.cache
+*.dist

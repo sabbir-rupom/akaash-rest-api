@@ -5,7 +5,8 @@
 /**
  * User data acquisition actions.
  */
-class UserItemDelete extends BaseClass {
+class UserItemDelete extends BaseClass
+{
     /**
      * User Login required or not.
      */
@@ -16,7 +17,8 @@ class UserItemDelete extends BaseClass {
     /**
      * Validation of request.
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         // Acquiring item id from json request
@@ -26,7 +28,8 @@ class UserItemDelete extends BaseClass {
     /**
      * Process API request.
      */
-    public function action() {
+    public function action()
+    {
         $userItemObj = Model_UserItem::findBy(['user_id' => $this->userId, 'id' => $this->item_id], $this->pdo, true);
 
         if (empty($userItemObj)) {
