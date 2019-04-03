@@ -14,44 +14,43 @@
  * @filesource
  */
 
-
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * A utility class that summarizes processing related to arrays
+ * A utility class that summarizes processing related to arrays.
  */
 class Common_ArrayUtil {
-
     /**
-     * Specify elements of the array and acquire data
+     * Specify elements of the array and acquire data.
      *
      * If it is possible to acquire the data contained in the key.
      *
-     * @param string $key
-     * @param array $array
+     * @param string       $key
+     * @param array        $array
      * @param unknown_type $defaultValue
      */
     public static function getArrayValue($key, $array, $defaultValue = null) {
         if (!array_key_exists($key, $array)) {
             return $defaultValue;
         }
+
         return $array[$key];
     }
 
     public static function searchPrefixValue($prefix, array $array) {
         foreach ($array as $key => $value) {
-            if (strpos($value, $prefix) !== false) {
+            if (false !== strpos($value, $prefix)) {
                 return $key;
             }
         }
+
         return false;
     }
 
     /**
      * Rewind array index from 0
-     * If the value is set to null, it is removed from the array
+     * If the value is set to null, it is removed from the array.
      *
-     * @access public
      * @param array $arrayData Target sequence
      */
     public static function trimArray($arrayData) {
@@ -60,12 +59,12 @@ class Common_ArrayUtil {
             return $arrayData;
         }
 
-        $returnArray = array();
+        $returnArray = [];
 
         reset($arrayData);
 
         while (list($key, $value) = each($arrayData)) {
-            if ($value !== null) {
+            if (null !== $value) {
                 $returnArray[] = $value;
             }
         }
@@ -74,15 +73,16 @@ class Common_ArrayUtil {
     }
 
     /**
-     * Add an element to the specified index of the base array
+     * Add an element to the specified index of the base array.
      *
      * @param array $array
      * @param array $element
-     * @param int $index
+     * @param int   $index
+     *
      * @return array
      */
     public static function add(array &$array, array $element, $index = null) {
-        if ($index === null) {
+        if (null === $index) {
             $index = count($array);
         }
 

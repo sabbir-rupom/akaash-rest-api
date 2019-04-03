@@ -6,7 +6,7 @@
  * Mission Status API.
  */
 class ShowImage extends BaseClass {
-    private $_image_type = null;
+    private $_image_type;
 
     public function __construct() {
     }
@@ -19,7 +19,7 @@ class ShowImage extends BaseClass {
             case 'user-profile':
                 $userInfo = Model_User::find($id);
                 if (empty($userInfo)) {
-                    header("HTTP/1.1 400 OK");
+                    header('HTTP/1.1 400 OK');
                     exit;
                 }
 
@@ -34,9 +34,9 @@ class ShowImage extends BaseClass {
                     $mobileDevice = true;
                 }
 
-                $imgPath = ($mobileDevice ? Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE : Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE) . $userInfo->profile_image;
-                break;
+                $imgPath = ($mobileDevice ? Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE : Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE).$userInfo->profile_image;
 
+                break;
             default:
                 break;
         }
@@ -44,15 +44,17 @@ class ShowImage extends BaseClass {
     }
 
     /**
-     * Process execution
+     * Process execution.
+     *
+     * @param mixed $filePath
      */
     protected function show_image($filePath) {
-        if ($filePath != '') {
-            header("Content-Type: image/jpeg");
+        if ('' != $filePath) {
+            header('Content-Type: image/jpeg');
             $res = file_get_contents($filePath);
             echo $res;
         } else {
-            header("HTTP/1.1 400 OK");
+            header('HTTP/1.1 400 OK');
         }
         exit();
     }

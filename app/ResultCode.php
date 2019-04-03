@@ -19,14 +19,12 @@
 /**
  * ResultCode Class
  * This class represents the state of API during / after the execution
- * Points out the type of exception along with user-defined messages to handle all error exceptions
+ * Points out the type of exception along with user-defined messages to handle all error exceptions.
  *
  * @author sabbir-hossain
  */
 class ResultCode {
-    /*
-     * USER DEFINED
-     */
+    // USER DEFINED
 
     const SUCCESS = 0;    // No error found
     const UNKNOWN_ERROR = 1;    // unexpected error occured
@@ -46,98 +44,100 @@ class ResultCode {
     const NOT_FOUND = 404;     // Data not found
 
     const USER_BLACKLIST = 1000; // User is blacklisted / blocked error
-    
-    const CODE_MESSAGE = array(
-        self::SUCCESS => array(
+
+    const CODE_MESSAGE = [
+        self::SUCCESS => [
             'title' => 'SUCCESS',
             'msg' => 'Success',
-            'http_status' => 404
-        ),
-        self::UNKNOWN_ERROR => array(
+            'http_status' => 404,
+        ],
+        self::UNKNOWN_ERROR => [
             'title' => 'UNKNOWN ERROR',
             'msg' => 'Unknown error occured',
-            'http_status' => 500
-        ),
-        self::INVALID_JSON => array(
+            'http_status' => 500,
+        ],
+        self::INVALID_JSON => [
             'title' => 'INVALID JSON',
             'msg' => 'Invalid json found',
-            'http_status' => 400
-        ),
-        self::SESSION_ERROR => array(
+            'http_status' => 400,
+        ],
+        self::SESSION_ERROR => [
             'title' => 'SESSION ERROR',
             'msg' => 'Session expired',
-            'http_status' => 401
-        ),
-        self::INVALID_REQUEST_TOKEN => array(
+            'http_status' => 401,
+        ],
+        self::INVALID_REQUEST_TOKEN => [
             'title' => 'INVALID REQUEST TOKEN',
             'msg' => 'Requested roken is invalid',
-            'http_status' => 400
-        ),
-        self::INVALID_REQUEST_PARAMETER => array(
+            'http_status' => 400,
+        ],
+        self::INVALID_REQUEST_PARAMETER => [
             'title' => 'INVALID REQUEST PARAMETER',
             'msg' => 'Requested parameter is not valid',
-            'http_status' => 406
-        ),
-        self::USER_NOT_FOUND => array(
+            'http_status' => 406,
+        ],
+        self::USER_NOT_FOUND => [
             'title' => 'USER NOT FOUND',
             'msg' => 'User not found',
-            'http_status' => 404
-        ),
-        self::DATA_ALREADY_EXISTS => array(
+            'http_status' => 404,
+        ],
+        self::DATA_ALREADY_EXISTS => [
             'title' => 'DATA EXIST',
             'msg' => 'Data already exist',
-            'http_status' => 409
-        ),
-        self::NOT_FOUND => array(
+            'http_status' => 409,
+        ],
+        self::NOT_FOUND => [
             'title' => 'NOT FOUND',
             'msg' => 'Data not found',
-            'http_status' => 404
-        ),
-        self::USER_BLACKLIST => array(
+            'http_status' => 404,
+        ],
+        self::USER_BLACKLIST => [
             'title' => 'BLACKLIST USER',
             'msg' => 'User is blacklisted',
-            'http_status' => 401
-        ),
-        self::ACCESS_FORBIDDEN => array(
+            'http_status' => 401,
+        ],
+        self::ACCESS_FORBIDDEN => [
             'title' => 'ACCESS FORBIDDEN',
             'msg' => 'Access forbidden',
-            'http_status' => 403
-        ),
-        self::PASSWORD_MISMATCHED => array(
+            'http_status' => 403,
+        ],
+        self::PASSWORD_MISMATCHED => [
             'title' => 'PASSWORD MISMATCHED',
             'msg' => 'Password did not matched',
-            'http_status' => 406
-        ),
-        self::DATA_NOT_ALLOWED => array(
+            'http_status' => 406,
+        ],
+        self::DATA_NOT_ALLOWED => [
             'title' => 'DATA NOT ALLOWED',
             'msg' => 'Provided data is not acceptable',
-            'http_status' => 406
-        ),
-        self::DUPLICATE_DATA => array(
+            'http_status' => 406,
+        ],
+        self::DUPLICATE_DATA => [
             'title' => 'DUPLICATE DATA',
             'msg' => 'Duplicate data found',
-            'http_status' => 406
-        ),
-        self::DATABASE_ERROR => array(
+            'http_status' => 406,
+        ],
+        self::DATABASE_ERROR => [
             'title' => 'DATABASE ERROR',
             'msg' => 'Database error occured',
-            'http_status' => 500
-        ),
-        self::FILE_UPLOAD_ERROR => array(
+            'http_status' => 500,
+        ],
+        self::FILE_UPLOAD_ERROR => [
             'title' => 'FILE UPLOAD ERROR',
             'msg' => 'File upload failed',
-            'http_status' => 500
-        ),
-        self::JSON_OUTPUT_ERROR => array(
+            'http_status' => 500,
+        ],
+        self::JSON_OUTPUT_ERROR => [
             'title' => 'JSON OUTPUT ERROR',
             'msg' => 'Failed to generate JSON output',
-            'http_status' => 500
-        ),
-    );
+            'http_status' => 500,
+        ],
+    ];
 
     /**
-     * Get result code message
+     * Get result code message.
+     *
      * @param int $code
+     *
      * @return string Return message against result code.
      */
     public static function getTitle($code) {
@@ -145,8 +145,10 @@ class ResultCode {
     }
 
     /**
-     * Get result code message
+     * Get result code message.
+     *
      * @param int $code
+     *
      * @return string Return message against result code.
      */
     public static function getMessage($code) {
@@ -154,8 +156,10 @@ class ResultCode {
     }
 
     /**
-     * Get result code corresponding HTTP status code
+     * Get result code corresponding HTTP status code.
+     *
      * @param int $code
+     *
      * @return int Return HTTP Status code against result code.
      */
     public static function getHTTPstatusCode($code) {

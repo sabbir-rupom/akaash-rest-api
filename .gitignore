@@ -4,3 +4,5 @@ app/config/config_app.ini
 *.cache.php
 nbproject/
 vendor/
+*.dist
+*.cache

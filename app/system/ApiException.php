@@ -14,11 +14,10 @@
  * @filesource
  */
 
-
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * API Exception Class
+ * API Exception Class.
  *
  * @author sabbir-hossain
  */

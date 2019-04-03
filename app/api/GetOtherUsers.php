@@ -3,12 +3,11 @@
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * Get all other registered user list
+ * Get all other registered user list.
  */
 class GetOtherUsers extends BaseClass {
-
     /**
-     * Login required or not
+     * Login required or not.
      */
     const LOGIN_REQUIRED = true;
 
@@ -17,7 +16,7 @@ class GetOtherUsers extends BaseClass {
     protected $sortOrder;
 
     /**
-     * Validation of request
+     * Validation of request.
      */
     public function validate() {
         parent::validate();
@@ -30,20 +29,17 @@ class GetOtherUsers extends BaseClass {
             $this->limit = 5;
         }
         $this->sortOrder = strtoupper($this->getValueFromJSON('sort_order', 'string'));
-        if ($this->sortOrder != 'DESC') {
+        if ('DESC' != $this->sortOrder) {
             $this->sortOrder = 'ASC';
         }
     }
 
     /**
-     * Process API request
+     * Process API request.
      */
     public function action() {
-        /*
-         * Find all users from database
-         */
-        $allUsersObj = Model_User::findAllBy(array('id !' => $this->userId), $this->sortOrder, array('limit' => $this->limit, 'offset' => $this->offset), $this->pdo);
-
+        // Find all users from database
+        $allUsersObj = Model_User::findAllBy(['id !' => $this->userId], $this->sortOrder, ['limit' => $this->limit, 'offset' => $this->offset], $this->pdo);
 
         if (empty($allUsersObj)) {
             throw new System_ApiException(ResultCode::NOT_FOUND, 'Session user not found');
@@ -54,26 +50,26 @@ class GetOtherUsers extends BaseClass {
 
         foreach ($allUsersObj as $key => $user) {
             $userID = (int) $user->id;
-            $userItemsObj = Model_UserItem::findAllBy(array('user_id' => $userID), null, null, $this->pdo);
+            $userItemsObj = Model_UserItem::findAllBy(['user_id' => $userID], null, null, $this->pdo);
             if (!empty($userItemsObj)) {
                 foreach ($userItemsObj as $item) {
                     $userItems[] = $item->toJsonHash();
                 }
             }
-            
+
             $userArray[$key] = $user->toJsonHash();
             $userArray[$key]['items'] = $userItems;
             $userItems = [];
         }
 
-        return array(
+        return [
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => array(
+            'data' => [
                 'other_users' => $userArray,
-                'user_info' => $this->cache_user->toJsonHash()
-            ),
-            'error' => []
-        );
+                'user_info' => $this->cache_user->toJsonHash(),
+            ],
+            'error' => [],
+        ];
     }
 }
