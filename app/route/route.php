@@ -2,19 +2,19 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 if (!isset($argv)) {
 
@@ -22,7 +22,7 @@ if (!isset($argv)) {
      * Set root / index page response view
      */
 
-    Flight::route('GET|POST /', function() {
+    Flight::route('GET|POST /', function () {
         Flight::json(array(
             'error' => array(
                 'title' => 'Direct Access Forbidden',
@@ -58,7 +58,7 @@ if (!isset($argv)) {
     Flight::route('DELETE /api/@name', array('Controller', 'initDelete'));
 
     /*
-     * Image path is masked in API response 
+     * Image path is masked in API response
      * Show image from file get content by table rowID and type
      */
     Flight::route('GET /image/@type/@id', array('ShowImage', 'index'));
@@ -66,7 +66,7 @@ if (!isset($argv)) {
     /*
      * Set error page page response
      */
-    Flight::map('notFound', function() {
+    Flight::map('notFound', function () {
         Flight::json(array(
             'error' => array(
                 'title' => 'Data Not Found',

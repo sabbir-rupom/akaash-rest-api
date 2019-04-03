@@ -2,19 +2,19 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Controller for application
@@ -22,8 +22,8 @@
  * @property BaseClass $action BaseClass
  * @author sabbir-hossain
  */
-class Controller {
-
+class Controller
+{
     protected static $apiName;
     protected static $getParams;
     protected static $headers;
@@ -31,11 +31,12 @@ class Controller {
 
     /**
      * Initialize application
-     * 
+     *
      * @param string $name REST API name
-     * @param string $method Application request Method 
+     * @param string $method Application request Method
      */
-    public static function init($name, $method) {
+    public static function init($name, $method)
+    {
         $data = null;
         try {
             self::$apiName = Common_Utils::camelize($name); // prepare api controller from request url call
@@ -51,7 +52,7 @@ class Controller {
                 self::$json = json_decode($data);
 
                 /*
-                 * Check if requested parameters are in json format or not 
+                 * Check if requested parameters are in json format or not
                  */
                 if (!empty($data) && json_last_error() != JSON_ERROR_NONE && empty($_FILES)) {
                     throw new System_ApiException(ResultCode::INVALID_JSON, "Invalid JSON: $data");
@@ -93,7 +94,7 @@ class Controller {
                 );
 
                 Common_Log::log(self::$apiName . ' (' . ResultCode::DATABASE_ERROR . '): ' . $errMsg);
-            } else if ($e instanceof PDOException) {
+            } elseif ($e instanceof PDOException) {
                 /*
                  * Handle all database related error messages
                  */
@@ -133,7 +134,7 @@ class Controller {
 
             if (Config_Config::getInstance()->isErrorDump()) {
                 /*
-                 * Additional error messages 
+                 * Additional error messages
                  * For developers debug purpose
                  */
                 $result['error_dump'] = array(
@@ -167,7 +168,8 @@ class Controller {
      * Initialize application for GET method
      * @param type $name Api name
      */
-    public static function initGet($name) {
+    public static function initGet($name)
+    {
         self::init($name, 'GET');
     }
 
@@ -175,7 +177,8 @@ class Controller {
      * Initialize application for POST method
      * @param type $name Api name
      */
-    public static function initPost($name) {
+    public static function initPost($name)
+    {
         self::init($name, 'POST');
     }
 
@@ -183,7 +186,8 @@ class Controller {
      * Initialize application for PUT method
      * @param type $name Api name
      */
-    public static function initPut($name) {
+    public static function initPut($name)
+    {
         self::init($name, 'PUT');
     }
 
@@ -191,7 +195,8 @@ class Controller {
      * Initialize application for PATCH method
      * @param type $name Api name
      */
-    public static function initPatch($name) {
+    public static function initPatch($name)
+    {
         self::init($name, 'PATCH');
     }
 
@@ -199,8 +204,8 @@ class Controller {
      * Initialize application for DELETE method
      * @param type $name Api name
      */
-    public static function initDelete($name) {
+    public static function initDelete($name)
+    {
         self::init($name, 'DELETE');
     }
-
 }

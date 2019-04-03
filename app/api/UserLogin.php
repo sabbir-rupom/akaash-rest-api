@@ -1,16 +1,17 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Description of UserLogin
  *
  * @author sabbir-hossain
  */
-class UserLogin extends BaseClass {
+class UserLogin extends BaseClass
+{
 
     // Login Required.
-    const LOGIN_REQUIRED = FALSE;
+    const LOGIN_REQUIRED = false;
 
     private $_user_email = null;
     private $_user_password = null;
@@ -20,7 +21,8 @@ class UserLogin extends BaseClass {
     /**
      * Validating Login Request
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         $this->_login_type = $this->getValueFromJSON('login_type', 'int');
@@ -29,8 +31,8 @@ class UserLogin extends BaseClass {
         }
         switch ($this->_login_type) {
             case 1:
-                $this->_user_email = $this->getValueFromJSON('email', 'string', TRUE);
-                $this->_user_password = $this->getValueFromJSON('password', 'string', TRUE);
+                $this->_user_email = $this->getValueFromJSON('email', 'string', true);
+                $this->_user_password = $this->getValueFromJSON('password', 'string', true);
 
 
                 if (empty($this->_user_password)) {
@@ -41,7 +43,7 @@ class UserLogin extends BaseClass {
                     throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
                 }
                 break;
-            default :
+            default:
                 throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
                 break;
         }
@@ -50,22 +52,23 @@ class UserLogin extends BaseClass {
     /**
      * Processing API script execution
      */
-    public function action() {
+    public function action()
+    {
         $this->pdo->beginTransaction();
 
         try {
             $user = null;
             switch ($this->_login_type) {
                 case 1:
-                    $user = Model_User::findBy(array('email' => $this->_user_email), $this->pdo, TRUE);
+                    $user = Model_User::findBy(array('email' => $this->_user_email), $this->pdo, true);
                     if (null === $user || empty($user)) {
                         throw new System_ApiException(ResultCode::USER_NOT_FOUND);
                     }
-                    if (password_verify($this->_user_password, $user->password) === FALSE) {
+                    if (password_verify($this->_user_password, $user->password) === false) {
                         throw new System_ApiException(ResultCode::PASSWORD_MISMATCHED);
                     }
                     break;
-                default :
+                default:
                     throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Login type is not defined');
                     break;
             }
@@ -96,10 +99,10 @@ class UserLogin extends BaseClass {
             }
 
             if (property_exists($this->json, 'longitude')) {
-                $user->longitude = $this->getValueFromJSON('longitude', 'string', TRUE);
+                $user->longitude = $this->getValueFromJSON('longitude', 'string', true);
             }
             if (property_exists($this->json, 'latitude')) {
-                $user->latitude = $this->getValueFromJSON('latitude', 'string', TRUE);
+                $user->latitude = $this->getValueFromJSON('latitude', 'string', true);
             }
 
             $user->update($this->pdo);
@@ -136,5 +139,4 @@ class UserLogin extends BaseClass {
             'error' => []
         );
     }
-
 }

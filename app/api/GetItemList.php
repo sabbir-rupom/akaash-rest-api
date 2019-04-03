@@ -1,16 +1,17 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Get all other registered user list
  */
-class GetItemList extends BaseClass {
+class GetItemList extends BaseClass
+{
 
     /**
      * Login required or not
      */
-    const LOGIN_REQUIRED = TRUE;
+    const LOGIN_REQUIRED = true;
 
     protected $itemName;
     protected $targetUserId;
@@ -18,7 +19,8 @@ class GetItemList extends BaseClass {
     /**
      * Validation of request
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
         
         $this->itemName = $this->getValueFromJSON('item_name', 'string');
@@ -32,7 +34,8 @@ class GetItemList extends BaseClass {
     /**
      * Process API request
      */
-    public function action() {
+    public function action()
+    {
         /*
          * Find items from database
          */
@@ -61,5 +64,4 @@ class GetItemList extends BaseClass {
             'error' => []
         );
     }
-
 }

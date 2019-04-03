@@ -1,28 +1,31 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Description of UserLogin
  *
  * @author sabbir-hossain
  */
-class UserLogout extends BaseClass {
+class UserLogout extends BaseClass
+{
 
     // Login Required.
-    const LOGIN_REQUIRED = TRUE;
+    const LOGIN_REQUIRED = true;
 
     /**
      * Validating Login Request
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
     }
 
     /**
      * Processing API script execution
      */
-    public function action() {
+    public function action()
+    {
         /*
          * Delete user data from cache
          */
@@ -48,5 +51,4 @@ class UserLogout extends BaseClass {
             'error' => []
         );
     }
-
 }

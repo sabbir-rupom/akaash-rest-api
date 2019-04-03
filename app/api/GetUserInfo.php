@@ -1,23 +1,25 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * User data acquisition actions.
  */
-class GetUserInfo extends BaseClass {
+class GetUserInfo extends BaseClass
+{
 
     /**
      * Login required or not
      */
-    const LOGIN_REQUIRED = TRUE;
+    const LOGIN_REQUIRED = true;
 
     private $targetUserId;
 
     /**
      * Validation of request
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         /*
@@ -29,7 +31,8 @@ class GetUserInfo extends BaseClass {
     /**
      * Process API request
      */
-    public function action() {
+    public function action()
+    {
         if (empty($this->targetUserId) || $this->targetUserId == $this->userId) {
             /*
              *  If user ID not specified, get the session user information
@@ -52,5 +55,4 @@ class GetUserInfo extends BaseClass {
             'error' => []
         );
     }
-
 }

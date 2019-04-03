@@ -1,16 +1,17 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Get all other registered user list
  */
-class GetOtherUsers extends BaseClass {
+class GetOtherUsers extends BaseClass
+{
 
     /**
      * Login required or not
      */
-    const LOGIN_REQUIRED = TRUE;
+    const LOGIN_REQUIRED = true;
 
     protected $offset;
     protected $limit;
@@ -19,7 +20,8 @@ class GetOtherUsers extends BaseClass {
     /**
      * Validation of request
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
         $this->offset = $this->getValueFromJSON('offset', 'int');
         if (empty($this->offset) || $this->offset < 0) {
@@ -38,7 +40,8 @@ class GetOtherUsers extends BaseClass {
     /**
      * Process API request
      */
-    public function action() {
+    public function action()
+    {
         /*
          * Find all users from database
          */
@@ -76,5 +79,4 @@ class GetOtherUsers extends BaseClass {
             'error' => []
         );
     }
-
 }

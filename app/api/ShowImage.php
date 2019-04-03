@@ -1,19 +1,20 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Mission Status API.
  */
-class ShowImage extends BaseClass {
-
+class ShowImage extends BaseClass
+{
     private $_image_type = null;
 
-    public function __construct() {
-        
+    public function __construct()
+    {
     }
 
-    public static function index($type, $id) {
+    public static function index($type, $id)
+    {
         $imageObj = new ShowImage();
 
         $imgURL = '';
@@ -25,15 +26,15 @@ class ShowImage extends BaseClass {
                     exit;
                 }
 
-                $mobileDevice = FALSE;
+                $mobileDevice = false;
                 if (stristr($_SERVER['HTTP_USER_AGENT'], 'ipad')) {
-                    $mobileDevice = TRUE;
-                } else if (stristr($_SERVER['HTTP_USER_AGENT'], 'iphone') || strstr($_SERVER['HTTP_USER_AGENT'], 'iphone')) {
-                    $mobileDevice = TRUE;
-                } else if (stristr($_SERVER['HTTP_USER_AGENT'], 'blackberry')) {
-                    $mobileDevice = TRUE;
-                } else if (stristr($_SERVER['HTTP_USER_AGENT'], 'android')) {
-                    $mobileDevice = TRUE;
+                    $mobileDevice = true;
+                } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'iphone') || strstr($_SERVER['HTTP_USER_AGENT'], 'iphone')) {
+                    $mobileDevice = true;
+                } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'blackberry')) {
+                    $mobileDevice = true;
+                } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'android')) {
+                    $mobileDevice = true;
                 }
 
                 $imgPath = ($mobileDevice ? Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE : Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE) . $userInfo->profile_image;
@@ -48,7 +49,8 @@ class ShowImage extends BaseClass {
     /**
      * Process execution
      */
-    protected function show_image($filePath) {
+    protected function show_image($filePath)
+    {
         if ($filePath != '') {
             header("Content-Type: image/jpeg");
             $res = file_get_contents($filePath);
@@ -58,5 +60,4 @@ class ShowImage extends BaseClass {
         }
         exit();
     }
-
 }

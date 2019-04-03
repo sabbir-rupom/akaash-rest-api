@@ -1,16 +1,17 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * User data acquisition actions.
  */
-class UserItemUpdate extends BaseClass {
+class UserItemUpdate extends BaseClass
+{
 
     /**
      * User Login required or not
      */
-    const LOGIN_REQUIRED = TRUE; 
+    const LOGIN_REQUIRED = true;
 
     protected $item_name;
     protected $item_id;
@@ -18,22 +19,23 @@ class UserItemUpdate extends BaseClass {
     /**
      * Validation of request
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         // Acquiring item information from json request
-        $this->item_name = $this->getValueFromJSON('item_name', 'string', TRUE);
-        $this->item_id = $this->getValueFromJSON('item_id', 'int', TRUE);
+        $this->item_name = $this->getValueFromJSON('item_name', 'string', true);
+        $this->item_id = $this->getValueFromJSON('item_id', 'int', true);
     }
 
     /**
      * Process API request
      */
-    public function action() {
+    public function action()
+    {
+        $userItemObj = Model_UserItem::findBy(array('user_id' => $this->userId, 'id' => $this->item_id), $this->pdo, true);
         
-        $userItemObj = Model_UserItem::findBy(array('user_id' => $this->userId, 'id' => $this->item_id), $this->pdo, TRUE);
-        
-        if(empty($userItemObj)) {
+        if (empty($userItemObj)) {
             throw new System_ApiException(ResultCode::NOT_FOUND, 'User item not found in database!');
         }
         
@@ -52,5 +54,4 @@ class UserItemUpdate extends BaseClass {
             'error' => []
         );
     }
-
 }

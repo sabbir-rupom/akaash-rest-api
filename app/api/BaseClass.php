@@ -2,45 +2,46 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Description of BaseClass
  *
  * @author sabbir-hossain
  */
-class BaseClass {
+class BaseClass
+{
 
     /**
      * User Authentication variable defined
      */
-    const LOGIN_REQUIRED = FALSE;
+    const LOGIN_REQUIRED = false;
 
     /*
      * Token Verification bypass config
      */
-    const TEST_ENV = FALSE;
+    const TEST_ENV = false;
 
     protected $headers;
     protected $getParams;
     protected $json;
-    protected $sessionId = NULL;
-    protected $requestToken = NULL;
-    protected $requestTime = NULL;
-    protected $userId = NULL;
-    protected $cache_user = NULL;
+    protected $sessionId = null;
+    protected $requestToken = null;
+    protected $requestTime = null;
+    protected $userId = null;
+    protected $cache_user = null;
 
     /**
      * Client Type, Version
@@ -50,7 +51,7 @@ class BaseClass {
     protected $actionName;
 
     /**
-     * Database PDO 
+     * Database PDO
      */
     protected $pdo;
 
@@ -67,7 +68,8 @@ class BaseClass {
      * @param string $apiName API Controller Class Name
      * @return Instance of Requested API Controller
      */
-    public function __construct($headers, $getParams, $json, $actionName) {
+    public function __construct($headers, $getParams, $json, $actionName)
+    {
         $this->headers = $headers;
         $this->getParams = $getParams;
         $this->json = $json;
@@ -85,8 +87,8 @@ class BaseClass {
         $this->pdo = Flight::pdo();
 
         /*
-         * Retrive the session ID 
-         * Retrive request token 
+         * Retrive the session ID
+         * Retrive request token
          * From HTTP Header
          */
 
@@ -97,7 +99,7 @@ class BaseClass {
             }
             if ($this->config['REQUEST_TOKEN_HEADER_KEY'] == $upperKey) {
                 $this->requestToken = $value;
-                if(Config_Config::getInstance()->checkRequestTokenFlag()) {
+                if (Config_Config::getInstance()->checkRequestTokenFlag()) {
                     break;
                 }
             }
@@ -109,7 +111,8 @@ class BaseClass {
      *
      * @throws Exception
      */
-    protected function _filter() {
+    protected function _filter()
+    {
         /*
          * Check Server Maintenance Status
          */
@@ -125,7 +128,7 @@ class BaseClass {
         if (static::LOGIN_REQUIRED) {
             $this->isLoggedIn();
 
-            if (FALSE == $this->userId) {
+            if (false == $this->userId) {
                 throw new System_ApiException(ResultCode::SESSION_ERROR, 'Session error.');
             }
         }
@@ -136,9 +139,10 @@ class BaseClass {
      *
      * @throws System_ApiException
      */
-    protected function _checkMaintenance() {
+    protected function _checkMaintenance()
+    {
         // Maintenance check parameter
-        $maintainance_check = FALSE;
+        $maintainance_check = false;
 
         if ($maintainance_check) {
             if ($this->isMaintenance()) {
@@ -151,8 +155,8 @@ class BaseClass {
      * Verify request token
      * [ Check if API request-call has been issued from authenticated source ]
      */
-    protected function _checkRequestToken() {
-
+    protected function _checkRequestToken()
+    {
         if (Config_Config::getInstance()->checkRequestTokenFlag() && !static::TEST_ENV) {
             $result = System_JwtToken::verifyToken($this->requestToken, Config_Config::getInstance()->getRequestTokenSecret());
 
@@ -164,7 +168,7 @@ class BaseClass {
                     case Const_Application::EMPTY_TOKEN:
                         throw new System_ApiException(ResultCode::INVALID_REQUEST_TOKEN, 'Token is empty');
                         break;
-                    default :
+                    default:
                         throw new System_ApiException(ResultCode::UNKNOWN_ERROR, 'Unexpected token error has been found');
                         break;
                 }
@@ -176,7 +180,7 @@ class BaseClass {
                     $this->sessionId = $result['data']->sessionToken;
                 }
                 /**
-                 * Get client API request time 
+                 * Get client API request time
                  */
                 if (!empty($result['data']->iat)) {
                     // convert request time to Server time assuming client request time format is in UTC milisecond
@@ -191,7 +195,8 @@ class BaseClass {
     /**
      * Request processing execution.
      */
-    public function process() {
+    public function process()
+    {
         /*
          * Check and verify client request call / User session
          */
@@ -208,7 +213,7 @@ class BaseClass {
             /*
              * Update user's active time without updating cache
              */
-            $this->cache_user->update($this->pdo, FALSE);
+            $this->cache_user->update($this->pdo, false);
         }
         /*
          * Fetch and check GET query strings
@@ -228,14 +233,16 @@ class BaseClass {
      * @return array Array to convert to response JSON.
      * @throws Exception
      */
-    public function action() {
+    public function action()
+    {
         throw new Exception('action is not implemented.');
     }
 
     /**
      * It verifies the value.
      */
-    public function validate() {
+    public function validate()
+    {
         /*
          * Client Type [1 = Android, 2 = iOS, 0 = Other]
          */
@@ -255,7 +262,8 @@ class BaseClass {
      * @param $required Required.
      * @return Value extracted from JSON.
      */
-    protected function getValueFromJSON($path, $type, $required = FALSE) {
+    protected function getValueFromJSON($path, $type, $required = false)
+    {
         if (empty($this->json) && $required) {
             throw new System_ApiException(ResultCode::INVALID_JSON, 'JSON is empty.');
         }
@@ -273,9 +281,9 @@ class BaseClass {
                 $var = $var->$pathElement;
             }
         } catch (Exception $e) {
-            $var = NULL;
+            $var = null;
         }
-        if (TRUE == $required && (is_null($var) || $var === '')) {
+        if (true == $required && (is_null($var) || $var === '')) {
             throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$pathStr is not set.");
         }
         if (!$this->isValidType($var, $type)) {
@@ -292,16 +300,17 @@ class BaseClass {
      * @param bool $required Required. Extracted value from
      * @return GET parameters.
      */
-    protected function getValueFromQuery($name, $type, $required = FALSE) {
+    protected function getValueFromQuery($name, $type, $required = false)
+    {
         if (isset($this->getParams[$name])) {
             $var = $this->getParams[$name];
             if ('string' != $type && '' === $var) {
-                $var = NULL;
+                $var = null;
             }
         } else {
-            $var = NULL;
+            $var = null;
         }
-        if (TRUE == $required && is_null($var)) {
+        if (true == $required && is_null($var)) {
             throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
         }
         if (!$this->isValidType($var, $type)) {
@@ -316,27 +325,28 @@ class BaseClass {
      * @param string $name Name of the parameter.
      * @param unknown $type Type of the variable. "int", "bool", "string".
      * @param bool $required Value required
-     * @param bool $xss_clean XSS clean 
+     * @param bool $xss_clean XSS clean
      * @return parameter value from POST Request.
      */
-    protected function getInputPost($name, $type, $required = FALSE, $xss_clean = FALSE) {
+    protected function getInputPost($name, $type, $required = false, $xss_clean = false)
+    {
         if (isset($_POST[$name])) {
             $var = $_POST[$name];
             if ('string' != $type && '' === $var) {
-                $var = NULL;
+                $var = null;
             }
         } else {
-            $var = NULL;
+            $var = null;
         }
 
-        if (TRUE == $required && empty($var)) {
+        if (true == $required && empty($var)) {
             throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "$name is not set.");
         }
         if (!$this->isValidType($var, $type)) {
             throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of $name is not valid.");
         }
 
-        return ($xss_clean === TRUE) ? Common_Security::xss_clean($var) : $var;
+        return ($xss_clean === true) ? Common_Security::xss_clean($var) : $var;
     }
 
     /**
@@ -347,10 +357,11 @@ class BaseClass {
      * The time being "int," string "
      * If it is correct type of @return value TRUE, otherwise FALSE. Value returns TRUE unconditionally if it is NULL.
      */
-    protected function isValidType($value, $type) {
-        $result = FALSE;
+    protected function isValidType($value, $type)
+    {
+        $result = false;
         if (is_null($value)) {
-            return TRUE;
+            return true;
         } else {
             switch ($type) {
                 case 'int':
@@ -375,7 +386,7 @@ class BaseClass {
                     $result = is_array($value);
                     break;
                 default:
-                    $result = TRUE;
+                    $result = true;
                     break;
             }
         }
@@ -386,7 +397,8 @@ class BaseClass {
      * Or is a login state check.
      * A user ID if the login state, returns FALSE if it is not logged in.
      */
-    private function isLoggedIn() {
+    private function isLoggedIn()
+    {
         if ($this->sessionId) {
             $sessionArray = unserialize(base64_decode($this->sessionId));
             $cacheSessionId = Model_User::retrieveSessionFromUserId($sessionArray['user_id']);
@@ -408,7 +420,8 @@ class BaseClass {
      *
      * @return boolean In the case of maintenance mode, true. Otherwise, false.
      */
-    protected function isMaintenance() {
+    protected function isMaintenance()
+    {
 
         // In the case of maintenance state
         if (Config_Config::getInstance()->checkMaintenance()) {
@@ -427,7 +440,8 @@ class BaseClass {
      *
      * @return boolean If it has been tested user registration, true. Others are false.
      */
-    protected function isTestUser() {
+    protected function isTestUser()
+    {
 
         // If you are already logged in
         if (true == $this->isLoggedIn()) {
@@ -439,11 +453,12 @@ class BaseClass {
     }
 
     /**
-     * 
+     *
      * @param int $str
      * @return boolean if string is in json formate
      */
-    protected function is_json($str) {
+    protected function is_json($str)
+    {
         $json = json_decode($str);
         return $json && $str != $json;
     }
@@ -452,9 +467,10 @@ class BaseClass {
      * Get Distance between two latlong co-ordinates
      * @param int $length String length
      * @param string $type Type of Random String
-     * @return string $randomString 
+     * @return string $randomString
      */
-    protected function generate_random_string($length = 4, $type = 'string') {
+    protected function generate_random_string($length = 4, $type = 'string')
+    {
         $stringRegex = "1234567890ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
         $intRegex = "1234567890";
         $capNdigitRegex = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -487,7 +503,8 @@ class BaseClass {
      * @param bool $old_image_delete if any existing image needed to be deleted or kept
      * @return string $image_name Return uploaded image name
      */
-    protected function process_binary_image($ID, $binary_image, $type = '', $old_image_delete = TRUE) {
+    protected function process_binary_image($ID, $binary_image, $type = '', $old_image_delete = true)
+    {
         $base64_string = "data:image/png;base64," . $binary_image;
 
         $curr_time = time();
@@ -500,7 +517,7 @@ class BaseClass {
              * If upload directory not exist, create
              */
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
-        } else if ($old_image_delete) {
+        } elseif ($old_image_delete) {
             /*
              * Delete all previous profile image
              */
@@ -539,7 +556,8 @@ class BaseClass {
      * @param bool $old_image_delete if any existing image needed to be deleted or kept
      * @return string $image_name Return uploaded image name
      */
-    protected function process_image_upload($ID, $image_file, $type = '', $old_image_delete = TRUE) {
+    protected function process_image_upload($ID, $image_file, $type = '', $old_image_delete = true)
+    {
         $ext = pathinfo($image_file['name'], PATHINFO_EXTENSION);
         if (!in_array($ext, array('jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'))) {
             throw new System_ApiException(ResultCode::DATA_NOT_ALLOWED, "Improper image is provided! Only jpg and png allowed!");
@@ -555,7 +573,7 @@ class BaseClass {
              * If upload directory not exist, create
              */
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
-        } else if ($old_image_delete) {
+        } elseif ($old_image_delete) {
             /*
              * Delete all previous profile image
              */
@@ -587,11 +605,12 @@ class BaseClass {
      * Resizing an uploaded image
      * @param string $image_src Source Image
      * @param string $image_name Image name to be saved
-     * @param int $maxDimW Image new width 
-     * @param int $maxDimH Image new height 
-     * @return string $randomString 
+     * @param int $maxDimW Image new width
+     * @param int $maxDimH Image new height
+     * @return string $randomString
      */
-    protected function resize_image($image_src, $image_name, $maxDimW, $maxDimH, $type) {
+    protected function resize_image($image_src, $image_name, $maxDimW, $maxDimH, $type)
+    {
         $destinationImage = Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $image_name;
         copy($image_src, $destinationImage);
 
@@ -616,10 +635,9 @@ class BaseClass {
         }
 
         if ($target_filename == '') {
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
-
 }

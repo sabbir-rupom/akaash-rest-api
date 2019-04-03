@@ -1,14 +1,15 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Save user's updated information
  */
-class SaveUserInfo extends BaseClass {
+class SaveUserInfo extends BaseClass
+{
 
     // Required Login or not
-    const LOGIN_REQUIRED = TRUE;
+    const LOGIN_REQUIRED = true;
 
     private $user;
     private $update_user; // User information update flag
@@ -17,7 +18,8 @@ class SaveUserInfo extends BaseClass {
      * Verification of the request.
      */
 
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         $this->user = $this->cache_user;
@@ -30,7 +32,7 @@ class SaveUserInfo extends BaseClass {
 
         if (!empty($this->json)) {
             if (property_exists($this->json, 'user_name')) {
-                $this->user->user_name = $this->getValueFromJSON('user_name', 'string', TRUE);
+                $this->user->user_name = $this->getValueFromJSON('user_name', 'string', true);
                 $this->update_user = true;
             }
 
@@ -48,12 +50,12 @@ class SaveUserInfo extends BaseClass {
             }
 
             if (property_exists($this->json, 'longitude')) {
-                $this->user->longitude = $this->getValueFromJSON('longitude', 'string', TRUE);
+                $this->user->longitude = $this->getValueFromJSON('longitude', 'string', true);
                 $this->update_user = true;
             }
 
             if (property_exists($this->json, 'latitude')) {
-                $this->user->latitude = $this->getValueFromJSON('latitude', 'string', TRUE);
+                $this->user->latitude = $this->getValueFromJSON('latitude', 'string', true);
                 $this->update_user = true;
             }
 
@@ -80,8 +82,8 @@ class SaveUserInfo extends BaseClass {
             }
 
             if (property_exists($this->json, 'email')) {
-                $email = $this->getValueFromJSON('email', 'string', TRUE);
-                If (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $email = $this->getValueFromJSON('email', 'string', true);
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     // Email is not valid.
                     throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, "Invalid email address");
                 }
@@ -90,21 +92,21 @@ class SaveUserInfo extends BaseClass {
             }
 
             if (property_exists($this->json, 'new_password')) {
-                $newPassword = $this->getValueFromJSON('new_password', 'string', TRUE);
-                $oldPassword = $this->getValueFromJSON('old_password', 'string', TRUE);
+                $newPassword = $this->getValueFromJSON('new_password', 'string', true);
+                $oldPassword = $this->getValueFromJSON('old_password', 'string', true);
                 /*
                  * Verify old password match with user's current password
                  */
                 if ($newPassword === $oldPassword) {
                     throw new System_ApiException(ResultCode::DUPLICATE_DATA, 'Please provide a new password');
-                } else if(password_verify($oldPassword, $this->user->password) === FALSE) {
+                } elseif (password_verify($oldPassword, $this->user->password) === false) {
                     throw new System_ApiException(ResultCode::DATA_NOT_ALLOWED, 'Current password does not match');
                 }
 
                 $this->user->password = password_hash(trim($newPassword), PASSWORD_BCRYPT, array('cost' => 10));
                 $this->update_user = true;
             }
-        } else if (!empty($_FILES)) {
+        } elseif (!empty($_FILES)) {
             /*
              * Upload process of form-data image
              */
@@ -118,14 +120,14 @@ class SaveUserInfo extends BaseClass {
             
             $this->user->profile_image = $this->process_image_upload($this->userId, $profile_image, 'profile');
             $this->update_user = true;
-
         }
     }
 
     /**
      * Process execution
      */
-    public function action() {
+    public function action()
+    {
         if ($this->update_user) {
             $this->user->update($this->pdo);
             Model_User::setCache(Model_CacheKey::getUserKey($this->user->id), $this->user);
@@ -140,5 +142,4 @@ class SaveUserInfo extends BaseClass {
             'error' => []
         );
     }
-
 }

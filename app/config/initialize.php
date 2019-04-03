@@ -2,24 +2,24 @@
 
 /*
  * RESTful API Template
- * 
+ *
  * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
+ * This software project is based on my recent REST-API development experiences.
+ *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
+ * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
+ *
  * @author	Sabbir Hossain Rupom
  * @since	Version 1.0.0
  * @filesource
  */
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 session_start();
 
 /*
- * Initialize Server Configuration 
+ * Initialize Server Configuration
  */
 if (!file_exists(CONFIG_DIR . "/config_app.ini")) {
     Flight::json(array(
@@ -34,12 +34,12 @@ if (!file_exists(CONFIG_DIR . "/config_app.ini")) {
 
 Flight::set('app_config', parse_ini_file(CONFIG_DIR . "/config_app.ini"));
 
-/* 
+/*
  * Register the flight server with app configuration
  */
 $configArray = Flight::get('app_config');
 
-if(empty($configArray['ENV'])) {
+if (empty($configArray['ENV'])) {
     Flight::json(array(
         'error' => array(
             'title' => 'Server Configuration Error',
@@ -53,12 +53,10 @@ if(empty($configArray['ENV'])) {
 /*
  * Set server timezone acording to Configuration
  */
-if(!empty($configArray['SERVER_TIMEZONE']) 
+if (!empty($configArray['SERVER_TIMEZONE'])
         && !empty($configArray['DB_SET_TIMEZONE'])
         && $configArray['DB_SET_TIMEZONE'] == 1) {
-    
-    
-    if(!date_default_timezone_set($configArray['SERVER_TIMEZONE'])) {
+    if (!date_default_timezone_set($configArray['SERVER_TIMEZONE'])) {
         /*
          * Set error condition if server timezone is set wrongly
          */
@@ -72,9 +70,3 @@ require_once CONFIG_DIR . '/db.php';
 
 //load basic routes
 require_once APP_DIR . '/route/route.php';
-
-
-
-
-
-
