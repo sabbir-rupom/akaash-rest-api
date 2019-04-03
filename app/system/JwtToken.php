@@ -18,8 +18,7 @@
 
 use Firebase\JWT\JWT;
 
-class System_JwtToken
-{
+class System_JwtToken {
     /**
      * Verify JWT Token with secret key.
      *
@@ -28,8 +27,7 @@ class System_JwtToken
      *
      * @return array Token verification result
      */
-    public static function verifyToken($token = '', $key = '')
-    {
+    public static function verifyToken($token = '', $key = '') {
         $result = ['error' => 0, 'data' => []];
         if ('' == $token) {
             $result['error'] = 5;
@@ -59,8 +57,7 @@ class System_JwtToken
      *
      * @return array Token creation result
      */
-    public static function createToken($payload = [], $key = '')
-    {
+    public static function createToken($payload = [], $key = '') {
         $result = ['error' => 0, 'token' => ''];
 
         try {

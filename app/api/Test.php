@@ -10,8 +10,7 @@
  * @internal
  * @coversNothing
  */
-class Test extends BaseClass
-{
+class Test extends BaseClass {
     // Login Required.
     const LOGIN_REQUIRED = false;
     const TEST_ENV = true;
@@ -19,8 +18,7 @@ class Test extends BaseClass
     /**
      * Processing API script execution.
      */
-    public function action()
-    {
+    public function action() {
         // DB connectivity with user table test case
         if ($this->pdo instanceof PDO) {
             $dbUserCount = Model_User::countBy();

@@ -16,8 +16,7 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-class System_Security
-{
+class System_Security {
     /**
      * List of never allowed strings.
      *
@@ -42,8 +41,7 @@ class System_Security
     /**
      * constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         // get class instance
         $this->security = new Common_Security();
     }
@@ -63,8 +61,7 @@ class System_Security
      *
      * @return string
      */
-    public static function xss_clean($str, $is_image = false)
-    {
+    public static function xss_clean($str, $is_image = false) {
         // Is the string an array?
         if (is_array($str)) {
             foreach ($str as $key => &$value) {
@@ -261,8 +258,7 @@ class System_Security
      *
      * @return string
      */
-    protected function remove_invisible_characters($str, $url_encoded = true)
-    {
+    protected function remove_invisible_characters($str, $url_encoded = true) {
         $non_displayables = [];
 
         // every control character except newline (dec 10),
@@ -290,8 +286,7 @@ class System_Security
      *
      * @return string
      */
-    protected function do_never_allowed($str)
-    {
+    protected function do_never_allowed($str) {
         $str = str_replace(array_keys($this->_never_allowed_str), $this->_never_allowed_str, $str);
 
         foreach ($this->_never_allowed_regex as $regex) {

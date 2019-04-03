@@ -19,8 +19,7 @@
 /**
  * A utility class that summarizes the processing related to Date..
  */
-class Common_DateUtil
-{
+class Common_DateUtil {
     /**
      * Insert the current time with DateTime type when storing it in MySQL.。
      *
@@ -28,8 +27,7 @@ class Common_DateUtil
      *
      * @return string Formatted date
      */
-    public static function getToday($format = null)
-    {
+    public static function getToday($format = null) {
         if (is_null($format)) {
             $format = 'Y-m-d H:i:s';
         }
@@ -44,8 +42,7 @@ class Common_DateUtil
      * @param mixed        $ago
      * @param null|mixed   $format
      */
-    public static function getNowModify($ago, $format = null)
-    {
+    public static function getNowModify($ago, $format = null) {
         if (is_null($format)) {
             $format = 'Y-m-d H:i:s';
         }
@@ -63,8 +60,7 @@ class Common_DateUtil
      * @param mixed        $ago
      * @param null|mixed   $format
      */
-    public static function getModify($day, $ago, $format = null)
-    {
+    public static function getModify($day, $ago, $format = null) {
         if (is_null($format)) {
             $format = 'Y-m-d H:i:s';
         }
@@ -82,8 +78,7 @@ class Common_DateUtil
      * @param mixed        $ago
      * @param null|mixed   $format
      */
-    public static function getMonthModify($day, $ago, $format = null)
-    {
+    public static function getMonthModify($day, $ago, $format = null) {
         if (is_null($format)) {
             $format = 'Y-m-d H:i:s';
         }
@@ -101,8 +96,7 @@ class Common_DateUtil
      * @param mixed        $ago
      * @param null|mixed   $format
      */
-    public static function getModifyYear($day, $ago, $format = null)
-    {
+    public static function getModifyYear($day, $ago, $format = null) {
         if (is_null($format)) {
             $format = 'Y-m-d H:i:s';
         }
@@ -120,8 +114,7 @@ class Common_DateUtil
      * @param mixed        $ago
      * @param null|mixed   $format
      */
-    public static function getModifyHour($day, $ago, $format = null)
-    {
+    public static function getModifyHour($day, $ago, $format = null) {
         if (is_null($format)) {
             $format = 'Y-m-d H:i:s';
         }
@@ -139,8 +132,7 @@ class Common_DateUtil
      * @param mixed        $ago
      * @param null|mixed   $format
      */
-    public static function getModifySec($day, $ago, $format = null)
-    {
+    public static function getModifySec($day, $ago, $format = null) {
         if (is_null($format)) {
             $format = 'Y-m-d H:i:s';
         }
@@ -157,8 +149,7 @@ class Common_DateUtil
      * @param string       $date
      * @param unknown_type $format Formatted date
      */
-    public static function getFormatDate($date, $format = null)
-    {
+    public static function getFormatDate($date, $format = null) {
         $dateTime = new DateTime($date);
 
         return $dateTime->format($format);
@@ -172,8 +163,7 @@ class Common_DateUtil
      *
      * @return int $intervalTime
      */
-    public static function getSecDiff($toDate, $fromDate)
-    {
+    public static function getSecDiff($toDate, $fromDate) {
         // Calculate UnixTime from date
         $fromDateTime = strtotime($fromDate);
         $toDateTime = strtotime($toDate);
@@ -190,8 +180,7 @@ class Common_DateUtil
      *
      * @return int $intervalDay
      */
-    public static function getDayDiff($toDate, $fromDate)
-    {
+    public static function getDayDiff($toDate, $fromDate) {
         // Set the date separately
         $fromDateArray = explode('-', self::getFormatDate($fromDate, 'Y-m-d'));
         $toDateArray = explode('-', self::getFormatDate($toDate, 'Y-m-d'));
@@ -214,8 +203,7 @@ class Common_DateUtil
      *
      * @return int $diff
      */
-    public static function getMonthDiff($toDate, $fromDate)
-    {
+    public static function getMonthDiff($toDate, $fromDate) {
         $date1 = strtotime($toDate);
         $date2 = strtotime($fromDate);
         $month1 = date('Y', $date1) * 12 + date('m', $date1);
@@ -231,8 +219,7 @@ class Common_DateUtil
      *
      * @return array $diff
      */
-    public static function convertTimeTodate($time)
-    {
+    public static function convertTimeTodate($time) {
         $tempTime = $time;
         $seek = [
             'day' => 'Day',
@@ -310,8 +297,7 @@ class Common_DateUtil
      *
      * @return string formatted date
      */
-    public static function getDisplayDate($date)
-    {
+    public static function getDisplayDate($date) {
         $today = self::getToday('Y-m-d');
 
         $displayDate = self::getFormatDate($date, 'Y-m-d');
@@ -331,8 +317,7 @@ class Common_DateUtil
      * @param $fromDate
      * @param $format [optional]
      */
-    public static function getSequenceDate($toDate, $fromDate, $format = null)
-    {
+    public static function getSequenceDate($toDate, $fromDate, $format = null) {
         // $format When not specified, display in YYYY-MM-DD format
         if (is_null($format)) {
             $format = 'Y-m-d';
@@ -352,16 +337,14 @@ class Common_DateUtil
     /**
      * Returns the current Unix timestamp in microseconds.
      */
-    public static function getMicroTime()
-    {
+    public static function getMicroTime() {
         return microtime(true);
     }
 
     /**
      * Returns server Timezone.
      */
-    public static function getServerTimeZone()
-    {
+    public static function getServerTimeZone() {
         return date_default_timezone_get();
     }
 
@@ -370,8 +353,7 @@ class Common_DateUtil
      *
      * @param mixed $start
      */
-    public static function getElapsedTime($start)
-    {
+    public static function getElapsedTime($start) {
         return DateUtil::getMicroTime() - $start;
     }
 
@@ -382,8 +364,7 @@ class Common_DateUtil
      *
      * @return string Week
      */
-    public static function getDayOfWeek($date = null)
-    {
+    public static function getDayOfWeek($date = null) {
         if (null == $date) {
             $date = self::getToday();
         }
@@ -400,8 +381,7 @@ class Common_DateUtil
      * @return string datetime
      */
 
-    public static function getConvertTimeZone($fromTimeZone, $toTimeZone, $dateTime)
-    {
+    public static function getConvertTimeZone($fromTimeZone, $toTimeZone, $dateTime) {
         $t = new DateTime($dateTime, new DateTimeZone($fromTimeZone));
         $t->setTimezone(new DateTimeZone($toTimeZone));
         $format = 'Y-m-d H:i:s';
@@ -416,8 +396,7 @@ class Common_DateUtil
      *
      * @return int Unix timestamp (in seconds)
      */
-    public static function strToTime($str)
-    {
+    public static function strToTime($str) {
         return strtotime($str);
     }
 
@@ -428,8 +407,7 @@ class Common_DateUtil
      *
      * @return DB registration for the time string
      */
-    public static function timeToStr($time)
-    {
+    public static function timeToStr($time) {
         return date('Y-m-d H:i:s', $time);
     }
 
@@ -440,8 +418,7 @@ class Common_DateUtil
      *
      * @return Datetime for DB registration
      */
-    public static function timeToDateStr($time)
-    {
+    public static function timeToDateStr($time) {
         return strftime('%Y-%m-%d', $time);
     }
 
@@ -453,8 +430,7 @@ class Common_DateUtil
      *
      * @return bool Check result
      */
-    public static function isSameDay($time1, $time2)
-    {
+    public static function isSameDay($time1, $time2) {
         return self::timeToDateStr($time1) == self::timeToDateStr($time2);
     }
 }

@@ -21,8 +21,7 @@
  *
  * @author sabbir-hossain
  */
-class BaseClass
-{
+class BaseClass {
     /**
      * User Authentication variable defined.
      */
@@ -68,8 +67,7 @@ class BaseClass
      *
      * @return Instance of Requested API Controller
      */
-    public function __construct($headers, $getParams, $json, $actionName)
-    {
+    public function __construct($headers, $getParams, $json, $actionName) {
         $this->headers = $headers;
         $this->getParams = $getParams;
         $this->json = $json;
@@ -107,8 +105,7 @@ class BaseClass
     /**
      * Request processing execution.
      */
-    public function process()
-    {
+    public function process() {
         // Check and verify client request call / User session
         $this->_filter();
 
@@ -137,18 +134,16 @@ class BaseClass
      *
      * @throws Exception
      *
-     * @return array Array to convert to response JSON.
+     * @return array array to convert to response JSON
      */
-    public function action()
-    {
+    public function action() {
         throw new Exception('action is not implemented.');
     }
 
     /**
      * It verifies the value.
      */
-    public function validate()
-    {
+    public function validate() {
         // Client Type [1 = Android, 2 = iOS, 0 = Other]
         $this->client_type = $this->getValueFromQuery('client_type', 'int');
 
@@ -161,8 +156,7 @@ class BaseClass
      *
      * @throws Exception
      */
-    protected function _filter()
-    {
+    protected function _filter() {
         // Check Server Maintenance Status
         $this->_checkMaintenance();
 
@@ -183,8 +177,7 @@ class BaseClass
      *
      * @throws System_ApiException
      */
-    protected function _checkMaintenance()
-    {
+    protected function _checkMaintenance() {
         // Maintenance check parameter
         $maintainance_check = false;
 
@@ -199,8 +192,7 @@ class BaseClass
      * Verify request token
      * [ Check if API request-call has been issued from authenticated source ].
      */
-    protected function _checkRequestToken()
-    {
+    protected function _checkRequestToken() {
         if (Config_Config::getInstance()->checkRequestTokenFlag() && !static::TEST_ENV) {
             $result = System_JwtToken::verifyToken($this->requestToken, Config_Config::getInstance()->getRequestTokenSecret());
 
@@ -240,12 +232,11 @@ class BaseClass
      *
      * @param $path JSON Path array to the value contained in. Is acceptable string if the highest layer.
      * @param $type Type of the variable. "int", "bool", "string".
-     * @param $required Required.
+     * @param $required required
      *
-     * @return Value extracted from JSON.
+     * @return Value extracted from JSON
      */
-    protected function getValueFromJSON($path, $type, $required = false)
-    {
+    protected function getValueFromJSON($path, $type, $required = false) {
         if (empty($this->json) && $required) {
             throw new System_ApiException(ResultCode::INVALID_JSON, 'JSON is empty.');
         }
@@ -278,14 +269,13 @@ class BaseClass
     /**
      * Return from GET parameters to extract the value.
      *
-     * @param string  $name     GET The name of the parameter.
+     * @param string  $name     GET The name of the parameter
      * @param unknown $type     Type of the variable. "int", "bool", "string".
      * @param bool    $required Required. Extracted value from
      *
-     * @return GET parameters.
+     * @return GET parameters
      */
-    protected function getValueFromQuery($name, $type, $required = false)
-    {
+    protected function getValueFromQuery($name, $type, $required = false) {
         if (isset($this->getParams[$name])) {
             $var = $this->getParams[$name];
             if ('string' != $type && '' === $var) {
@@ -307,15 +297,14 @@ class BaseClass
     /**
      * Return parameter value from Post call.
      *
-     * @param string  $name      Name of the parameter.
+     * @param string  $name      name of the parameter
      * @param unknown $type      Type of the variable. "int", "bool", "string".
      * @param bool    $required  Value required
      * @param bool    $xss_clean XSS clean
      *
-     * @return parameter value from POST Request.
+     * @return parameter value from POST Request
      */
-    protected function getInputPost($name, $type, $required = false, $xss_clean = false)
-    {
+    protected function getInputPost($name, $type, $required = false, $xss_clean = false) {
         if (isset($_POST[$name])) {
             $var = $_POST[$name];
             if ('string' != $type && '' === $var) {
@@ -338,15 +327,14 @@ class BaseClass
     /**
      * Check the type of the value.
      *
-     * @param $ Value value to validate.
+     * @param $ Value value to validate
      * @param $ Type expected to type.
      * The time being "int," string "
      * If it is correct type of @return value TRUE, otherwise FALSE. Value returns TRUE unconditionally if it is NULL.
      * @param mixed $value
      * @param mixed $type
      */
-    protected function isValidType($value, $type)
-    {
+    protected function isValidType($value, $type) {
         $result = false;
         if (is_null($value)) {
             return true;
@@ -394,8 +382,7 @@ class BaseClass
      *
      * @return bool In the case of maintenance mode, true. Otherwise, false.
      */
-    protected function isMaintenance()
-    {
+    protected function isMaintenance() {
         // In the case of maintenance state
         if (Config_Config::getInstance()->checkMaintenance()) {
             // If it is not in the test user
@@ -412,8 +399,7 @@ class BaseClass
      *
      * @return bool If it has been tested user registration, true. Others are false.
      */
-    protected function isTestUser()
-    {
+    protected function isTestUser() {
         // If you are already logged in
         if (true == $this->isLoggedIn()) {
             // Check if session user ID matches the tester ID
@@ -428,8 +414,7 @@ class BaseClass
      *
      * @return bool if string is in json formate
      */
-    protected function is_json($str)
-    {
+    protected function is_json($str) {
         $json = json_decode($str);
 
         return $json && $str != $json;
@@ -443,8 +428,7 @@ class BaseClass
      *
      * @return string $randomString
      */
-    protected function generate_random_string($length = 4, $type = 'string')
-    {
+    protected function generate_random_string($length = 4, $type = 'string') {
         $stringRegex = '1234567890ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
         $intRegex = '1234567890';
         $capNdigitRegex = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -483,8 +467,7 @@ class BaseClass
      *
      * @return string $image_name Return uploaded image name
      */
-    protected function process_binary_image($ID, $binary_image, $type = '', $old_image_delete = true)
-    {
+    protected function process_binary_image($ID, $binary_image, $type = '', $old_image_delete = true) {
         $base64_string = 'data:image/png;base64,'.$binary_image;
 
         $curr_time = time();
@@ -532,8 +515,7 @@ class BaseClass
      *
      * @return string $image_name Return uploaded image name
      */
-    protected function process_image_upload($ID, $image_file, $type = '', $old_image_delete = true)
-    {
+    protected function process_image_upload($ID, $image_file, $type = '', $old_image_delete = true) {
         $ext = pathinfo($image_file['name'], PATHINFO_EXTENSION);
         if (!in_array($ext, ['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'])) {
             throw new System_ApiException(ResultCode::DATA_NOT_ALLOWED, 'Improper image is provided! Only jpg and png allowed!');
@@ -581,8 +563,7 @@ class BaseClass
      *
      * @return string $randomString
      */
-    protected function resize_image($image_src, $image_name, $maxDimW, $maxDimH, $type)
-    {
+    protected function resize_image($image_src, $image_name, $maxDimW, $maxDimH, $type) {
         $destinationImage = Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE.$image_name;
         copy($image_src, $destinationImage);
 
@@ -617,8 +598,7 @@ class BaseClass
      * Or is a login state check.
      * A user ID if the login state, returns FALSE if it is not logged in.
      */
-    private function isLoggedIn()
-    {
+    private function isLoggedIn() {
         if ($this->sessionId) {
             $sessionArray = unserialize(base64_decode($this->sessionId));
             $cacheSessionId = Model_User::retrieveSessionFromUserId($sessionArray['user_id']);

@@ -16,8 +16,7 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-class System_MemcachedServer
-{
+class System_MemcachedServer {
     public $host;
     public $port;
 
@@ -25,49 +24,40 @@ class System_MemcachedServer
 
     private $connection;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->connection = new Memcache();
     }
 
-    public function getConnection()
-    {
+    public function getConnection() {
         return $this->connection;
     }
 
-    public function addServer()
-    {
+    public function addServer() {
         $this->connection->addServer($this->host, $this->port);
     }
 
-    public function get($key)
-    {
+    public function get($key) {
         return $this->connection->get($key);
     }
 
-    public function put($key, $value, $limit = 0)
-    {
+    public function put($key, $value, $limit = 0) {
         $this->connection->set($key, $value, false, $limit);
     }
 
-    public function set($key, $value, $flag, $limit = 0)
-    {
+    public function set($key, $value, $flag, $limit = 0) {
         // For the third argument, it is best to specify what to specify
         $this->connection->set($key, $value, $flag, $limit);
     }
 
-    public function delete($key, $timeout = 0)
-    {
+    public function delete($key, $timeout = 0) {
         $this->connection->delete($key, $timeout);
     }
 
-    public function remove($key)
-    {
+    public function remove($key) {
         $this->connection->delete($key, 0);
     }
 
-    public function add($value, $limit = 0)
-    {
+    public function add($value, $limit = 0) {
         $key = uniqid(rand(), true);
 
         $this->connection->set($key, $value, false, $limit);
@@ -75,8 +65,7 @@ class System_MemcachedServer
         return $key;
     }
 
-    public function flush($delay = 0)
-    {
+    public function flush($delay = 0) {
         return $this->connection->flush();
     }
 }

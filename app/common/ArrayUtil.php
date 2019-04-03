@@ -19,8 +19,7 @@
 /**
  * A utility class that summarizes processing related to arrays.
  */
-class Common_ArrayUtil
-{
+class Common_ArrayUtil {
     /**
      * Specify elements of the array and acquire data.
      *
@@ -30,8 +29,7 @@ class Common_ArrayUtil
      * @param array        $array
      * @param unknown_type $defaultValue
      */
-    public static function getArrayValue($key, $array, $defaultValue = null)
-    {
+    public static function getArrayValue($key, $array, $defaultValue = null) {
         if (!array_key_exists($key, $array)) {
             return $defaultValue;
         }
@@ -39,8 +37,7 @@ class Common_ArrayUtil
         return $array[$key];
     }
 
-    public static function searchPrefixValue($prefix, array $array)
-    {
+    public static function searchPrefixValue($prefix, array $array) {
         foreach ($array as $key => $value) {
             if (false !== strpos($value, $prefix)) {
                 return $key;
@@ -56,8 +53,7 @@ class Common_ArrayUtil
      *
      * @param array $arrayData Target sequence
      */
-    public static function trimArray($arrayData)
-    {
+    public static function trimArray($arrayData) {
         // If the target array is empty or null, return it as it is
         if (empty($arrayData)) {
             return $arrayData;
@@ -85,8 +81,7 @@ class Common_ArrayUtil
      *
      * @return array
      */
-    public static function add(array &$array, array $element, $index = null)
-    {
+    public static function add(array &$array, array $element, $index = null) {
         if (null === $index) {
             $index = count($array);
         }
