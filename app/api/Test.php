@@ -10,7 +10,8 @@
  * @internal
  * @coversNothing
  */
-class Test extends BaseClass {
+class Test extends BaseClass
+{
     // Login Required.
     const LOGIN_REQUIRED = false;
     const TEST_ENV = true;
@@ -18,7 +19,8 @@ class Test extends BaseClass {
     /**
      * Processing API script execution.
      */
-    public function action() {
+    public function action()
+    {
         // DB connectivity with user table test case
         if ($this->pdo instanceof PDO) {
             $dbUserCount = Model_User::countBy();
@@ -34,7 +36,7 @@ class Test extends BaseClass {
             if (empty($this->config['REQUEST_TOKEN_SECRET'])) {
                 $responseArray['JWT'] = 'JWT token secret key is not set. Please check config_app.ini';
             } else {
-                $result = System_JwtToken::createToken(['test' => 1], $this->config['REQUEST_TOKEN_SECRET']);
+                $result = System_JwtToken::createToken(array('test' => 1), $this->config['REQUEST_TOKEN_SECRET']);
                 if (0 == $result['error']) {
                     $result = System_JwtToken::verifyToken($result['token'], $this->config['REQUEST_TOKEN_SECRET']);
                 }
@@ -96,10 +98,10 @@ class Test extends BaseClass {
 
             $message2 = !empty($cache->get($key)) ? 'Memcache system is functional' : 'Memcache system is not functional. Please check memcache settings.';
         }
-        $responseArray['Cache'] = [
+        $responseArray['Cache'] = array(
             'filecache' => $message1,
             'memcache' => $message2,
-        ];
+        );
 
         // Check file upload path access permission
 
@@ -118,11 +120,11 @@ class Test extends BaseClass {
             }
         }
 
-        return [
+        return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
             'data' => $responseArray,
-            'error' => [],
-        ];
+            'error' => array(),
+        );
     }
 }

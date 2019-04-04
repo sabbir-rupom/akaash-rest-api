@@ -5,13 +5,16 @@
 /**
  * Mission Status API.
  */
-class ShowImage extends BaseClass {
+class ShowImage extends BaseClass
+{
     private $_image_type;
 
-    public function __construct() {
+    public function __construct()
+    {
     }
 
-    public static function index($type, $id) {
+    public static function index($type, $id)
+    {
         $imageObj = new ShowImage();
 
         $imgURL = '';
@@ -48,7 +51,8 @@ class ShowImage extends BaseClass {
      *
      * @param mixed $filePath
      */
-    protected function show_image($filePath) {
+    protected function show_image($filePath)
+    {
         if ('' != $filePath) {
             header('Content-Type: image/jpeg');
             $res = file_get_contents($filePath);

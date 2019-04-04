@@ -5,7 +5,8 @@
 /**
  * User data acquisition actions.
  */
-class UserItemUpdate extends BaseClass {
+class UserItemUpdate extends BaseClass
+{
     /**
      * User Login required or not.
      */
@@ -17,7 +18,8 @@ class UserItemUpdate extends BaseClass {
     /**
      * Validation of request.
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         // Acquiring item information from json request
@@ -28,8 +30,9 @@ class UserItemUpdate extends BaseClass {
     /**
      * Process API request.
      */
-    public function action() {
-        $userItemObj = Model_UserItem::findBy(['user_id' => $this->userId, 'id' => $this->item_id], $this->pdo, true);
+    public function action()
+    {
+        $userItemObj = Model_UserItem::findBy(array('user_id' => $this->userId, 'id' => $this->item_id), $this->pdo, true);
 
         if (empty($userItemObj)) {
             throw new System_ApiException(ResultCode::NOT_FOUND, 'User item not found in database!');
@@ -39,13 +42,13 @@ class UserItemUpdate extends BaseClass {
         $userItemObj->item_name = $this->item_name;
         $userItemObj->update($this->pdo);
 
-        return [
+        return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => [
+            'data' => array(
                 'user_item' => $userItemObj->toJsonHash(),
-            ],
-            'error' => [],
-        ];
+            ),
+            'error' => array(),
+        );
     }
 }

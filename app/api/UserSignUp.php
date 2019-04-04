@@ -7,7 +7,8 @@
  *
  * @author sabbir-hossain
  */
-class UserSignUp extends BaseClass {
+class UserSignUp extends BaseClass
+{
     // Login Required.
     const LOGIN_REQUIRED = false;
 
@@ -18,7 +19,8 @@ class UserSignUp extends BaseClass {
     /**
      * Validating Login Request.
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         $this->_user_email = $this->getValueFromJSON('email', 'string', true);
@@ -28,7 +30,7 @@ class UserSignUp extends BaseClass {
         if (false === filter_var($this->_user_email, FILTER_VALIDATE_EMAIL)) {
             throw new System_ApiException(ResultCode::INVALID_REQUEST_PARAMETER, 'Email is invalid.');
         }
-        if (Model_User::countBy(['email' => $this->_user_email], $this->pdo) > 0) {
+        if (Model_User::countBy(array('email' => $this->_user_email), $this->pdo) > 0) {
             throw new System_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'Another user is registered with this email!');
         }
     }
@@ -36,7 +38,8 @@ class UserSignUp extends BaseClass {
     /**
      * Processing API script execution.
      */
-    public function action() {
+    public function action()
+    {
         $this->pdo->beginTransaction();
 
         try {
@@ -77,7 +80,7 @@ class UserSignUp extends BaseClass {
                 }
             }
 
-            $user->password = password_hash(trim($this->_user_password), PASSWORD_BCRYPT, ['cost' => 10]);
+            $user->password = password_hash(trim($this->_user_password), PASSWORD_BCRYPT, array('cost' => 10));
             $user->user_name = $this->_user_name;
             $user->email = $this->_user_email;
 
@@ -90,13 +93,13 @@ class UserSignUp extends BaseClass {
             throw $e;
         }
 
-        return [
+        return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => [
+            'data' => array(
                 'user_info' => $user->toJsonHash(),
-            ],
-            'error' => [],
-        ];
+            ),
+            'error' => array(),
+        );
     }
 }

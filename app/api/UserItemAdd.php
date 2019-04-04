@@ -5,7 +5,8 @@
 /**
  * User data acquisition actions.
  */
-class UserItemAdd extends BaseClass {
+class UserItemAdd extends BaseClass
+{
     /**
      * User Login required or not.
      */
@@ -16,7 +17,8 @@ class UserItemAdd extends BaseClass {
     /**
      * Validation of request.
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         // Acquiring item name from json request
@@ -26,20 +28,21 @@ class UserItemAdd extends BaseClass {
     /**
      * Process API request.
      */
-    public function action() {
+    public function action()
+    {
         $userItemObj = Model_UserItem::addUserItem($this->userId, $this->item_name, $this->pdo);
 
         if (empty($userItemObj->id)) {
             throw new System_ApiException(ResultCode::DATABASE_ERROR, 'Failed to insert item in database!');
         }
 
-        return [
+        return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => [
+            'data' => array(
                 'user_item' => $userItemObj->toJsonHash(),
-            ],
-            'error' => [],
-        ];
+            ),
+            'error' => array(),
+        );
     }
 }

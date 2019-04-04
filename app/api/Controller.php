@@ -1,17 +1,16 @@
 <?php
 
-/*
+/**
  * RESTful API Template
  *
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences.
+ * A RESTful API template in PHP based on flight micro-framework
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
+ * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
+ * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @since       Version 1.0.0
  */
 
 (defined('APP_NAME')) or exit('Forbidden 403');
@@ -23,7 +22,8 @@
  *
  * @author sabbir-hossain
  */
-class Controller {
+class Controller
+{
     protected static $apiName;
     protected static $getParams;
     protected static $headers;
@@ -35,7 +35,8 @@ class Controller {
      * @param string $name   REST API name
      * @param string $method Application request Method
      */
-    public static function init($name, $method) {
+    public static function init($name, $method)
+    {
         $data = null;
 
         try {
@@ -43,7 +44,7 @@ class Controller {
             self::$getParams = $_GET;
             self::$headers = getallheaders();
 
-            if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
+            if (in_array($method, array('POST', 'PUT', 'PATCH', 'DELETE'))) {
                 // Fetch all requested parameters
                 $data = file_get_contents('php://input');
 
@@ -54,7 +55,7 @@ class Controller {
                     throw new System_ApiException(ResultCode::INVALID_JSON, "Invalid JSON: ${data}");
                 }
             } else {
-                self::$json = [];
+                self::$json = array();
             }
 
             // Check if requested API controller exist in server
@@ -74,48 +75,48 @@ class Controller {
                 // Handle all application error messages
                 header('HTTP/1.1 '.ResultCode::getHTTPstatusCode($e->getCode()).' '.ResultCode::getTitle($e->getCode()));
                 $errMsg = empty($e->getMessage()) ? ResultCode::getMessage($e->getCode()) : $e->getMessage();
-                $result = [
+                $result = array(
                     'result_code' => $e->getCode(),
                     'time' => Common_DateUtil::getToday(),
-                    'error' => [
+                    'error' => array(
                         'title' => ResultCode::getTitle($e->getCode()),
                         'msg' => $errMsg,
-                    ],
-                ];
+                    ),
+                );
 
                 Common_Log::log(self::$apiName.' ('.ResultCode::DATABASE_ERROR.'): '.$errMsg);
             } elseif ($e instanceof PDOException) {
                 // Handle all database related error messages
                 header('HTTP/1.1 '.ResultCode::getHTTPstatusCode(ResultCode::DATABASE_ERROR).' '.ResultCode::getTitle(ResultCode::DATABASE_ERROR));
                 $errMsg = empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::DATABASE_ERROR).': check connection' : $e->getMessage();
-                $result = [
+                $result = array(
                     'result_code' => ResultCode::DATABASE_ERROR,
                     'time' => Common_DateUtil::getToday(),
-                    'error' => [
+                    'error' => array(
                         'title' => ResultCode::getTitle(ResultCode::DATABASE_ERROR),
                         'msg' => $errMsg,
-                    ],
-                ];
+                    ),
+                );
 
                 Common_Log::log(self::$apiName.' ('.ResultCode::DATABASE_ERROR.'): '.$errMsg);
             } else {
                 // Handle all system error messages
                 header('HTTP/1.1 '.ResultCode::getHTTPstatusCode(ResultCode::UNKNOWN_ERROR).' '.ResultCode::getTitle(ResultCode::UNKNOWN_ERROR));
                 $errMsg = empty($e->getMessage()) ? ResultCode::getMessage(ResultCode::UNKNOWN_ERROR) : $e->getMessage();
-                $result = [
+                $result = array(
                     'result_code' => ResultCode::UNKNOWN_ERROR,
                     'time' => Common_DateUtil::getToday(),
-                    'error' => [
+                    'error' => array(
                         'title' => ResultCode::getTitle(ResultCode::UNKNOWN_ERROR),
                         'msg' => $errMsg,
-                    ],
-                ];
+                    ),
+                );
 
-                Common_Log::log([
+                Common_Log::log(array(
                     'message' => self::$apiName.' ('.ResultCode::UNKNOWN_ERROR.'): '.$errMsg,
                     'file_name' => $e->getFile(),
                     'line_number' => $e->getLine(),
-                ]);
+                ));
             }
 
             if (Config_Config::getInstance()->isErrorDump()) {
@@ -123,11 +124,11 @@ class Controller {
                  * Additional error messages
                  * For developers debug purpose
                  */
-                $result['error_dump'] = [
+                $result['error_dump'] = array(
                     'code' => $e->getCode(),
                     'file' => $e->getFile(),
                     'line' => $e->getLine(),
-                ];
+                );
             }
         }
         $json_array = $result;
@@ -154,7 +155,8 @@ class Controller {
      *
      * @param type $name Api name
      */
-    public static function initGet($name) {
+    public static function initGet($name)
+    {
         self::init($name, 'GET');
     }
 
@@ -163,7 +165,8 @@ class Controller {
      *
      * @param type $name Api name
      */
-    public static function initPost($name) {
+    public static function initPost($name)
+    {
         self::init($name, 'POST');
     }
 
@@ -172,7 +175,8 @@ class Controller {
      *
      * @param type $name Api name
      */
-    public static function initPut($name) {
+    public static function initPut($name)
+    {
         self::init($name, 'PUT');
     }
 
@@ -181,7 +185,8 @@ class Controller {
      *
      * @param type $name Api name
      */
-    public static function initPatch($name) {
+    public static function initPatch($name)
+    {
         self::init($name, 'PATCH');
     }
 
@@ -190,7 +195,8 @@ class Controller {
      *
      * @param type $name Api name
      */
-    public static function initDelete($name) {
+    public static function initDelete($name)
+    {
         self::init($name, 'DELETE');
     }
 }

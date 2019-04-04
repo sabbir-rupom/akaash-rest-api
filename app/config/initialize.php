@@ -1,32 +1,32 @@
 <?php
 
-/*
+/**
  * RESTful API Template
  *
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences.
+ * A RESTful API template in PHP based on flight micro-framework
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
+ * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
+ * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @since       Version 1.0.0
  */
-
-(defined('APP_NAME')) or exit('Forbidden 403');
+if (!defined('APP_NAME')) {
+    die('Forbidden 403');
+}
 
 session_start();
 
 // Initialize Server Configuration
 if (!file_exists(CONFIG_DIR.'/config_app.ini')) {
-    Flight::json([
-        'error' => [
+    Flight::json(array(
+        'error' => array(
             'title' => 'Server Configuration Error',
             'message' => 'Server configuration file [ config_app.ini ] is missing',
-        ],
+        ),
         'result_code' => 500,
-    ], 500);
+    ), 500);
     exit;
 }
 
@@ -36,13 +36,13 @@ Flight::set('app_config', parse_ini_file(CONFIG_DIR.'/config_app.ini'));
 $configArray = Flight::get('app_config');
 
 if (empty($configArray['ENV'])) {
-    Flight::json([
-        'error' => [
+    Flight::json(array(
+        'error' => array(
             'title' => 'Server Configuration Error',
             'message' => 'Server environment is not set in config',
-        ],
+        ),
         'result_code' => 503,
-    ], 503);
+    ), 503);
     exit;
 }
 

@@ -1,28 +1,25 @@
 <?php
 
-/*
+/**
  * RESTful API Template
  *
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences.
+ * A RESTful API template in PHP based on flight micro-framework
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
+ * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
+ * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @since       Version 1.0.0
  */
-
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Application constant class
  * This class provides all constant values required throughout this application.
- *
- * @author sabbir-hossain
  */
-class Const_Application {
+class Const_Application
+{
     /** Unknown client
      */
     const PLATFORM_TYPE_NONE = 0;
@@ -52,5 +49,5 @@ class Const_Application {
     const MOBILE_IMAGE_HEIGHT = 256;
 
     // Allowed encoded algorithms for JWT
-    const JWT_ENCODE_ALGORITHMS = ['HS256', 'HS512'];
+    const JWT_ENCODE_ALGORITHMS = array('HS256', 'HS512');
 }

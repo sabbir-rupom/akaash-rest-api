@@ -5,44 +5,45 @@
 /**
  * User login log model.
  */
-class Model_UserLoginSession extends Model_BaseModel {
+class Model_UserLoginSession extends Model_BaseModel
+{
     const TABLE_NAME = 'user_login_sessions';
 
     // Table column definitions
-    protected static $columnsOnDB = [
-        'id' => [
+    protected static $columnsOnDB = array(
+        'id' => array(
             'type' => 'int',
             'json' => false,
-        ],
-        'user_id' => [
+        ),
+        'user_id' => array(
             'type' => 'int',
             'json' => false,
-        ],
-        'session_id' => [
+        ),
+        'session_id' => array(
             'type' => 'string',
             'json' => false,
-        ],
-        'login_type' => [
+        ),
+        'login_type' => array(
             'type' => 'int',
             'json' => false,
-        ],
-        'login_count' => [
+        ),
+        'login_count' => array(
             'type' => 'int',
             'json' => false,
-        ],
-        'time' => [
+        ),
+        'time' => array(
             'type' => 'int',
             'json' => false,
-        ],
-        'created_at' => [
+        ),
+        'created_at' => array(
             'type' => 'datetime',
             'json' => false,
-        ],
-        'updated_at' => [
+        ),
+        'updated_at' => array(
             'type' => 'datetime',
             'json' => false,
-        ],
-    ];
+        ),
+    );
 
     /**
      * Insert / Update user session for each day.
@@ -56,12 +57,13 @@ class Model_UserLoginSession extends Model_BaseModel {
      *
      * @return bool Success [TRUE]
      */
-    public static function updateSession($userId, $sessionId, $loginType, $pdo = null) {
+    public static function updateSession($userId, $sessionId, $loginType, $pdo = null)
+    {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
 
-        $userSession = self::findBy(['user_id' => $userId, 'DATE(created_at)' => Common_DateUtil::getToday('Y-m-d')], $pdo, true);
+        $userSession = self::findBy(array('user_id' => $userId, 'DATE(created_at)' => Common_DateUtil::getToday('Y-m-d')), $pdo, true);
 
         if (empty($userSession)) {
             $userSession = new Model_UserLoginSession();

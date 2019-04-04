@@ -5,7 +5,8 @@
 /**
  * User data acquisition actions.
  */
-class GetUserInfo extends BaseClass {
+class GetUserInfo extends BaseClass
+{
     /**
      * Login required or not.
      */
@@ -16,7 +17,8 @@ class GetUserInfo extends BaseClass {
     /**
      * Validation of request.
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         // If a user ID is specified through GET / Query string
@@ -26,7 +28,8 @@ class GetUserInfo extends BaseClass {
     /**
      * Process API request.
      */
-    public function action() {
+    public function action()
+    {
         if (empty($this->targetUserId) || $this->targetUserId == $this->userId) {
             // If user ID not specified, get the session user information
             $user = $this->cache_user;
@@ -38,13 +41,13 @@ class GetUserInfo extends BaseClass {
             throw new System_ApiException(ResultCode::USER_NOT_FOUND, 'User not found');
         }
 
-        return [
+        return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => [
+            'data' => array(
                 'user_info' => $user->toJsonHash(),
-            ],
-            'error' => [],
-        ];
+            ),
+            'error' => array(),
+        );
     }
 }

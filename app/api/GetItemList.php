@@ -5,7 +5,8 @@
 /**
  * Get all other registered user list.
  */
-class GetItemList extends BaseClass {
+class GetItemList extends BaseClass
+{
     /**
      * Login required or not.
      */
@@ -17,7 +18,8 @@ class GetItemList extends BaseClass {
     /**
      * Validation of request.
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         $this->itemName = $this->getValueFromJSON('item_name', 'string');
@@ -29,7 +31,8 @@ class GetItemList extends BaseClass {
     /**
      * Process API request.
      */
-    public function action() {
+    public function action()
+    {
         // Find items from database
         $itemsObj = Model_UserItem::getAllItems($this->itemName, $this->targetUserId, $this->pdo);
 
@@ -38,21 +41,21 @@ class GetItemList extends BaseClass {
         }
 
         // Initialize empty array
-        $items = [];
+        $items = array();
 
         foreach ($itemsObj as $key => $val) {
             $items[$key]['name'] = $val->item_name;
             $items[$key]['count'] = (int) $val->count;
         }
 
-        return [
+        return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => [
+            'data' => array(
                 'items' => $items,
                 'user_info' => $this->cache_user->toJsonHash(),
-            ],
-            'error' => [],
-        ];
+            ),
+            'error' => array(),
+        );
     }
 }

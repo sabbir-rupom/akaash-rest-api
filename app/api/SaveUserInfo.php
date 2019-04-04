@@ -5,7 +5,8 @@
 /**
  * Save user's updated information.
  */
-class SaveUserInfo extends BaseClass {
+class SaveUserInfo extends BaseClass
+{
     // Required Login or not
     const LOGIN_REQUIRED = true;
 
@@ -15,7 +16,8 @@ class SaveUserInfo extends BaseClass {
     /**
      * Verification of the request.
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         $this->user = $this->cache_user;
@@ -96,7 +98,7 @@ class SaveUserInfo extends BaseClass {
                     throw new System_ApiException(ResultCode::DATA_NOT_ALLOWED, 'Current password does not match');
                 }
 
-                $this->user->password = password_hash(trim($newPassword), PASSWORD_BCRYPT, ['cost' => 10]);
+                $this->user->password = password_hash(trim($newPassword), PASSWORD_BCRYPT, array('cost' => 10));
                 $this->update_user = true;
             }
         } elseif (!empty($_FILES)) {
@@ -117,19 +119,20 @@ class SaveUserInfo extends BaseClass {
     /**
      * Process execution.
      */
-    public function action() {
+    public function action()
+    {
         if ($this->update_user) {
             $this->user->update($this->pdo);
             Model_User::setCache(Model_CacheKey::getUserKey($this->user->id), $this->user);
         }
 
-        return [
+        return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => [
+            'data' => array(
                 'user_info' => $this->user->toJsonHash($this->pdo),
-            ],
-            'error' => [],
-        ];
+            ),
+            'error' => array(),
+        );
     }
 }

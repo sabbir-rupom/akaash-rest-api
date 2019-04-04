@@ -5,7 +5,8 @@
 /**
  * User Item model class.
  */
-class Model_UserItem extends Model_BaseModel {
+class Model_UserItem extends Model_BaseModel
+{
     /**
      * Table Name.
      */
@@ -14,28 +15,28 @@ class Model_UserItem extends Model_BaseModel {
     /**
      * Table column definitions.
      */
-    protected static $columnsOnDB = [
-        'id' => [
+    protected static $columnsOnDB = array(
+        'id' => array(
             'type' => 'int',
             'json' => true,
-        ],
-        'user_id' => [
+        ),
+        'user_id' => array(
             'type' => 'int',
             'json' => false,
-        ],
-        'item_name' => [
+        ),
+        'item_name' => array(
             'type' => 'string',
             'json' => true,
-        ],
-        'created_at' => [
+        ),
+        'created_at' => array(
             'type' => 'string',
             'json' => false,
-        ],
-        'updated_at' => [
+        ),
+        'updated_at' => array(
             'type' => 'string',
             'json' => false,
-        ],
-    ];
+        ),
+    );
 
     /**
      * Insert new unique item for session user.
@@ -48,12 +49,13 @@ class Model_UserItem extends Model_BaseModel {
      *
      * @return obj $userItemObj Model_UserItem object
      */
-    public static function addUserItem($userId, $itemName, $pdo = null) {
+    public static function addUserItem($userId, $itemName, $pdo = null)
+    {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
 
-        $userItemObj = self::findBy(['user_id' => $userId, 'item_name' => $itemName], $pdo);
+        $userItemObj = self::findBy(array('user_id' => $userId, 'item_name' => $itemName), $pdo);
 
         if (empty($userItemObj)) {
             $userItemObj = new Model_UserItem();
@@ -77,17 +79,18 @@ class Model_UserItem extends Model_BaseModel {
      *
      * @return array $result Array of item list
      */
-    public static function getAllItems($itemName = '', $userId = null, $pdo = null) {
+    public static function getAllItems($itemName = '', $userId = null, $pdo = null)
+    {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
         $sql = 'SELECT item_name, count(item_name) AS count FROM '.self::TABLE_NAME.' WHERE ';
 
         list($condition, $values) = self::constructQueryCondition(
-            [
-                ['item_name', $itemName, 'like'],
-                ['user_id', $userId, '='],
-            ]
+            array(
+                array('item_name', $itemName, 'like'),
+                array('user_id', $userId, '='),
+            )
         );
 
         $sql .= $condition.' GROUP BY item_name ORDER BY item_name ASC';

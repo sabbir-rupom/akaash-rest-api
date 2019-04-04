@@ -2,7 +2,8 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-class Model_User extends Model_BaseModel {
+class Model_User extends Model_BaseModel
+{
     const MEMCACHED_EXPIRE = 3600; // Time to expire memcache; 1 hour
     const SESSION_DURATION_SEC = 3600; // 1 hour
     const SESSION_RESOLVE_DURATION_SEC = 0; // No limit
@@ -11,72 +12,72 @@ class Model_User extends Model_BaseModel {
     const TABLE_NAME = 'users';
 
     // Table column definitions
-    protected static $columnsOnDB = [
-        'id' => [
+    protected static $columnsOnDB = array(
+        'id' => array(
             'type' => 'int',
             'json' => true,
-        ],
-        'user_name' => [
+        ),
+        'user_name' => array(
             'type' => 'string',
             'json' => true,
-        ],
-        'profile_image' => [
+        ),
+        'profile_image' => array(
             'type' => 'string',
             'json' => true,
-        ],
-        'gender' => [
+        ),
+        'gender' => array(
             'type' => 'string',
             'json' => true,
-        ],
-        'first_name' => [
+        ),
+        'first_name' => array(
             'type' => 'string',
             'json' => true,
-        ],
-        'last_name' => [
+        ),
+        'last_name' => array(
             'type' => 'string',
             'json' => true,
-        ],
-        'email' => [
+        ),
+        'email' => array(
             'type' => 'string',
             'json' => true,
-        ],
-        'password' => [
+        ),
+        'password' => array(
             'type' => 'string',
             'json' => false,
-        ],
-        'personal_info' => [
+        ),
+        'personal_info' => array(
             'type' => 'string',
             'json' => true,
-        ],
-        'latitude' => [
+        ),
+        'latitude' => array(
             'type' => 'float',
             'json' => true,
-        ],
-        'longitude' => [
+        ),
+        'longitude' => array(
             'type' => 'float',
             'json' => true,
-        ],
-        'last_api_time' => [
+        ),
+        'last_api_time' => array(
             'type' => 'string',
             'json' => false,
-        ],
-        'device_token' => [
+        ),
+        'device_token' => array(
             'type' => 'string',
             'json' => false,
-        ],
-        'device_model' => [
+        ),
+        'device_model' => array(
             'type' => 'string',
             'json' => false,
-        ],
-        'created_at' => [
+        ),
+        'created_at' => array(
             'type' => 'string',
             'json' => false,
-        ],
-        'updated_at' => [
+        ),
+        'updated_at' => array(
             'type' => 'string',
             'json' => false,
-        ],
-    ];
+        ),
+    );
 
     /**
      * Registration process execution.
@@ -88,15 +89,16 @@ class Model_User extends Model_BaseModel {
      *
      * @return User object
      */
-    public function createUser($dataArray, $pdo = null) {
+    public function createUser($dataArray, $pdo = null)
+    {
         // Get User data by uuid
-        $user = Model_User::findBy(['email' => $dataArray['email']], $pdo);
+        $user = Model_User::findBy(array('email' => $dataArray['email']), $pdo);
 
         // Checke User exist or not
         if (null === $user || empty($user)) {
             // User Data Collection
             $this->user_name = $dataArray['username'];
-            $this->password = password_hash($dataArray['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+            $this->password = password_hash($dataArray['password'], PASSWORD_BCRYPT, array('cost' => 12));
             $this->email = $dataArray['email'];
             $this->personal_info = $dataArray['personal_info'];
             $this->first_name = $dataArray['firstname'];
@@ -123,7 +125,8 @@ class Model_User extends Model_BaseModel {
      *
      * @param PDO $pdo
      */
-    public function updateUserLastActiveTime($pdo = null) {
+    public function updateUserLastActiveTime($pdo = null)
+    {
         if (property_exists($this, 'last_api_time')) {
             if (null === $pdo) {
                 $pdo = Flight::pdo();
@@ -138,7 +141,8 @@ class Model_User extends Model_BaseModel {
      *
      * @param mixed $userId
      */
-    public static function retrieveSessionFromUserId($userId) {
+    public static function retrieveSessionFromUserId($userId)
+    {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
         $memcache = Config_Config::getMemcachedClient();
 
@@ -148,7 +152,8 @@ class Model_User extends Model_BaseModel {
     /**
      * Update the session ID, save the session to Memcached.
      */
-    public function setSession() {
+    public function setSession()
+    {
         session_regenerate_id();
         $sessionId = session_id();
         self::cacheSession($sessionId, $this->id);
@@ -161,7 +166,8 @@ class Model_User extends Model_BaseModel {
      *
      * @param mixed $userId
      */
-    public function removeSessionFromUserId($userId) {
+    public function removeSessionFromUserId($userId)
+    {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
         $session = Config_Config::getMemcachedClient();
         $session->remove($sessionKey);
@@ -173,7 +179,8 @@ class Model_User extends Model_BaseModel {
      * @param mixed $sessionId
      * @param mixed $userId
      */
-    public static function cacheSession($sessionId, $userId) {
+    public static function cacheSession($sessionId, $userId)
+    {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
         $memcache = Config_Config::getMemcachedClient();
         $memcache->set($sessionKey, $sessionId, 0, self::SESSION_DURATION_SEC);
@@ -184,7 +191,8 @@ class Model_User extends Model_BaseModel {
      *
      * @param mixed $additionalData
      */
-    public function toJsonHash($additionalData = []) {
+    public function toJsonHash($additionalData = array())
+    {
         $userId = intval($this->id);
         $hash = parent::toJsonHash();
 
@@ -209,7 +217,8 @@ class Model_User extends Model_BaseModel {
      *
      * @return obj array object Model_User
      */
-    public static function cache_or_find($userId, $pdo = null) {
+    public static function cache_or_find($userId, $pdo = null)
+    {
         $user = parent::getCache(Model_CacheKey::getUserKey($userId));
 
         if (false == $user) {
@@ -228,7 +237,8 @@ class Model_User extends Model_BaseModel {
      *
      * @return obj array object Model_User
      */
-    public static function refreshCache($userId, $pdo = null) {
+    public static function refreshCache($userId, $pdo = null)
+    {
         $user = self::find($userId, $pdo, true);
         parent::setCache(Model_CacheKey::getUserKey($userId), $user);
 
@@ -241,7 +251,8 @@ class Model_User extends Model_BaseModel {
      * @param obj  $pdo         DB connection Object PDO
      * @param bool $cacheDelete [optional] Delete data from cache if exist
      */
-    public function update($pdo = null, $cacheDelete = true) {
+    public function update($pdo = null, $cacheDelete = true)
+    {
         if ($cacheDelete) {
             parent::deleteCache($this->id);
         }

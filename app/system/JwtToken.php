@@ -1,24 +1,26 @@
 <?php
 
-/*
+/**
  * RESTful API Template
  *
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences.
+ * A RESTful API template in PHP based on flight micro-framework
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
+ * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
+ * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @since       Version 1.0.0
  */
-
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 use Firebase\JWT\JWT;
 
-class System_JwtToken {
+/*
+ * System library class JwtToken
+ */
+class System_JwtToken
+{
     /**
      * Verify JWT Token with secret key.
      *
@@ -27,8 +29,9 @@ class System_JwtToken {
      *
      * @return array Token verification result
      */
-    public static function verifyToken($token = '', $key = '') {
-        $result = ['error' => 0, 'data' => []];
+    public static function verifyToken($token = '', $key = '')
+    {
+        $result = array('error' => 0, 'data' => array());
         if ('' == $token) {
             $result['error'] = 5;
 
@@ -57,8 +60,9 @@ class System_JwtToken {
      *
      * @return array Token creation result
      */
-    public static function createToken($payload = [], $key = '') {
-        $result = ['error' => 0, 'token' => ''];
+    public static function createToken($payload = array(), $key = '')
+    {
+        $result = array('error' => 0, 'token' => '');
 
         try {
             $jwt = JWT::encode($payload, $key);

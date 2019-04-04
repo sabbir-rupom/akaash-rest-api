@@ -1,27 +1,24 @@
 <?php
 
-/*
+/**
  * RESTful API Template
  *
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences.
+ * A RESTful API template in PHP based on flight micro-framework
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
+ * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
+ * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @since       Version 1.0.0
  */
-
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * 　Cache key generation Model class.
- *
- * @author sabbir-hossain
  */
-class Model_CacheKey {
+class Model_CacheKey
+{
     /**
      * Session storage cache key acquisition.
      *
@@ -29,7 +26,8 @@ class Model_CacheKey {
      *
      * @return Cache key
      */
-    public static function getUserSessionKey($userId) {
+    public static function getUserSessionKey($userId)
+    {
         return Config_Config::getInstance()->getMemcachePrefix().'user_ses_'.$userId;
     }
 
@@ -52,7 +50,8 @@ class Model_CacheKey {
      *
      * @return Cache key
      */
-    public static function getUserKey($userId) {
+    public static function getUserKey($userId)
+    {
         return Config_Config::getInstance()->getMemcachePrefix().'users_'.$userId;
     }
 }

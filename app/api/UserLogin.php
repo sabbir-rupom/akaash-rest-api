@@ -7,7 +7,8 @@
  *
  * @author sabbir-hossain
  */
-class UserLogin extends BaseClass {
+class UserLogin extends BaseClass
+{
     // Login Required.
     const LOGIN_REQUIRED = false;
 
@@ -19,7 +20,8 @@ class UserLogin extends BaseClass {
     /**
      * Validating Login Request.
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         $this->_login_type = $this->getValueFromJSON('login_type', 'int');
@@ -50,14 +52,15 @@ class UserLogin extends BaseClass {
     /**
      * Processing API script execution.
      */
-    public function action() {
+    public function action()
+    {
         $this->pdo->beginTransaction();
 
         try {
             $user = null;
             switch ($this->_login_type) {
                 case 1:
-                    $user = Model_User::findBy(['email' => $this->_user_email], $this->pdo, true);
+                    $user = Model_User::findBy(array('email' => $this->_user_email), $this->pdo, true);
                     if (null === $user || empty($user)) {
                         throw new System_ApiException(ResultCode::USER_NOT_FOUND);
                     }
@@ -116,19 +119,19 @@ class UserLogin extends BaseClass {
         }
 
         // Encode session data for client
-        $encodeUserSession = base64_encode(serialize([
+        $encodeUserSession = base64_encode(serialize(array(
             'session_id' => $sessionId,
             'user_id' => $user->id,
-        ]));
+        )));
 
-        return [
+        return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => Common_DateUtil::getToday(),
-            'data' => [
+            'data' => array(
                 'session_id' => $encodeUserSession,
                 'user_info' => $user->toJsonHash(),
-            ],
-            'error' => [],
-        ];
+            ),
+            'error' => array(),
+        );
     }
 }

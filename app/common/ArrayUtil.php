@@ -1,17 +1,16 @@
 <?php
 
-/*
+/**
  * RESTful API Template
  *
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences.
+ * A RESTful API template in PHP based on flight micro-framework
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
+ * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
+ * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @since       Version 1.0.0
  */
 
 (defined('APP_NAME')) or exit('Forbidden 403');
@@ -19,7 +18,8 @@
 /**
  * A utility class that summarizes processing related to arrays.
  */
-class Common_ArrayUtil {
+class Common_ArrayUtil
+{
     /**
      * Specify elements of the array and acquire data.
      *
@@ -29,7 +29,8 @@ class Common_ArrayUtil {
      * @param array        $array
      * @param unknown_type $defaultValue
      */
-    public static function getArrayValue($key, $array, $defaultValue = null) {
+    public static function getArrayValue($key, $array, $defaultValue = null)
+    {
         if (!array_key_exists($key, $array)) {
             return $defaultValue;
         }
@@ -37,7 +38,8 @@ class Common_ArrayUtil {
         return $array[$key];
     }
 
-    public static function searchPrefixValue($prefix, array $array) {
+    public static function searchPrefixValue($prefix, array $array)
+    {
         foreach ($array as $key => $value) {
             if (false !== strpos($value, $prefix)) {
                 return $key;
@@ -53,13 +55,14 @@ class Common_ArrayUtil {
      *
      * @param array $arrayData Target sequence
      */
-    public static function trimArray($arrayData) {
+    public static function trimArray($arrayData)
+    {
         // If the target array is empty or null, return it as it is
         if (empty($arrayData)) {
             return $arrayData;
         }
 
-        $returnArray = [];
+        $returnArray = array();
 
         reset($arrayData);
 
@@ -81,7 +84,8 @@ class Common_ArrayUtil {
      *
      * @return array
      */
-    public static function add(array &$array, array $element, $index = null) {
+    public static function add(array &$array, array $element, $index = null)
+    {
         if (null === $index) {
             $index = count($array);
         }
