@@ -19,11 +19,11 @@ if (!isset($argv)) {
 
     Flight::route('GET|POST /', function () {
         Flight::json(array(
-            'error' => array(
-                'title' => 'Direct Access Forbidden',
-                'message' => 'Unauthorized access is forbidden',
+            'data' => array(
+                'title' => 'Welcome',
+                'message' => 'This REST-API template is built on PHP langauage, with flight microfamework as backend engine',
             ),
-            'result_code' => ResultCode::ACCESS_FORBIDDEN,
+            'result_code' => ResultCode::SUCCESS,
         ));
     });
 
