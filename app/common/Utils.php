@@ -1,25 +1,22 @@
 <?php
 
 /**
- * RESTful API Template
- *
- * A RESTful API template in PHP based on flight micro-framework
+ * A RESTful API template in PHP based on flight micro-framework.
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
  * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
- * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @license	http://www.opensource.org/licenses/mit-license.php ( MIT License )
+ *
  * @since       Version 1.0.0
  */
-
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Utility helper class.
  */
-class Common_Utils
-{
+class Common_Utils {
     /**
      * Convert a string to CamelCase.
      *
@@ -28,8 +25,7 @@ class Common_Utils
      *
      * @return CamelCase of string, underscore is removed
      */
-    public static function camelize($str, $ucfirst = true)
-    {
+    public static function camelize($str, $ucfirst = true) {
         if (stristr($str, '-')) {
             $elements = explode('-', $str);
         } else {
@@ -53,8 +49,7 @@ class Common_Utils
      *
      * @return bool Check result
      */
-    public static function isInt($var)
-    {
+    public static function isInt($var) {
         if (is_int($var)) {
             return true;
         }
@@ -70,8 +65,7 @@ class Common_Utils
      *
      * @return string Var_dump content text column
      */
-    public static function dump($object)
-    {
+    public static function dump($object) {
         ob_start();
         var_dump($object);
         $dumpStdOut = ob_get_contents();
@@ -89,8 +83,7 @@ class Common_Utils
      *
      * @return array Conversion hash representation
      */
-    public static function objToJsonHash($obj)
-    {
+    public static function objToJsonHash($obj) {
         $str = json_encode($obj);
 
         return json_decode($str, true);
@@ -104,8 +97,7 @@ class Common_Utils
      *
      * @return object Converted object representation
      */
-    public static function objFromJsonHash($hash)
-    {
+    public static function objFromJsonHash($hash) {
         $str = json_encode($hash);
 
         return json_decode($str, false);
@@ -116,8 +108,7 @@ class Common_Utils
      *
      * @return string
      */
-    public static function getPostStringParameter()
-    {
+    public static function getPostStringParameter() {
         $handle = fopen('php://input', 'r');
         $string = fgets($handle);
 
@@ -131,8 +122,7 @@ class Common_Utils
      *
      * @return int $platformType Type of client platform
      */
-    public static function getHttpRequestPlatformType()
-    {
+    public static function getHttpRequestPlatformType() {
         // Unable to acquire OS type None
         if (false == array_key_exists('platform_type', $_GET)) {
             if (true == array_key_exists('client_type', $_GET)) {

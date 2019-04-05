@@ -1,26 +1,22 @@
 <?php
 
 /**
- * RESTful API Template
- *
- * A RESTful API template in PHP based on flight micro-framework
+ * A RESTful API template in PHP based on flight micro-framework.
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
  * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
- * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @license	http://www.opensource.org/licenses/mit-license.php ( MIT License )
+ *
  * @since       Version 1.0.0
  */
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 use Firebase\JWT\JWT;
 
-/*
- * System library class JwtToken
- */
-class System_JwtToken
-{
+// System library class JwtToken
+class System_JwtToken {
     /**
      * Verify JWT Token with secret key.
      *
@@ -29,8 +25,7 @@ class System_JwtToken
      *
      * @return array Token verification result
      */
-    public static function verifyToken($token = '', $key = '')
-    {
+    public static function verifyToken($token = '', $key = '') {
         $result = array('error' => 0, 'data' => array());
         if ('' == $token) {
             $result['error'] = 5;
@@ -60,8 +55,7 @@ class System_JwtToken
      *
      * @return array Token creation result
      */
-    public static function createToken($payload = array(), $key = '')
-    {
+    public static function createToken($payload = array(), $key = '') {
         $result = array('error' => 0, 'token' => '');
 
         try {

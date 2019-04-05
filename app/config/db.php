@@ -1,23 +1,23 @@
 <?php
 
 /**
- * RESTful API Template
- *
- * A RESTful API template in PHP based on flight micro-framework
+ * A RESTful API template in PHP based on flight micro-framework.
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
  * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
- * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @license	http://www.opensource.org/licenses/mit-license.php ( MIT License )
+ *
  * @since       Version 1.0.0
  */
 if (!defined('APP_NAME')) {
     die('Forbidden 403');
 }
 
-// Initialize database connections from config
-
+/**
+ *  Initialize database connections from configuration file.
+ */
 $db_host = $configArray['DB_HOST'];
 $db_name = $configArray['DB_NAME'];
 $db_user = $configArray['DB_USER'];

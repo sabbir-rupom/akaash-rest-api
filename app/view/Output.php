@@ -1,15 +1,14 @@
 <?php
 
 /**
- * RESTful API Template
- *
- * A RESTful API template in PHP based on flight micro-framework
+ * A RESTful API template in PHP based on flight micro-framework.
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
  * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
- * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @license	http://www.opensource.org/licenses/mit-license.php ( MIT License )
+ *
  * @since       Version 1.0.0
  */
 (defined('APP_NAME')) or exit('Forbidden 403');
@@ -18,13 +17,11 @@
  * Output class
  * This class views all the responses after API execution.
  */
-class View_Output
-{
+class View_Output {
     /**
      * class constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
     }
 
     /**
@@ -32,8 +29,7 @@ class View_Output
      *
      * @param mixed $json_array
      */
-    public static function responseJson($json_array)
-    {
+    public static function responseJson($json_array) {
         $jsonResult = self::safe_json_encode($json_array);
         /*
          * Flight JSON encode feature is not used
@@ -53,8 +49,7 @@ class View_Output
      * Convert result to JSON Object for output result
      */
 
-    public static function safe_json_encode($data)
-    {
+    public static function safe_json_encode($data) {
         $encoded = json_encode($data, JSON_PRETTY_PRINT);
 
         switch (json_last_error()) {
@@ -83,8 +78,7 @@ class View_Output
      * Correct all utf-8 related errors for proper JSON output
      */
 
-    public static function utf8ize($mixed)
-    {
+    public static function utf8ize($mixed) {
         if (is_array($mixed)) {
             foreach ($mixed as $key => $value) {
                 $mixed[$key] = self::utf8ize($value);

@@ -1,24 +1,22 @@
 <?php
 
 /**
- * RESTful API Template
- *
- * A RESTful API template in PHP based on flight micro-framework
+ * A RESTful API template in PHP based on flight micro-framework.
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
  * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
- * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @license	http://www.opensource.org/licenses/mit-license.php ( MIT License )
+ *
  * @since       Version 1.0.0
  */
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * System library class Security
+ * System library class Security.
  */
-class System_Security
-{
+class System_Security {
     /**
      * List of never allowed strings.
      *
@@ -43,8 +41,7 @@ class System_Security
     /**
      * constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         // get class instance
         $this->security = new Common_Security();
     }
@@ -64,8 +61,7 @@ class System_Security
      *
      * @return string
      */
-    public static function xss_clean($str, $is_image = false)
-    {
+    public static function xss_clean($str, $is_image = false) {
         // Is the string an array?
         if (is_array($str)) {
             foreach ($str as $key => &$value) {
@@ -262,8 +258,7 @@ class System_Security
      *
      * @return string
      */
-    protected function remove_invisible_characters($str, $url_encoded = true)
-    {
+    protected function remove_invisible_characters($str, $url_encoded = true) {
         $non_displayables = array();
 
         // every control character except newline (dec 10),
@@ -291,8 +286,7 @@ class System_Security
      *
      * @return string
      */
-    protected function do_never_allowed($str)
-    {
+    protected function do_never_allowed($str) {
         $str = str_replace(array_keys($this->_never_allowed_str), $this->_never_allowed_str, $str);
 
         foreach ($this->_never_allowed_regex as $regex) {

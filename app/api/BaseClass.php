@@ -1,17 +1,15 @@
 <?php
 
 /**
- * RESTful API Template
- *
- * A RESTful API template in PHP based on flight micro-framework
+ * A RESTful API template in PHP based on flight micro-framework.
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
- * @author  Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
- * @license https://opensource.org/licenses/MIT ( MIT License )
- * @link    https://github.com/sabbir-rupom/rest-api-PHP-flight
- * @since   Version 1.0.0
+ * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
+ * @license	http://www.opensource.org/licenses/mit-license.php ( MIT License )
+ *
+ * @since       Version 1.0.0
  */
 (defined('APP_NAME')) or exit('Forbidden 403');
 
@@ -19,7 +17,6 @@
  * Description of BaseClass.
  */
 class BaseClass {
-
     // User Authentication variable defined.
     const LOGIN_REQUIRED = false;
     // Token Verification bypass config
@@ -37,7 +34,7 @@ class BaseClass {
     protected $client_type;
     protected $client_version;
     protected $actionName;
-    // Database PDO. 
+    // Database PDO.
     protected $pdo;
     // Server Configuration Parameters.
     protected $config;
@@ -50,7 +47,7 @@ class BaseClass {
      * @param obj    $json       All Requested JSON Parameters
      * @param string $actionName API Controller Class Name
      *
-     * @return Instance of Requested API Controller 
+     * @return Instance of Requested API Controller
      */
     public function __construct($headers, $getParams, $json, $actionName) {
         $this->headers = $headers;
@@ -89,7 +86,7 @@ class BaseClass {
 
     /**
      * Request processing execution.
-     * 
+     *
      * @return mixed API controller response
      */
     public function process() {
@@ -455,29 +452,29 @@ class BaseClass {
      * @return string $image_name Return uploaded image name
      */
     protected function process_binary_image($ID, $binary_image, $type = '', $old_image_delete = true) {
-        $base64_string = 'data:image/png;base64,' . $binary_image;
+        $base64_string = 'data:image/png;base64,'.$binary_image;
 
         $curr_time = time();
-        $image_prefix = $type . $ID . '_';
-        $image_name = $image_prefix . $curr_time . '.png';
-        $mask = $image_prefix . '*.*';
+        $image_prefix = $type.$ID.'_';
+        $image_name = $image_prefix.$curr_time.'.png';
+        $mask = $image_prefix.'*.*';
 
         if (!file_exists(Const_Application::UPLOAD_PROFILE_IMAGE_PATH)) {
             // If upload directory not exist, create
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
         } elseif ($old_image_delete) {
             // Delete all previous profile image
-            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH . $mask));
+            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH.$mask));
         }
 
         if (!file_exists(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE)) {
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE, 0777, true);
         } else {
             // Delete all previous profile (mobile size) image
-            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $mask));
+            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE.$mask));
         }
 
-        $output_file = Const_Application::UPLOAD_PROFILE_IMAGE_PATH . $image_name;
+        $output_file = Const_Application::UPLOAD_PROFILE_IMAGE_PATH.$image_name;
 
         $ifp = fopen($output_file, 'wb');
         $data = explode(',', $base64_string);
@@ -509,26 +506,26 @@ class BaseClass {
         }
 
         $curr_time = time();
-        $image_prefix = $type . $ID . '_';
-        $image_name = $image_prefix . $curr_time . '.png';
-        $mask = $image_prefix . '*.*';
+        $image_prefix = $type.$ID.'_';
+        $image_name = $image_prefix.$curr_time.'.png';
+        $mask = $image_prefix.'*.*';
 
         if (!file_exists(Const_Application::UPLOAD_PROFILE_IMAGE_PATH)) {
             // If upload directory not exist, create
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH, 0777, true);
         } elseif ($old_image_delete) {
             // Delete all previous profile image
-            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH . $mask));
+            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH.$mask));
         }
 
         if (!file_exists(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE)) {
             mkdir(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE, 0777, true);
         } else {
             // Delete all previous profile (mobile size) image
-            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $mask));
+            array_map('unlink', glob(Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE.$mask));
         }
 
-        $output_file = Const_Application::UPLOAD_PROFILE_IMAGE_PATH . $image_name;
+        $output_file = Const_Application::UPLOAD_PROFILE_IMAGE_PATH.$image_name;
 
         if (move_uploaded_file($image_file['tmp_name'], $output_file)) {
             $this->resize_image($output_file, $image_name, Const_Application::MOBILE_IMAGE_WIDTH, Const_Application::MOBILE_IMAGE_HEIGHT, $type);
@@ -551,7 +548,7 @@ class BaseClass {
      * @return string $randomString
      */
     protected function resize_image($image_src, $image_name, $maxDimW, $maxDimH, $type) {
-        $destinationImage = Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE . $image_name;
+        $destinationImage = Const_Application::UPLOAD_PROFILE_IMAGE_PATH_MOBILE.$image_name;
         copy($image_src, $destinationImage);
 
         $target_filename = '';
@@ -602,5 +599,4 @@ class BaseClass {
 
         return false;
     }
-
 }

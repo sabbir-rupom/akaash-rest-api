@@ -1,18 +1,16 @@
 <?php
 
 /**
- * RESTful API Template
- *
- * A RESTful API template in PHP based on flight micro-framework
+ * A RESTful API template in PHP based on flight micro-framework.
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
  * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
- * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @license	http://www.opensource.org/licenses/mit-license.php ( MIT License )
+ *
  * @since       Version 1.0.0
  */
-
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
@@ -22,8 +20,7 @@
  *
  * @author sabbir-hossain
  */
-class Controller
-{
+class Controller {
     protected static $apiName;
     protected static $getParams;
     protected static $headers;
@@ -35,8 +32,7 @@ class Controller
      * @param string $name   REST API name
      * @param string $method Application request Method
      */
-    public static function init($name, $method)
-    {
+    public static function init($name, $method) {
         $data = null;
 
         try {
@@ -155,8 +151,7 @@ class Controller
      *
      * @param type $name Api name
      */
-    public static function initGet($name)
-    {
+    public static function initGet($name) {
         self::init($name, 'GET');
     }
 
@@ -165,8 +160,7 @@ class Controller
      *
      * @param type $name Api name
      */
-    public static function initPost($name)
-    {
+    public static function initPost($name) {
         self::init($name, 'POST');
     }
 
@@ -175,8 +169,7 @@ class Controller
      *
      * @param type $name Api name
      */
-    public static function initPut($name)
-    {
+    public static function initPut($name) {
         self::init($name, 'PUT');
     }
 
@@ -185,8 +178,7 @@ class Controller
      *
      * @param type $name Api name
      */
-    public static function initPatch($name)
-    {
+    public static function initPatch($name) {
         self::init($name, 'PATCH');
     }
 
@@ -195,8 +187,7 @@ class Controller
      *
      * @param type $name Api name
      */
-    public static function initDelete($name)
-    {
+    public static function initDelete($name) {
         self::init($name, 'DELETE');
     }
 }

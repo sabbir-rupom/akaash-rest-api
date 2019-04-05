@@ -1,15 +1,14 @@
 <?php
 
 /**
- * RESTful API Template
- *
- * A RESTful API template in PHP based on flight micro-framework
+ * A RESTful API template in PHP based on flight micro-framework.
  *
  * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
  * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT
  *
  * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
- * @license	https://github.com/sabbir-rupom/rest-api-PHP-flight/blob/master/LICENSE ( MIT License )
+ * @license	http://www.opensource.org/licenses/mit-license.php ( MIT License )
+ *
  * @since       Version 1.0.0
  */
 (defined('APP_NAME')) or exit('Forbidden 403');
@@ -19,8 +18,7 @@
  * This class represents the state of API during / after the execution
  * Points out the type of exception along with user-defined messages to handle all error exceptions.
  */
-class ResultCode
-{
+class ResultCode {
     // USER DEFINED
 
     const SUCCESS = 0;    // No error found
@@ -137,8 +135,7 @@ class ResultCode
      *
      * @return string return message against result code
      */
-    public static function getTitle($code)
-    {
+    public static function getTitle($code) {
         return self::CODE_MESSAGE[$code]['title'];
     }
 
@@ -149,8 +146,7 @@ class ResultCode
      *
      * @return string return message against result code
      */
-    public static function getMessage($code)
-    {
+    public static function getMessage($code) {
         return self::CODE_MESSAGE[$code]['msg'];
     }
 
@@ -161,8 +157,7 @@ class ResultCode
      *
      * @return int return HTTP Status code against result code
      */
-    public static function getHTTPstatusCode($code)
-    {
+    public static function getHTTPstatusCode($code) {
         return self::CODE_MESSAGE[$code]['http_status'];
     }
 }
