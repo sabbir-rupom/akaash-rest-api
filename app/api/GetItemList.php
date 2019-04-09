@@ -11,8 +11,7 @@ class GetItemList extends BaseClass {
      */
     const LOGIN_REQUIRED = true;
 
-    protected $itemName;
-    protected $targetUserId;
+    protected $type;
 
     /**
      * Validation of request.
@@ -20,10 +19,9 @@ class GetItemList extends BaseClass {
     public function validate() {
         parent::validate();
 
-        $this->itemName = $this->getValueFromJSON('item_name', 'string');
+        $this->itemName = $this->getValueFromJSON('item_name', 'string'); // Item name specific
 
-        // If a user ID is specified through GET / Query string
-        $this->targetUserId = $this->getValueFromQuery('user_id', 'int');
+        $this->type = $this->getValueFromJSON('select_type', 'int'); // Item selection type
     }
 
     /**
@@ -31,7 +29,7 @@ class GetItemList extends BaseClass {
      */
     public function action() {
         // Find items from database
-        $itemsObj = Model_UserItem::getAllItems($this->itemName, $this->targetUserId, $this->pdo);
+        $itemsObj = Model_UserItem::getAllItems($this->itemName, empty($this->type) ? null : $this->userId, $this->pdo);
 
         if (empty($itemsObj)) {
             throw new System_ApiException(ResultCode::NOT_FOUND, 'No items available as user item');

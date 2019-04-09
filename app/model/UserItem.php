@@ -6,6 +6,7 @@
  * User Item model class.
  */
 class Model_UserItem extends Model_BaseModel {
+
     /**
      * Table Name.
      */
@@ -81,20 +82,24 @@ class Model_UserItem extends Model_BaseModel {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
-        $sql = 'SELECT item_name, count(item_name) AS count FROM '.self::TABLE_NAME.' WHERE ';
-
-        list($condition, $values) = self::constructQueryCondition(
-            array(
-                array('item_name', $itemName, 'like'),
-                array('user_id', $userId, '='),
-            )
+        $sql = 'SELECT item_name, count(item_name) AS count FROM ' . self::TABLE_NAME;
+        
+        list($conditions, $values) = self::constructConditions(array_filter(array(
+                    'item_name like' => $itemName,
+                    'user_id' => $userId
+                        ))
         );
 
-        $sql .= $condition.' GROUP BY item_name ORDER BY item_name ASC';
+        if (!empty($conditions)) {
+            $sql .= ' WHERE ' . join(' AND ', $conditions);
+        }
+
+        $sql .= ' GROUP BY item_name ORDER BY item_name ASC';
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute($values);
 
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
+
 }

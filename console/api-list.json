@@ -67,7 +67,7 @@
         "action": "/get_item_list",
         "query": "client_type=1&client_version=1&user_id=",
         "method": "POST",
-        "json": "{ \"item_name\":\"\"}"
+        "json": "{ \"item_name\":\"\", \"select_type\":1 }"
     },
     "/user_item_add": {
         "title": "Add an Item to Session User",

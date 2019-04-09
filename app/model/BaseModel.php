@@ -100,7 +100,7 @@ abstract class Model_BaseModel {
     public static function findAllBy($params = array(), $order = null, $limitArgs = null, $pdo = null, $forUpdate = false) {
         if (null == $pdo) {
             $pdo = Flight::pdo();
-        }
+        }    
         list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);
         $sql = 'SELECT * FROM '.static::TABLE_NAME.$conditionSql;
 
@@ -229,7 +229,7 @@ abstract class Model_BaseModel {
         }
         $sql .= join(',', $setStmts);
         if (true === static::HAS_UPDATED_AT) {
-            $sql .= (empty($setStmts) ? '' : ',') . "updated_at='" . Helper_DateUtil::getToday() . "'";
+            $sql .= (empty($setStmts) ? '' : ',') . "updated_at='" . Common_DateUtil::getToday() . "'";
         }
         $sql .= ' WHERE id = ?';
         $stmt = $pdo->prepare($sql);
@@ -454,7 +454,7 @@ abstract class Model_BaseModel {
 
                         break;
                     case '!':
-                        $conditions[] .= $field[0]." !${operator} ?";
+                        $conditions[] .= $field[0]." ${operator}= ?";
 
                         break;
                     case 'like':
