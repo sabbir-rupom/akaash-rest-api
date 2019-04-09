@@ -229,7 +229,7 @@ abstract class Model_BaseModel {
         }
         $sql .= join(',', $setStmts);
         if (true === static::HAS_UPDATED_AT) {
-            $sql .= ",updated_at='".Common_DateUtil::getToday()."'";
+            $sql .= (empty($setStmts) ? '' : ',') . "updated_at='" . Helper_DateUtil::getToday() . "'";
         }
         $sql .= ' WHERE id = ?';
         $stmt = $pdo->prepare($sql);
