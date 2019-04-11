@@ -37,6 +37,7 @@ class ResultCode {
     const JSON_OUTPUT_ERROR = 20;     // Failed to generate JSON data
     const ACCESS_FORBIDDEN = 100;     //Forbidden access error
     const NOT_FOUND = 404;     // Data not found
+    const SERVER_CONFIGURATION_ERROR = 500;     // Server configuration error
 
     const USER_BLACKLIST = 1000; // User is blacklisted / blocked error
 
@@ -121,6 +122,11 @@ class ResultCode {
             'msg' => 'File upload failed',
             'http_status' => 500,
         ),
+        self::SERVER_CONFIGURATION_ERROR => array(
+            'title' => 'SERVER CONFIGURATION ERROR',
+            'msg' => 'An error found in application configuration',
+            'http_status' => 500,
+        ),
         self::JSON_OUTPUT_ERROR => array(
             'title' => 'JSON OUTPUT ERROR',
             'msg' => 'Failed to generate JSON output',
@@ -161,3 +167,4 @@ class ResultCode {
         return self::CODE_MESSAGE[$code]['http_status'];
     }
 }
+

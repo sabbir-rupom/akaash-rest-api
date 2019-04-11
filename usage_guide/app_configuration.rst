@@ -123,16 +123,16 @@ Configuration keys are explained below:
                 $conn->exec("SET time_zone='{$db_timezone}'");
             }
         }
-- **LOCAL_CACHE_FLAG**
+- **FILE_CACHE_FLAG**
     - Local file cache system ON / OFF flag  [ 0=OFF , 1=ON ] 
-    - if enabled, caching will be done in local directory 
+    - if `SERVER_CACHE_ENABLE_FLAG`` flag is set to 1, by setting this flag '1' server caching will be done in local file 
 - **LOCAL_CACHE_PATH**
-    - Local file cache directory path
-    - Server will store cache data in this path if **LOCAL_CACHE_FLAG** is enabled
+    - Directory path for local cache file
+    - Server will store cache data in this path if **FILE_CACHE_FLAG** is enabled
     ::
     
         $config = new Config_Config();
-	if ($config->isLocalCacheEnable()) {
+	if ($config->isLocalFileCacheEnable()) {
 
             $cachePath = $config->getLocalCachePath();
             if (is_dir($cachePath)) {
@@ -168,6 +168,11 @@ Configuration keys are explained below:
                  */ 
             }
         }
+
+
+
+
+
 
 
 

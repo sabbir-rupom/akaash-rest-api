@@ -216,10 +216,21 @@ class Config_Config {
     }
 
     /**
+     * Whether Server caching is enabled / disabled.
+     */
+    public function isServerCacheEnable() {
+        if (array_key_exists('SERVER_CACHE_ENABLE_FLAG', $this->_config) && '1' === $this->_config['SERVER_CACHE_ENABLE_FLAG']) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    /**
      * Whether Server Local File-caching is enabled / disabled.
      */
-    public function isLocalCacheEnable() {
-        if (array_key_exists('LOCAL_CACHE_FLAG', $this->_config) && '1' === $this->_config['LOCAL_CACHE_FLAG']) {
+    public function isLocalFileCacheEnable() {
+        if (array_key_exists('FILE_CACHE_FLAG', $this->_config) && '1' === $this->_config['FILE_CACHE_FLAG']) {
             return true;
         }
 
@@ -292,13 +303,18 @@ class Config_Config {
      * @return obj Cache server connection
      */
     public static function getMemcachedClient() {
+        
+        $config = new Config_Config();
+        
+        if (false == $config->isServerCacheEnable()) {
+            throw new System_ApiException(ResultCode::SERVER_CONFIGURATION_ERROR, 'Server caching is not enabled. Check config file');
+        } 
+        
         if (null !== self::$_memcachedClient) {
             return self::$_memcachedClient;
         }
 
-        $config = new Config_Config();
-
-        if (true == $config->isLocalCacheEnable()) {
+        if (true == $config->isLocalFileCacheEnable()) {
             $localFileClient = new System_FileCacheClient($config->getLocalCachePath());
 
             self::$_memcachedClient = $localFileClient;
@@ -319,3 +335,10 @@ class Config_Config {
         return new Config_Config();
     }
 }
+
+
+
+
+
+
+

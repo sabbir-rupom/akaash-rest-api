@@ -122,7 +122,7 @@ MemcachedServer Class
 
 MemcachedServer is the library class for caching data in memcache.
 
-The REST application's cache system will be connected to memcache server if ``LOCAL_CACHE_FLAG`` is disabled from ``config``.
+The REST application's cache system will be connected to memcache server if ``SERVER_CACHE_ENABLE_FLAG`` flag is set to 1 and ``FILE_CACHE_FLAG`` is set to 0 from ``config_app.ini``.
 
 Function definitions are same as above [ *FileCacheClient* ]
 
@@ -131,5 +131,7 @@ Security Class
 =====================
 
 [[ Will be discussed soon ]]
+
+
 
 
