@@ -17,6 +17,7 @@
  * Abstract Base Model Class.
  */
 abstract class Model_BaseModel {
+
     // Table name. Be overridden by the implementation class.
     const TABLE_NAME = '';
     // Created_at whether the column exists. Be overridden by the implementation class, if necessary.
@@ -48,7 +49,7 @@ abstract class Model_BaseModel {
             throw new System_ApiException(ResultCode::DATABASE_ERROR, '$id must be passed as argument');
         }
 
-        $sql = 'SELECT * FROM '.static::TABLE_NAME.' WHERE id = ?';
+        $sql = 'SELECT * FROM ' . static::TABLE_NAME . ' WHERE id = ?';
         if ($forUpdate) {
             $sql .= ' FOR UPDATE';
         }
@@ -75,7 +76,7 @@ abstract class Model_BaseModel {
             $pdo = Flight::pdo();
         }
         list($conditionSql, $values) = self::constructQuery($params, null, null, $forUpdate);
-        $sql = 'SELECT * FROM '.static::TABLE_NAME.$conditionSql;
+        $sql = 'SELECT * FROM ' . static::TABLE_NAME . $conditionSql;
 
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
@@ -100,9 +101,9 @@ abstract class Model_BaseModel {
     public static function findAllBy($params = array(), $order = null, $limitArgs = null, $pdo = null, $forUpdate = false) {
         if (null == $pdo) {
             $pdo = Flight::pdo();
-        }    
+        }
         list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);
-        $sql = 'SELECT * FROM '.static::TABLE_NAME.$conditionSql;
+        $sql = 'SELECT * FROM ' . static::TABLE_NAME . $conditionSql;
 
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
@@ -131,7 +132,7 @@ abstract class Model_BaseModel {
 
         list($conditionSql, $values) = self::constructQuery($params, $order, $limitArgs, $forUpdate);
 
-        $sql = 'SELECT '.implode(',', $columns).' FROM '.static::TABLE_NAME.$conditionSql;
+        $sql = 'SELECT ' . implode(',', $columns) . ' FROM ' . static::TABLE_NAME . $conditionSql;
 
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
@@ -164,18 +165,14 @@ abstract class Model_BaseModel {
             $countSql = 'id';
         }
 
-        $sql = 'SELECT count('.(true === $highPerformanceFlag ? ' id ' : ' * ').') as count FROM '.static::TABLE_NAME.(true === $highPerformanceFlag ? '' : $conditionSql);
+        $sql = 'SELECT count(' . (true === $highPerformanceFlag ? ' id ' : ' * ') . ') as count FROM ' . static::TABLE_NAME . (true === $highPerformanceFlag ? '' : $conditionSql);
 
         $stmt = $pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute($values);
-        $records = $stmt->fetchAll();
-        $count = 0;
-        if (!empty($records[0]->count)) {
-            $count = $records[0]->count;
-        }
-
-        return $count;
+        $record = $stmt->fetch();
+        
+        return (int) $record->count;
     }
 
     /**
@@ -193,12 +190,12 @@ abstract class Model_BaseModel {
         list($columns, $values) = $this->getValues();
 
         $now = Common_DateUtil::getToday();
-        $sql = 'INSERT INTO '.static::TABLE_NAME.' ('.join(',', $columns);
+        $sql = 'INSERT INTO ' . static::TABLE_NAME . ' (' . join(',', $columns);
         $sql .= (true === static::HAS_CREATED_AT ? ',created_at' : '');
         $sql .= (true === static::HAS_UPDATED_AT ? ',updated_at' : '');
-        $sql .= ') VALUES ('.str_repeat('?,', count($columns) - 1).'?';
-        $sql .= (true === static::HAS_CREATED_AT ? ",'".$now."'" : '');
-        $sql .= (true === static::HAS_UPDATED_AT ? ",'".$now."'" : '');
+        $sql .= ') VALUES (' . str_repeat('?,', count($columns) - 1) . '?';
+        $sql .= (true === static::HAS_CREATED_AT ? ",'" . $now . "'" : '');
+        $sql .= (true === static::HAS_UPDATED_AT ? ",'" . $now . "'" : '');
         $sql .= ')';
         // INSERT data
         $stmt = $pdo->prepare($sql);
@@ -215,17 +212,17 @@ abstract class Model_BaseModel {
      */
     public function update($pdo = null) {
         if (!isset($this->id)) {
-            throw new Exception('The '.get_called_class().' is not saved yet.');
+            throw new Exception('The ' . get_called_class() . ' is not saved yet.');
         }
         if (is_null($pdo)) {
             $pdo = Flight::pdo();
         }
         // Preparing SQL
         list($columns, $values) = $this->getValues();
-        $sql = 'UPDATE '.static::TABLE_NAME.' SET ';
+        $sql = 'UPDATE ' . static::TABLE_NAME . ' SET ';
         $setStmts = array();
         foreach ($columns as $column) {
-            $setStmts[] = $column.'=?';
+            $setStmts[] = $column . '=?';
         }
         $sql .= join(',', $setStmts);
         if (true === static::HAS_UPDATED_AT) {
@@ -247,13 +244,13 @@ abstract class Model_BaseModel {
      */
     public function delete($pdo = null) {
         if (!isset($this->id)) {
-            throw new Exception('The '.get_called_class().' is not initiated properly.');
+            throw new Exception('The ' . get_called_class() . ' is not initiated properly.');
         }
         if (is_null($pdo)) {
             $pdo = Flight::pdo();
         }
 
-        $stmt = $pdo->prepare('DELETE FROM '.static::TABLE_NAME.' WHERE id = ?');
+        $stmt = $pdo->prepare('DELETE FROM ' . static::TABLE_NAME . ' WHERE id = ?');
         $stmt->bindParam(1, $this->id);
         $result = $stmt->execute();
 
@@ -322,9 +319,12 @@ abstract class Model_BaseModel {
      * @param mixed        $cacheKey
      */
     public static function getCache($cacheKey) {
-        $memcache = Config_Config::getMemcachedClient();
+        if (Config_Config::getInstance()->isServerCacheEnable()) {
+            $memcache = Config_Config::getMemcachedClient();
 
-        return $memcache->get($cacheKey);
+            return $memcache->get($cacheKey);
+        }
+        return FALSE;
     }
 
     /**
@@ -335,10 +335,14 @@ abstract class Model_BaseModel {
      * @param mixed        $cacheKey
      */
     public static function setCache($cacheKey, $value) {
-        $memcache = Config_Config::getMemcachedClient();
-        $call_class = get_called_class();
+        if (Config_Config::getInstance()->isServerCacheEnable()) {
+            $memcache = Config_Config::getMemcachedClient();
+            $call_class = get_called_class();
 
-        return $memcache->set($cacheKey, $value, MEMCACHE_COMPRESSED, $call_class::MEMCACHED_EXPIRE);
+            $memcache->set($cacheKey, $value, MEMCACHE_COMPRESSED, $call_class::MEMCACHED_EXPIRE);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -348,30 +352,37 @@ abstract class Model_BaseModel {
      * @param mixed        $cacheKey
      */
     public static function deleteCache($cacheKey) {
-        $memcache = Config_Config::getMemcachedClient();
-        $memcache->delete($cacheKey);
+        if (Config_Config::getInstance()->isServerCacheEnable()) {
+            $memcache = Config_Config::getMemcachedClient();
+            $memcache->delete($cacheKey);
+            return true;
+        }
+        return false;
     }
 
     /**
      * To get all the data from Memcache.
      * If it's not registered to Memcache, it is set to Memcache to retrieve from the database.
      *
-     * @return array array of model objects
+     * @return mixed array of model objects or null
      */
     public static function getAll() {
-        $key = static::getAllKey();
-        // To connect to Memcached, to get the value.
-        $memcache = Config_Config::getMemcachedClient();
-        $value = $memcache->get($key);
-        if (false === $value) {
-            // If the value has been set to Memcached, it is set to Memcached to retrieve from the database.
-            $value = self::findAllBy(array());
-            if ($value) {
-                $memcache->set($key, $value, 0, static::MEMCACHED_EXPIRE);
+        if (Config_Config::getInstance()->isServerCacheEnable()) {
+            $key = static::getAllKey();
+            // To connect to Memcached, to get the value.
+            $memcache = Config_Config::getMemcachedClient();
+            $value = $memcache->get($key);
+            if (false === $value) {
+                // If the value has been set to Memcached, it is set to Memcached to retrieve from the database.
+                $value = self::findAllBy(array());
+                if ($value) {
+                    $memcache->set($key, $value, 0, static::MEMCACHED_EXPIRE);
+                }
             }
-        }
 
-        return $value;
+            return $value;
+        }
+        return null;
     }
 
     /**
@@ -398,20 +409,20 @@ abstract class Model_BaseModel {
 //        }
         $sql = '';
         if (!empty($conditions)) {
-            $sql .= ' WHERE '.join(' AND ', $conditions);
+            $sql .= ' WHERE ' . join(' AND ', $conditions);
         }
         if (isset($order) && is_array($order) && !empty($order)) {
             $sqo = '';
             foreach ($order as $key => $val) {
                 $sqo .= '' == $sqo ? "{$key} {$val}" : ", {$key} {$val}";
             }
-            $sql .= ' ORDER BY '.$sqo;
+            $sql .= ' ORDER BY ' . $sqo;
         }
         if (isset($limitArgs) && array_key_exists('limit', $limitArgs)) {
             if (array_key_exists('offset', $limitArgs)) {
-                $sql .= ' LIMIT '.$limitArgs['offset'].', '.$limitArgs['limit'];
+                $sql .= ' LIMIT ' . $limitArgs['offset'] . ', ' . $limitArgs['limit'];
             } else {
-                $sql .= ' LIMIT '.$limitArgs['limit'];
+                $sql .= ' LIMIT ' . $limitArgs['limit'];
             }
         }
         if ($forUpdate) {
@@ -432,7 +443,7 @@ abstract class Model_BaseModel {
         $conditions = $values = array();
         foreach ($params as $k => $v) {
             if (is_array($v)) {
-                $conditions[] = $k.' IN ('.implode(',', array_fill(0, count($v), '?')).')';
+                $conditions[] = $k . ' IN (' . implode(',', array_fill(0, count($v), '?')) . ')';
                 $values = array_merge($values, $v);
             } else {
                 $field = explode(' ', trim($k));
@@ -450,16 +461,16 @@ abstract class Model_BaseModel {
                     case '<=':
                     case '>':
                     case '<':
-                        $conditions[] = $field[0]." ${operator} ?";
+                        $conditions[] = $field[0] . " ${operator} ?";
 
                         break;
                     case '!':
-                        $conditions[] .= $field[0]." ${operator}= ?";
+                        $conditions[] .= $field[0] . " ${operator}= ?";
 
                         break;
                     case 'like':
-                        $conditions[] .= $field[0]." ${operator} ?";
-                        $v = ('%'.$v.'%');
+                        $conditions[] .= $field[0] . " ${operator} ?";
+                        $v = ('%' . $v . '%');
 
                         break;
                 }
@@ -512,7 +523,7 @@ abstract class Model_BaseModel {
                 $pdo = Flight::pdo();
             }
 
-            $stmt = $pdo->prepare('SELECT * from '.static::TABLE_NAME.' order by id limit 1 ');
+            $stmt = $pdo->prepare('SELECT * from ' . static::TABLE_NAME . ' order by id limit 1 ');
             $stmt->execute();
             self::$columnsOnDB = array_keys($stmt->fetch(PDO::FETCH_ASSOC));
         }
@@ -534,6 +545,7 @@ abstract class Model_BaseModel {
      * Returns the key for setting all records in memcache.
      */
     protected static function getAllKey() {
-        return Config_Config::getInstance()->getMemcachePrefix().get_called_class().'_all';
+        return Config_Config::getInstance()->getMemcachePrefix() . get_called_class() . '_all';
     }
+
 }

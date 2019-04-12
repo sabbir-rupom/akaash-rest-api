@@ -123,6 +123,18 @@ Configuration keys are explained below:
                 $conn->exec("SET time_zone='{$db_timezone}'");
             }
         }
+- **SERVER_CACHE_ENABLE_FLAG**
+    - Enable or disable server cache feature
+    - [ **Note** ] for session related API cache system must be enabled
+    ::
+    
+        $config = new Config_Config();
+	if ($config->isServerCacheEnable()) {
+
+            /**
+             * write code related to cache feature
+             */ 
+        }
 - **FILE_CACHE_FLAG**
     - Local file cache system ON / OFF flag  [ 0=OFF , 1=ON ] 
     - if `SERVER_CACHE_ENABLE_FLAG`` flag is set to 1, by setting this flag '1' server caching will be done in local file 

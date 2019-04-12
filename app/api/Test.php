@@ -12,20 +12,23 @@
  */
 class Test extends BaseClass {
 
-    // Login Required.
-    const LOGIN_REQUIRED = false;
-    const TEST_ENV = true;
+    
+    const LOGIN_REQUIRED = false; // Disable session requirement flag
+    const TEST_ENV = true; // Enable test environment flag
 
     /**
      * Processing API script execution.
      */
     public function action() {
-        // DB connectivity with user table test case
+        /**
+         *  Check database connection with PDO driver
+         */
         if ($this->pdo instanceof PDO) {
-            $dbUserCount = Model_User::countBy();
-            $responseArray['DB'] = !empty($dbUserCount) ? 'Database to user table connection is functional' : 'Database to user table connection is not functional';
+            $responseArray['DB'] = 'Database is properly connected';
+//            $dbUserCount = Model_User::countBy();
+//            $responseArray['DB'] = !empty($dbUserCount) ? 'Database to user table connection is functional' : 'Database to user table connection is not functional';
         } else {
-            $responseArray['DB'] = 'Database connection is not functional. Please check config_app.ini';
+            $responseArray['DB'] = 'Database is not connected properly. Please check config_app.ini';
         }
 
         // JWT token verification test case
@@ -107,10 +110,6 @@ class Test extends BaseClass {
         } else {
             $responseArray['Cache'] = 'Server cache feature is disabled from config';
         }
-
-
-
-
 
         // Check file upload path access permission
 

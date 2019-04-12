@@ -56,6 +56,11 @@ if (!empty($configArray['SERVER_TIMEZONE'])
 
 Flight::set('env', $configArray['ENV']);
 
+/**
+ * Following definition is to bypass the memcache-compression flag error
+ */
+defined('MEMCACHE_COMPRESSED') or define('MEMCACHE_COMPRESSED', 1);
+
 //Configure Database Connection
 require_once CONFIG_DIR.'/db.php';
 

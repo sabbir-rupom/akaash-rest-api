@@ -4,7 +4,6 @@
 
 class Model_User extends Model_BaseModel {
     const MEMCACHED_EXPIRE = 3600; // Time to expire memcache; 1 hour
-    const SESSION_DURATION_SEC = 3600; // 1 hour
     const SESSION_RESOLVE_DURATION_SEC = 0; // No limit
 
     // Table Name
@@ -140,9 +139,7 @@ class Model_User extends Model_BaseModel {
      */
     public static function retrieveSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $memcache = Config_Config::getMemcachedClient();
-
-        return $memcache->get($sessionKey);
+        return parent::getCache($sessionKey);
     }
 
     /**
@@ -163,8 +160,7 @@ class Model_User extends Model_BaseModel {
      */
     public function removeSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $session = Config_Config::getMemcachedClient();
-        $session->remove($sessionKey);
+        parent::deleteCache($sessionKey);
     }
 
     /**
@@ -175,8 +171,7 @@ class Model_User extends Model_BaseModel {
      */
     public static function cacheSession($sessionId, $userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $memcache = Config_Config::getMemcachedClient();
-        $memcache->set($sessionKey, $sessionId, 0, self::SESSION_DURATION_SEC);
+        parent::setCache($sessionKey, $sessionId);
     }
 
     /**
