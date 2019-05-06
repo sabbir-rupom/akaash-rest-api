@@ -37,17 +37,17 @@ class System_FileCacheClient {
         return null;
     }
 
-    public function put($key, $value, $timeout = 0) {
+    public function put($key, $value, $flag, $timeout = 0) {
         if ($this->connection->isExpired($key)) {
-            if (0 == $timeout) {
+            if ($timeout == 0) {
                 $timeout = self::CACHE_TIMEOUT;
             }
             $this->connection->store($key, $value, $timeout);
         }
     }
 
-    public function set($key, $value, $timeout = 0) {
-        if (0 == $timeout) {
+    public function set($key, $value, $flag, $timeout = 0) {
+        if ($timeout == 0) {
             $timeout = self::CACHE_TIMEOUT;
         }
         $this->connection->store($key, $value, $timeout);
