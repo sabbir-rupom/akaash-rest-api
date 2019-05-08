@@ -33,6 +33,8 @@ pre {
     margin-bottom: 20px;
     padding: 8px 35px 8px 14px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+    font-size: 13px;
 }
 #responseHeader {
     background-color: #eaeaea;
