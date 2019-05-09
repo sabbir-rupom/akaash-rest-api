@@ -17,6 +17,7 @@
  * Utility helper class.
  */
 class Common_Utils {
+
     /**
      * Convert a string to CamelCase.
      *
@@ -78,8 +79,7 @@ class Common_Utils {
     /**
      * Convert any object into a JSON hash representation.
      *
-     * @param object Any object
-     * @param mixed $obj
+     * @param mixed $obj Any object
      *
      * @return array Conversion hash representation
      */
@@ -93,7 +93,6 @@ class Common_Utils {
      * Convert any of hash representation JSON to object.
      *
      * @param array JSON hash representation
-     * @param mixed $hash
      *
      * @return object Converted object representation
      */
@@ -144,4 +143,16 @@ class Common_Utils {
 
         return $platformType;
     }
+
+    /**
+     * Encode / Decode encoded integer number
+     *
+     * @param int number / encoded number
+     *
+     * @return int number / encoded number
+     */
+    public static function numhash($n) {
+        return (((0x0000FFFF & $n) << 16) + ((0xFFFF0000 & $n) >> 16));
+    }
+
 }
