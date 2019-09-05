@@ -20,7 +20,7 @@ if (!isset($argv)) {
         Flight::json(array(
             'data' => array(
                 'title' => 'Welcome',
-                'message' => 'This REST-API template is built on PHP langauage, with flight microfamework as backend engine',
+                'message' => 'This REST-API template is built on PHP langauage, with flight microframework as backend engine',
             ),
             'result_code' => ResultCode::SUCCESS,
         ));
@@ -58,3 +58,4 @@ if (!isset($argv)) {
         ));
     });
 }
+
