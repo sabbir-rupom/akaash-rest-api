@@ -6,6 +6,14 @@ var sessionHeader = 'X-USER-SESSION-ID';
 
 $(function () {
     
+    var browserUrl = document.location.href;
+    if(apiUrl != browserUrl && apiUrl.includes('localhost')) {
+        apiUrl = browserUrl.replace('/console', '');
+        if(apiUrl.substr(apiUrl.length - 1) == '/') {
+            apiUrl = apiUrl.slice(0, -1);
+        }
+    }
+    
     $("input[name=baseUrl]").val(apiUrl);
     $("input[name=apiPath]").val(pathExt);
 
@@ -198,3 +206,12 @@ function syntaxHighlight(json) {
     }
     return json;
 }
+
+
+
+
+
+
+
+
+

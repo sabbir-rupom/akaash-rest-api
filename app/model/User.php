@@ -184,7 +184,7 @@ class Model_User extends Model_BaseModel {
         $hash = parent::toJsonHash();
 
         if ('' != $hash['profile_image']) {
-            $hash['profile_image'] = SERVER_HOST.'/image/user-profile/'.$userId.'?ref='.md5($hash['profile_image']);
+            $hash['profile_image'] = SERVER_HOST.'image/user-profile/'.$userId.'?ref='.md5($hash['profile_image']);
         }
 
         if (!empty($additionalData)) {
@@ -243,3 +243,4 @@ class Model_User extends Model_BaseModel {
         parent::update($pdo);
     }
 }
+

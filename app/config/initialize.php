@@ -56,6 +56,11 @@ if (!empty($configArray['SERVER_TIMEZONE'])
 
 Flight::set('env', $configArray['ENV']);
 
+/*
+ * Set Server Host URL
+ */
+define('SERVER_HOST', !empty($configArray['BASE_URL']) ? $configArray['BASE_URL'] : (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST']) . '/';
+
 /**
  * Following definition is to bypass the memcache-compression flag error
  */

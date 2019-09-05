@@ -20,11 +20,6 @@ define('API_DIR', APP_DIR . '/api');
 define('CONFIG_DIR', APP_DIR . '/config');
 
 /*
- * Server Host URL
- */
-define('SERVER_HOST', (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST']);
-
-/*
  * Load Flight microframework
  */
 require 'flight/Flight.php';
