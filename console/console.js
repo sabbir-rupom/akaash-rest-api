@@ -5,15 +5,15 @@ var tokenHeader = 'X-API-TOKEN';
 var sessionHeader = 'X-USER-SESSION-ID';
 
 $(function () {
-    
+
     var browserUrl = document.location.href;
-    if(apiUrl != browserUrl && apiUrl.includes('localhost')) {
+    if (apiUrl != browserUrl && apiUrl.includes('localhost')) {
         apiUrl = browserUrl.replace('/console', '');
-        if(apiUrl.substr(apiUrl.length - 1) == '/') {
+        if (apiUrl.substr(apiUrl.length - 1) == '/') {
             apiUrl = apiUrl.slice(0, -1);
         }
     }
-    
+
     $("input[name=baseUrl]").val(apiUrl);
     $("input[name=apiPath]").val(pathExt);
 
@@ -74,7 +74,7 @@ $(function () {
         var tokenSignature = $('textarea[name=tokenHash]').val();
 
         if (checkJson) {
-            $.ajax({
+            var xhr = $.ajax({
                 url: apiPath + (queryParameter.length > 0 ? '?' + queryParameter : ''),
                 type: apiMethod,
                 data: jsonBody,
@@ -106,17 +106,21 @@ $(function () {
                     console.log(request.getAllResponseHeaders());
                     $('#responseHeader').html(request.getAllResponseHeaders().replace(/\n/g, '<br/>'));
 
+                },
+                error: function (xhr) {
+                    $('#responseHeader').html('HTTP-STATUS: ' + xhr.status + '<br>' + xhr.getAllResponseHeaders().replace(/\n/g, '<br>'));
                 }
-            }).fail(function (obj, textStatus, request) {
-                if (obj.hasOwnProperty('responseJSON')) {
-                    obj = obj.responseJSON;
-                } else if (obj.hasOwnProperty('responseText')) {
-                    obj = obj.responseText;
+            }).fail(function (jqXHR) {
+                if (jqXHR.hasOwnProperty('responseJSON')) {
+                    var obj = jqXHR.responseJSON;
+                } else if (jqXHR.hasOwnProperty('responseText')) {
+                    var obj = jqXHR.responseText;
                 }
+                
                 var str = JSON.stringify(obj, null, 2);
+                
                 $("#jsonOutput").css("background-color", "rgb(251, 205, 183)");
                 $('#jsonOutput').text(syntaxHighlight(str));
-                $('#responseHeader').html(request.getAllResponseHeaders().replace(/\n/g, '<br/>'));
             });
 //            $('#submit').attr('disabled', 'disabled');
         } else {
@@ -206,6 +210,19 @@ function syntaxHighlight(json) {
     }
     return json;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
