@@ -15,6 +15,13 @@ Configuration keys are explained below:
 
 	$config = new Config_Config();
         echo $config->getEnv();
+- **BASE_URL**
+    - Server application base url 
+    - Configure this parameter in case of Host URL complexity, will be added as server constant
+    - e.g ``http://www.example.com/service/rest/`` 
+    ::
+
+        echo SERVER_HOST;
 - **PRODUCTION_ENV** 
     - Set production / live status [ 0=OFF , 1=ON ]
     - Purpose of this parameter is for testing features which are dependent on specific credential key's [ e.g. switch Stripe payment feature as sandbox test or live production etc. ]
@@ -180,18 +187,4 @@ Configuration keys are explained below:
                  */ 
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
