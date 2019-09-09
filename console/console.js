@@ -9,6 +9,9 @@ $(function () {
     var browserUrl = document.location.href;
     if (apiUrl != browserUrl && apiUrl.includes('localhost')) {
         apiUrl = browserUrl.replace('/console', '');
+        if (apiUrl.includes('#')) {
+            apiUrl = apiUrl.split("#")[0];
+        }
         if (apiUrl.substr(apiUrl.length - 1) == '/') {
             apiUrl = apiUrl.slice(0, -1);
         }
@@ -210,25 +213,3 @@ function syntaxHighlight(json) {
     }
     return json;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
