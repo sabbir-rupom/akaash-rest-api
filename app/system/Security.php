@@ -1,10 +1,11 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 namespace System;
 
-class Security {
+class Security
+{
 
     /**
      * List of never allowed strings
@@ -29,7 +30,8 @@ class Security {
     /**
      * constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         // get class instance
         $this->security = new Common_Security();
     }
@@ -47,7 +49,8 @@ class Security {
      * @param	string|string[]	$str		Input data
      * @return	string
      */
-    public static function xss_clean($str, $is_image = FALSE) {
+    public static function xss_clean($str, $is_image = false)
+    {
         // Is the string an array?
         if (is_array($str)) {
             foreach ($str as $key => &$value) {
@@ -210,13 +213,17 @@ class Security {
          * Becomes:	eval&#40;'some code'&#41;
          */
         $str = preg_replace(
-                '#(alert|prompt|confirm|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)\((.*?)\)#si', '\\1\\2&#40;\\3&#41;', $str
+                '#(alert|prompt|confirm|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)\((.*?)\)#si',
+            '\\1\\2&#40;\\3&#41;',
+            $str
         );
 
         // Same thing, but for "tag functions" (e.g. eval`some code`)
         // See https://github.com/bcit-ci/CodeIgniter/issues/5420
         $str = preg_replace(
-                '#(alert|prompt|confirm|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)`(.*?)`#si', '\\1\\2&#96;\\3&#96;', $str
+                '#(alert|prompt|confirm|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)`(.*?)`#si',
+            '\\1\\2&#96;\\3&#96;',
+            $str
         );
 
         // Final clean up
@@ -237,7 +244,8 @@ class Security {
      * @param	bool
      * @return	string
      */
-    protected function remove_invisible_characters($str, $url_encoded = TRUE) {
+    protected function remove_invisible_characters($str, $url_encoded = true)
+    {
         $non_displayables = array();
 
         // every control character except newline (dec 10),
@@ -263,7 +271,8 @@ class Security {
      * @param 	string
      * @return 	string
      */
-    protected function do_never_allowed($str) {
+    protected function do_never_allowed($str)
+    {
         $str = str_replace(array_keys($this->_never_allowed_str), $this->_never_allowed_str, $str);
 
         foreach ($this->_never_allowed_regex as $regex) {
@@ -272,5 +281,4 @@ class Security {
 
         return $str;
     }
-
 }

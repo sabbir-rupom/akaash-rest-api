@@ -8,8 +8,8 @@ use View\Output as Output;
 use flight\net\Request as Request;
 use System\Config as Config;
 
-class Handler {
-
+class Handler
+{
     public static function handle(
         Request $request,
         Config $config,
@@ -50,5 +50,4 @@ class Handler {
 //                  'line_number' => $e->getLine()
 //                ));
     }
-
 }

@@ -1,10 +1,9 @@
 <?php
 namespace API\Filter;
 
-interface MethodTemplate {
-
+interface MethodTemplate
+{
     public function check();
 
     public function validate();
-
 }

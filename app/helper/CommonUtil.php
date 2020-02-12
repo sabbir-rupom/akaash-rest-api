@@ -1,21 +1,22 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 namespace Helper;
 
 /**
  * Common helper class
  */
-class CommonUtil {
+class CommonUtil
+{
 
     /**
      * Prepare API class name
      * @param string $name Api name
      * @param string $group Api Group name
      */
-    public static function prepareApiClass($name, $group = '') {
-
+    public static function prepareApiClass($name, $group = '')
+    {
         return empty($group) ? self::camelize($name) : ucfirst($group) . (empty($name) ? '' : "_") . self::camelize($name);
     }
 
@@ -25,12 +26,13 @@ class CommonUtil {
      * Correct all utf-8 related errors for proper JSON output
      */
 
-    public static function utf8ize($mixed) {
+    public static function utf8ize($mixed)
+    {
         if (is_array($mixed)) {
             foreach ($mixed as $key => $value) {
                 $mixed[$key] = self::utf8ize($value);
             }
-        } else if (is_string($mixed)) {
+        } elseif (is_string($mixed)) {
             return utf8_encode($mixed);
         }
         return $mixed;
@@ -43,7 +45,8 @@ class CommonUtil {
      * @param boolean $ucfirst
      * @return CamelCase of string, underscore is removed
      */
-    public static function camelize($str, $ucfirst = TRUE) {
+    public static function camelize($str, $ucfirst = true)
+    {
         if (stristr($str, '-')) {
             $elements = explode('-', $str);
         } else {
@@ -65,7 +68,8 @@ class CommonUtil {
      * @param mixed $var Value to be checked
      * @return boolean Check result
      */
-    public static function isInt($var) {
+    public static function isInt($var)
+    {
         if (is_int($var)) {
             return true;
         }
@@ -79,7 +83,8 @@ class CommonUtil {
      * @param mixed $object
      * @return string Var_dump content text column
      */
-    public static function dump($object) {
+    public static function dump($object)
+    {
         ob_start();
         var_dump($object);
         $dumpStdOut = ob_get_contents();
@@ -95,9 +100,10 @@ class CommonUtil {
      * @param object Any object
      * @return array Conversion hash representation
      */
-    public static function objToJsonHash($obj) {
+    public static function objToJsonHash($obj)
+    {
         $str = json_encode($obj);
-        $hash = json_decode($str, TRUE);
+        $hash = json_decode($str, true);
         return $hash;
     }
 
@@ -107,9 +113,10 @@ class CommonUtil {
      * @param array JSON hash representation
      * @return object Converted object representation
      */
-    public static function objFromJsonHash($hash) {
+    public static function objFromJsonHash($hash)
+    {
         $str = json_encode($hash);
-        $obj = json_decode($str, FALSE);
+        $obj = json_decode($str, false);
         return $obj;
     }
 
@@ -117,7 +124,8 @@ class CommonUtil {
      * String parameter sent with HTTP POST
      * @return string
      */
-    public static function getPostStringParameter() {
+    public static function getPostStringParameter()
+    {
         $handle = fopen('php://input', 'r');
         $string = fgets($handle);
 
@@ -131,11 +139,12 @@ class CommonUtil {
      *
      * @return unknown NULL
      */
-    public static function getHttpRequestPlatformType() {
+    public static function getHttpRequestPlatformType()
+    {
 
         // Unable to acquire OS type None
         if (false == array_key_exists('platform_type', $_GET)) {
-            if (TRUE == array_key_exists('client_type', $_GET)) {
+            if (true == array_key_exists('client_type', $_GET)) {
                 $client = intval($_GET['client_type']);
                 if ($client === 2) {
                     return Const_Application::PLATFORM_TYPE_ANDROID;
@@ -153,7 +162,6 @@ class CommonUtil {
 
         return $platformType;
     }
-
 }
 
 //
@@ -169,20 +177,3 @@ class CommonUtil {
 //    }
 //
 //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

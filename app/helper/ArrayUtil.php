@@ -6,7 +6,8 @@ namespace Helper;
  * Array helper class
  */
 
-class ArrayUtil {
+class ArrayUtil
+{
 
     /**
      * Specify elements of the array and acquire data
@@ -17,14 +18,16 @@ class ArrayUtil {
      * @param array $array
      * @param unknown_type $defaultValue
      */
-    public static function getArrayValue($key, $array, $defaultValue = null) {
+    public static function getArrayValue($key, $array, $defaultValue = null)
+    {
         if (!array_key_exists($key, $array)) {
             return $defaultValue;
         }
         return $array[$key];
     }
 
-    public static function searchPrefixValue($prefix, array $array) {
+    public static function searchPrefixValue($prefix, array $array)
+    {
         foreach ($array as $key => $value) {
             if (strpos($value, $prefix) !== false) {
                 return $key;
@@ -40,7 +43,8 @@ class ArrayUtil {
      * @access public
      * @param array $arrayData Target sequence
      */
-    public static function trimArray($arrayData) {
+    public static function trimArray($arrayData)
+    {
         // If the target array is empty or null, return it as it is
         if (empty($arrayData)) {
             return $arrayData;
@@ -67,8 +71,8 @@ class ArrayUtil {
      * @param int $index
      * @return array
      */
-    public static function add(array &$array, array $element, $index = null) {
-
+    public static function add(array &$array, array $element, $index = null)
+    {
         if ($index === null) {
             $index = count($array);
         }
@@ -77,8 +81,4 @@ class ArrayUtil {
 
         return true;
     }
-
 }
-
-
-

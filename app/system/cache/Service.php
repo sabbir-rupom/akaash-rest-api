@@ -2,8 +2,8 @@
 
 namespace System\Cache;
 
-interface Service {
-
+interface Service
+{
     const DEFAULT_EXPIRATION = 3600; // in seconds
 
     public function add($value, int $flag = 0, int $expire = 0): string;

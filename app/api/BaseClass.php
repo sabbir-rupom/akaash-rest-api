@@ -1,6 +1,6 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 use flight\net\Request;
 use System\Exception\AppException;
@@ -12,20 +12,20 @@ use View\Output;
  * Description of BaseClass
  *
  * @property System\Config Config
- *
  * @author sabbir-hossain
  */
-class BaseClass {
+class BaseClass
+{
 
     /**
      * User Authentication variable defined
      */
-    const LOGIN_REQUIRED = FALSE;
+    const LOGIN_REQUIRED = false;
 
     /*
      * Authentication bypass flag for testing
      */
-    const TEST_ENV = FALSE;
+    const TEST_ENV = false;
 
     protected $get;
     protected $data;
@@ -34,14 +34,15 @@ class BaseClass {
     protected $response;
     protected $apiName;
     protected $pdo;
-    protected $requestToken = NULL;
+    protected $requestToken = null;
     protected $config = null;
 
 //    protected $sessionId = NULL;
 //    protected $userId = NULL;
 //    protected $cacheUser = NULL;
 
-    public function __construct(Request $request, $value, $apiName) {
+    public function __construct(Request $request, $value, $apiName)
+    {
         $this->get = $request->query;
         $this->data = $request->data;
         $this->value = $value;
@@ -56,7 +57,8 @@ class BaseClass {
     /**
      * Request processing execution.
      */
-    public function process() {
+    public function process()
+    {
 
         // Check and verify client request call / User session
         $this->filter();
@@ -75,14 +77,16 @@ class BaseClass {
      *
      * @throws AppException
      */
-    public function action() {
+    public function action()
+    {
         throw new ApiException(ResultCode::NOT_FOUND, 'Action script not found');
     }
 
     /**
      * Validate request parameters before processing
      */
-    protected function validate() {
+    protected function validate()
+    {
         // Write your validation code here
     }
 
@@ -91,15 +95,8 @@ class BaseClass {
      *
      * @throws Exception
      */
-    protected function filter() {
+    protected function filter()
+    {
         // Write your filter code here
     }
-
 }
-
-
-
-
-
-
-

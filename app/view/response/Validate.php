@@ -1,12 +1,11 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 namespace View\Response;
 
 use System\Message\ResultCode as ResultCode;
 use System\Exception\AppException as AppException;
-
 
 /**
  * Response Validation class
@@ -14,13 +13,15 @@ use System\Exception\AppException as AppException;
  * @author sabbir-hossain
  */
 
-class Validate {
-        /**
+class Validate
+{
+    /**
      * Convert result to JSON Object
      * @param array $data array of result from API
      * Convert result to JSON Object for output result
      */
-    public static function safeJsonEncode(array $data) {
+    public static function safeJsonEncode(array $data)
+    {
         $encoded = json_encode($data, JSON_PRETTY_PRINT);
 
         switch (json_last_error()) {

@@ -7,13 +7,14 @@ use System\Config;
 use flight\net\Request;
 use System\Exception\AppException;
 
-class Authentication {
+class Authentication
+{
 
     /**
      * Check client authorization
      */
-    public static function isAuthorized() {
-        
+    public static function isAuthorized()
+    {
         try {
             //Check Server Maintenance Status
             $auth = new Authorization(Config::getInstance()->checkRequestTokenFlag());
@@ -25,5 +26,4 @@ class Authentication {
             $e->generate(new Request(), Config::getInstance(), 'hooks');
         }
     }
-
 }

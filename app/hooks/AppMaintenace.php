@@ -7,12 +7,14 @@ use System\Config as Config;
 use flight\net\Request as Request;
 use System\Exception\AppException as AppException;
 
-class AppMaintenace {
+class AppMaintenace
+{
 
     /**
      * check server application under maintenance or not
      */
-    public static function isRunning() {
+    public static function isRunning()
+    {
         try {
             //Check Server Maintenance Status
             $maintenance = new Maintenance(Config::getInstance()->checkMaintenance());
@@ -24,5 +26,4 @@ class AppMaintenace {
             $e->generate(new Request(), Config::getInstance(), 'hooks');
         }
     }
-
 }

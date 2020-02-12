@@ -6,8 +6,8 @@ use System\Log\LoggerInterface as LoggerInterface;
 use System\Config as Config;
 use \flight\net\Request as Request;
 
-final class Logger implements LoggerInterface {
-
+final class Logger implements LoggerInterface
+{
     private $logTime;
     private $logFile;
     private $logPath;
@@ -15,12 +15,14 @@ final class Logger implements LoggerInterface {
     private $clientIp;
     private $logContent;
 
-    public function __contruct() {
+    public function __contruct()
+    {
         $this->content = [];
     }
 
-    public static function create(Request $request, Config $config, $data, string $type = ''): bool {
-        if ($config->isLogEnable() == FALSE || empty($data)) {
+    public static function create(Request $request, Config $config, $data, string $type = ''): bool
+    {
+        if ($config->isLogEnable() == false || empty($data)) {
             return false;
         }
 
@@ -38,7 +40,8 @@ final class Logger implements LoggerInterface {
         return true;
     }
 
-    public function prepare() {
+    public function prepare()
+    {
         $this->logContent = "[{$this->logTime}] [client: {$this->clientIp}] ";
 
         if (is_array($this->logData)) {
@@ -54,12 +57,13 @@ final class Logger implements LoggerInterface {
         }
     }
 
-    public function write(): bool {
+    public function write(): bool
+    {
         if (!is_dir($this->logPath)) {
             return false;
         }
         if (($fp = fopen($this->logPath . $this->logFile, 'a+')) !== false) {
-            if (flock($fp, LOCK_EX) === TRUE) {
+            if (flock($fp, LOCK_EX) === true) {
                 //write the info into the file
                 fwrite($fp, $this->logContent);
                 flock($fp, LOCK_UN);
@@ -72,8 +76,7 @@ final class Logger implements LoggerInterface {
         return true;
     }
 
-    public static function get(array $options): string {
-        
+    public static function get(array $options): string
+    {
     }
-
 }

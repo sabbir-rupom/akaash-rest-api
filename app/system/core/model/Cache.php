@@ -1,6 +1,6 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Abstract Cache Model Class
@@ -12,13 +12,15 @@ namespace System\Core\Model;
 
 use System\Cache\Service;
 
-abstract class Cache {
+abstract class Cache
+{
 
     /**
      * Get the cache data.
      * @param unknown_type $key
      */
-    public static function getCache(Service $cache, $key ) {
+    public static function getCache(Service $cache, $key)
+    {
         return $cache->get($key);
     }
 
@@ -27,8 +29,8 @@ abstract class Cache {
      * @param unknown_type $key
      * @param unknown_type $value
      */
-    public static function setCache(Service $cache, $key, $value, $flag = 0, $expire = 0) {
-
+    public static function setCache(Service $cache, $key, $value, $flag = 0, $expire = 0)
+    {
         return $cache->put($key, $value, $flag, $expire);
     }
 
@@ -37,8 +39,8 @@ abstract class Cache {
      * @param unknown_type $key
      * @param unknown_type $value
      */
-    public static function addCache(Service $cache, $key, $value, $expire = 0, $flag = 0) {
-
+    public static function addCache(Service $cache, $key, $value, $expire = 0, $flag = 0)
+    {
         return $cache->set($key, $value, $flag, $expire);
     }
 
@@ -46,7 +48,8 @@ abstract class Cache {
      * Delete the cache.
      * @param unknown_type $key
      */
-    public static function deleteCache(Service $cache, $key) {
+    public static function deleteCache(Service $cache, $key)
+    {
         return $cache->delete($key);
     }
 
@@ -55,8 +58,8 @@ abstract class Cache {
      * Delete the cache.
      * @param unknown_type $key
      */
-    public static function clearCache(Service $cache) {
+    public static function clearCache(Service $cache)
+    {
         return $cache->flush();
     }
-
 }

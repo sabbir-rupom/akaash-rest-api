@@ -1,12 +1,11 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 namespace View\Response;
 
 use System\Config as Config;
 use View\Response\Validate as Validate;
-
 
 /**
  * Response Format class
@@ -14,8 +13,10 @@ use View\Response\Validate as Validate;
  * @author sabbir-hossain
  */
 
-class Format {
-    public static function formatJson(array $data): string {
+class Format
+{
+    public static function formatJson(array $data): string
+    {
         if ('PRODUCTION' != strtoupper(Config::getInstance()->getEnv())) {
             /*
              * Calculate server execution time for running API script [ For developers only ]

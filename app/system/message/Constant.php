@@ -2,7 +2,8 @@
 
 namespace System\Message;
 
-interface Constant {
+interface Constant
+{
 
     /**
      * System Result Codes
@@ -116,5 +117,4 @@ interface Constant {
         'http_status' => 500
       ),
     );
-
 }

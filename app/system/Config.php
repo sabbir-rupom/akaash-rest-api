@@ -1,10 +1,11 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 namespace System;
 
-class Config {
+class Config
+{
 
     /**
      * initialize class properties
@@ -15,17 +16,19 @@ class Config {
     /**
      * Initialize class constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Load application config file
         $this->_config = \Flight::app()->get('app_config');
     }
 
     /**
      * get database host name
-     * 
+     *
      * @return string
      */
-    public function getDatabaseHostName() {
+    public function getDatabaseHostName()
+    {
         return $this->_config['DB_HOST'];
     }
 
@@ -34,7 +37,8 @@ class Config {
      *
      * @return string
      */
-    public function getDatabaseName() {
+    public function getDatabaseName()
+    {
         return $this->_config['DB_NAME'];
     }
 
@@ -43,7 +47,8 @@ class Config {
      *
      * @return string
      */
-    public function getDatabaseUser() {
+    public function getDatabaseUser()
+    {
         return $this->_config['DB_USER'];
     }
 
@@ -52,7 +57,8 @@ class Config {
      *
      * @return string
      */
-    public function getDatabasePassword() {
+    public function getDatabasePassword()
+    {
         return $this->_config['DB_PASSWORD'];
     }
 
@@ -61,7 +67,8 @@ class Config {
      *
      * @return int
      */
-    public function getDatabasePort() {
+    public function getDatabasePort()
+    {
         return intval($this->_config['DB_PORT']);
     }
 
@@ -70,7 +77,8 @@ class Config {
      *
      * @return boolean
      */
-    public function isDbSetTimezone() {
+    public function isDbSetTimezone()
+    {
         if (array_key_exists("DB_SET_TIMEZONE", $this->_config) && intval($this->_config["DB_SET_TIMEZONE"]) > 0) {
             return true;
         }
@@ -82,7 +90,8 @@ class Config {
      *
      * @return string
      */
-    public function getDbTimezone() {
+    public function getDbTimezone()
+    {
         return $this->_config["DB_TIMEZONE"];
     }
 
@@ -91,7 +100,8 @@ class Config {
      *
      * @return string
      */
-    public function getEnv() {
+    public function getEnv()
+    {
         return $this->_config["ENV"];
     }
 
@@ -100,7 +110,8 @@ class Config {
      *
      * @return bool
      */
-    public function isProduction() {
+    public function isProduction()
+    {
         if (array_key_exists("PRODUCTION_ENV", $this->_config) && intval($this->_config["PRODUCTION_ENV"])> 0) {
             return true;
         }
@@ -112,7 +123,8 @@ class Config {
      *
      * @return boolean
      */
-    public function isLogEnable() {
+    public function isLogEnable()
+    {
         if (array_key_exists("APPLICATION_LOG", $this->_config) && intval($this->_config["APPLICATION_LOG"]) > 0) {
             return true;
         }
@@ -124,7 +136,8 @@ class Config {
      *
      * @return string
      */
-    public function getAppLogPath() {
+    public function getAppLogPath()
+    {
         return $this->_config["LOG_FILE_PATH"];
     }
 
@@ -133,7 +146,8 @@ class Config {
      *
      * @return boolean
      */
-    public function isErrorDump() {
+    public function isErrorDump()
+    {
         if (array_key_exists("ERROR_DUMP", $this->_config) && intval($this->_config["ERROR_DUMP"]) > 0) {
             return true;
         }
@@ -145,7 +159,8 @@ class Config {
      *
      * @return boolean
      */
-    public function checkMaintenance() {
+    public function checkMaintenance()
+    {
         if (array_key_exists("MAINTENANCE", $this->_config) && intval($this->_config["MAINTENANCE"]) > 0) {
             return true;
         }
@@ -157,7 +172,8 @@ class Config {
      *
      * @return boolean
      */
-    public function checkRequestTokenFlag() {
+    public function checkRequestTokenFlag()
+    {
         if (array_key_exists("CHECK_REQUEST_TOKEN", $this->_config) && intval($this->_config["CHECK_REQUEST_TOKEN"]) > 0) {
             return true;
         }
@@ -169,7 +185,8 @@ class Config {
      *
      * @return string
      */
-    public function getRequestTokenSecret() {
+    public function getRequestTokenSecret()
+    {
         return $this->_config['REQUEST_TOKEN_SECRET'];
     }
 
@@ -178,7 +195,8 @@ class Config {
      *
      * @return string
      */
-    public function getRequestTokenHeaderKey() {
+    public function getRequestTokenHeaderKey()
+    {
         return $this->_config['REQUEST_TOKEN_HEADER_KEY'];
     }
 
@@ -189,7 +207,8 @@ class Config {
      *
      * @return int User ID
      */
-    public function getTestUserID() {
+    public function getTestUserID()
+    {
         if (array_key_exists('TEST_USER_ID', $this->_config)) {
             return (int) $this->_config['TEST_USER_ID'];
         }
@@ -202,16 +221,18 @@ class Config {
      *
      * @return string
      */
-    public function getSupportMailAddress() {
+    public function getSupportMailAddress()
+    {
         return $this->_config['SUPPORT_MAIL'];
     }
 
     /**
      * check server caching is enabled or disabled
-     * 
+     *
      * @return boolean
      */
-    public function isServerCacheEnable() {
+    public function isServerCacheEnable()
+    {
         if (array_key_exists('SERVER_CACHE_ENABLE_FLAG', $this->_config) && intval($this->_config["SERVER_CACHE_ENABLE_FLAG"]) > 0) {
             return true;
         }
@@ -220,10 +241,11 @@ class Config {
 
     /**
      * check server local file-caching is enabled or disabled
-     * 
+     *
      * @return boolean
      */
-    public function isLocalFileCacheEnable() {
+    public function isLocalFileCacheEnable()
+    {
         if (array_key_exists('FILE_CACHE_FLAG', $this->_config) && intval($this->_config["FILE_CACHE_FLAG"]) > 0) {
             return true;
         }
@@ -233,10 +255,11 @@ class Config {
 
     /**
      * get local cache path
-     * 
+     *
      * @return string
      */
-    public function getLocalCachePath() {
+    public function getLocalCachePath()
+    {
         return $this->_config['LOCAL_CACHE_PATH'];
     }
 
@@ -245,7 +268,8 @@ class Config {
      *
      * @return string
      */
-    public function getMemcacheHost() {
+    public function getMemcacheHost()
+    {
         return $this->_config['MEMCACHED_HOST'];
     }
 
@@ -254,7 +278,8 @@ class Config {
      *
      * @return string
      */
-    public function getMemcachePort() {
+    public function getMemcachePort()
+    {
         return $this->_config['MEMCACHED_PORT'];
     }
 
@@ -263,7 +288,8 @@ class Config {
      *
      * @return string
      */
-    public function getMemcachePrefix() {
+    public function getMemcachePrefix()
+    {
         return $this->_config["MEMCACHE_PREFIX"];
     }
 
@@ -272,7 +298,8 @@ class Config {
      *
      * @return int
      */
-    public function getClientVersion() {
+    public function getClientVersion()
+    {
         if (array_key_exists("CLIENT_VERSION", $this->_config) && !empty($this->_config['CLIENT_VERSION'])) {
             return intval($this->_config['CLIENT_VERSION']);
         }
@@ -285,7 +312,8 @@ class Config {
      * @param string $client
      * @return string
      */
-    public function getClientStoreLocation(string $client = '') {
+    public function getClientStoreLocation(string $client = '')
+    {
         if ($client === 'android') {
             return $this->_config["CLIENT_STORE_LOCATION_ANDROID"];
         } elseif ($client === 'ios') {
@@ -300,7 +328,8 @@ class Config {
      *
      * @return object
      */
-    public function cacheService() {
+    public function cacheService()
+    {
         if ($this->isLocalFileCacheEnable()) {
             return new \System\Cache\LocalCache($this->getLocalCachePath());
         } else {
@@ -313,23 +342,12 @@ class Config {
      *
      * @return obj
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == null) {
             self::$_instance = new Config();
         }
 
         return self::$_instance;
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-

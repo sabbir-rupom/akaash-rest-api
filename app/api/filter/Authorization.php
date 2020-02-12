@@ -5,7 +5,8 @@ namespace API\Filter;
 use System\Exception\AppException;
 use System\Config;
 
-class Authorization implements MethodTemplate  {
+class Authorization implements MethodTemplate
+{
     /**
      *  0 = do not check request token
      *  1 = check and validate request token
@@ -17,7 +18,8 @@ class Authorization implements MethodTemplate  {
     /**
      * Check server maintenance status
      */
-    public function check() {
+    public function check()
+    {
         $this->mode = Config::getInstance()->checkRequestTokenFlag();
 
         $this->validate();
@@ -28,11 +30,11 @@ class Authorization implements MethodTemplate  {
      *
      * @throws AppException
      */
-    public function validate() {
+    public function validate()
+    {
         if ($this->mode > 0) {
 //            throw new AppException(ResultCode::UNDER_MAINTENANCE, 'system under maintenance');
         }
         return;
     }
-
 }

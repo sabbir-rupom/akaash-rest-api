@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('APP_NAME'))
+if (!defined('APP_NAME')) {
     die('Forbidden');
+}
 
 // Register some basic information with flight
 Flight::set('start_time', microtime(true));
@@ -10,7 +11,7 @@ Flight::set('headers', getallheaders());
 session_start();
 
 /*
- * Initialize Server Configuration 
+ * Initialize Server Configuration
  */
 if (!file_exists(CONFIG_DIR . "/app_config.ini")) {
     Flight::json(array(
@@ -107,7 +108,8 @@ spl_autoload_register('directoryClassLoader');
  * the function with treat the class inside a directory
  * which will be found at 0'th index value after explode()
  */
-function directoryClassLoader($class) {
+function directoryClassLoader($class)
+{
     if (strpos($class, '_') || strpos($class, '-')) {
         $class_file = explode('/', str_replace(['_', '-'], ['/', '/'], $class) . '.php');
         for ($i = 0; $i < count($class_file) - 1; $i++) {
@@ -130,31 +132,3 @@ if (file_exists(CONFIG_DIR . "/hooks.php")) {
      */
     include_once CONFIG_DIR . "/hooks.php";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

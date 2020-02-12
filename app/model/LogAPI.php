@@ -1,6 +1,6 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 namespace Model;
 
@@ -9,7 +9,8 @@ use System\Core\Model\Base as BaseModel;
 /**
  * API log model class.
  */
-class LogAPI extends BaseModel {
+class LogAPI extends BaseModel
+{
 
     /**
      * Table definitions
@@ -43,9 +44,4 @@ class LogAPI extends BaseModel {
             'json' => true
         )
     );
-
 }
-
-
-
-

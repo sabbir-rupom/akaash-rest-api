@@ -1,11 +1,11 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 namespace Model;
 
-class User extends BaseModel {
-
+class User extends BaseModel
+{
     const MEMCACHED_EXPIRE = 3600; // Time to expire memcache; 1 hour
     const SESSION_DURATION_SEC = 3600; // 1 hour
     const SESSION_RESOLVE_DURATION_SEC = 0; // No limit
@@ -87,7 +87,8 @@ class User extends BaseModel {
      * @throws System_ApiException
      */
 
-    public function createUser($dataArray, $pdo = null) {
+    public function createUser($dataArray, $pdo = null)
+    {
 
         // Get User data by uuid
         $user = Model_User::findBy(array('email' => $dataArray['email']), $pdo);
@@ -114,7 +115,6 @@ class User extends BaseModel {
             $this->device_model = $dataArray['d_model'];
 
             $this->create($pdo);
-
         } else {
             throw new System_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
         }
@@ -125,7 +125,8 @@ class User extends BaseModel {
      * Update user's last active time
      * @param PDO $pdo
      */
-    public function updateUserLastActiveTime($pdo = null) {
+    public function updateUserLastActiveTime($pdo = null)
+    {
         if (property_exists($this, 'last_api_time')) {
             if (null === $pdo) {
                 $pdo = Flight::pdo();
@@ -148,7 +149,8 @@ class User extends BaseModel {
     /**
      * Return from the session to get a user ID.
      */
-    public static function retrieveSessionFromUserId($userId) {
+    public static function retrieveSessionFromUserId($userId)
+    {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
         $memcache = Config_Config::getMemcachedClient();
         $sessionId = $memcache->get($sessionKey);
@@ -158,7 +160,8 @@ class User extends BaseModel {
     /**
      * Update the session ID, save the session to Memcached.
      */
-    public function setSession() {
+    public function setSession()
+    {
         session_regenerate_id();
         $sessionId = session_id();
         self::cacheSession($sessionId, $this->id);
@@ -169,7 +172,8 @@ class User extends BaseModel {
     /**
      * Delete old session.
      */
-    public function removeSessionFromUserId($userId) {
+    public function removeSessionFromUserId($userId)
+    {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
         $session = Config_Config::getMemcachedClient();
         $session->remove($sessionKey);
@@ -178,7 +182,8 @@ class User extends BaseModel {
     /**
      * Save the user ID to Memcache to the session ID as a key.
      */
-    public static function cacheSession($sessionId, $userId) {
+    public static function cacheSession($sessionId, $userId)
+    {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
         $memcache = Config_Config::getMemcachedClient();
         $memcache->set($sessionKey, $sessionId, 0, self::SESSION_DURATION_SEC);
@@ -187,7 +192,8 @@ class User extends BaseModel {
     /**
      * Return an associative array for JSON.
      */
-    public function toJsonHash($additionalData = array()) {
+    public function toJsonHash($additionalData = array())
+    {
         $userId = intval($this->id);
         $hash = parent::toJsonHash();
 
@@ -209,13 +215,14 @@ class User extends BaseModel {
      * @param PDO $pdo
      * @return Model_User
      */
-    public static function cache_or_find($userId, $pdo = null) {
+    public static function cache_or_find($userId, $pdo = null)
+    {
         $user = parent::getCache(Model_CacheKey::getUserKey($userId));
         
-        if ($user == FALSE) {
+        if ($user == false) {
             //user not in cache, refreshing cache
             $user = self::refreshCache($userId, $pdo);
-        } 
+        }
         return $user;
     }
 
@@ -225,8 +232,9 @@ class User extends BaseModel {
      * @param type $pdo
      * @return type
      */
-    public static function refreshCache($userId, $pdo = null) {
-        $user = self::find($userId, $pdo, TRUE);
+    public static function refreshCache($userId, $pdo = null)
+    {
+        $user = self::find($userId, $pdo, true);
         parent::setCache(Model_CacheKey::getUserKey($userId), $user);
         return $user;
     }
@@ -235,7 +243,8 @@ class User extends BaseModel {
      * Before Update Deleting Cache
      * @param type $pdo
      */
-    public function update($pdo = null, $cacheDelete = TRUE) {
+    public function update($pdo = null, $cacheDelete = true)
+    {
         if ($cacheDelete) {
             parent::deleteCache($this->id);
         }

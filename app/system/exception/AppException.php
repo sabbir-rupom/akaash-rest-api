@@ -1,10 +1,10 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * API Exception Class
- * 
+ *
  * @author sabbir-hossain
  */
 
@@ -15,17 +15,18 @@ use System\Exception\Handler as Handler;
 use flight\net\Request as Request;
 use System\Config as Config;
 
-class AppException extends \Exception {
-
+class AppException extends \Exception
+{
     public $resultCode;
 
-    public function __construct($code = 0, $message = '', Exception $previous = null) {
+    public function __construct($code = 0, $message = '', Exception $previous = null)
+    {
         parent::__construct($message, $code, $previous);
         $this->resultCode = $code;
     }
 
-    public function generate(Request $request, Config $config, string $apiName = '') {
-
+    public function generate(Request $request, Config $config, string $apiName = '')
+    {
         if ($this instanceof \PDOException) {
             $this->resultCode = ResultCode::DATABASE_ERROR;
         } elseif (!$this instanceof AppException) {
@@ -47,18 +48,4 @@ class AppException extends \Exception {
             ] : []
         );
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

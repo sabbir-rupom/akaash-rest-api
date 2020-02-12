@@ -2,12 +2,11 @@
 
 namespace System\Message;
 
-interface MethodTemplate {
-
+interface MethodTemplate
+{
     public static function getTitle(int $code);
 
     public static function getMessage(int $code);
 
     public static function getHTTPstatusCode(int $code);
-
 }

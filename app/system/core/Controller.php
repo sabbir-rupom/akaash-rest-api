@@ -1,6 +1,6 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 namespace Core;
 
@@ -8,22 +8,26 @@ use \flight\net\Request;
 
 /**
  * Controller for application
- * 
+ *
  * @author sabbir-hossain
  */
-class Controller {
+class Controller
+{
 
     /**
      * Initialize API application
      * @param type $name Api name
      */
-    public static function initAPI($name) {
+    public static function initAPI($name)
+    {
         Initiate::makeCall(
-            new Request(), [
+            new Request(),
+            [
           'name' => $name,
-          'group' => NULL,
-          'value' => NULL
-        ]);
+          'group' => null,
+          'value' => null
+        ]
+        );
     }
 
     /**
@@ -31,13 +35,16 @@ class Controller {
      * @param type $group Group name
      * @param type $name Api name
      */
-    public static function initGroupAPI($group, $name) {
+    public static function initGroupAPI($group, $name)
+    {
         Initiate::makeCall(
-            new Request(), [
+            new Request(),
+            [
           'name' => $name,
           'group' => $group,
-          'value' => NULL
-        ]);
+          'value' => null
+        ]
+        );
     }
 
     /**
@@ -46,13 +53,15 @@ class Controller {
      * @param type $name Api name
      * @param type $value Query parameter
      */
-    public static function initGroupAPIwithParam($group, $name, $value) {
+    public static function initGroupAPIwithParam($group, $name, $value)
+    {
         Initiate::makeCall(
-            new Request(), [
+            new Request(),
+            [
           'name' => $name,
           'group' => $group,
-          'value' => empty($value) ? NULL : $value
-        ]);
+          'value' => empty($value) ? null : $value
+        ]
+        );
     }
-
 }

@@ -5,8 +5,8 @@ namespace System\Log;
 use System\Config as Config;
 use \flight\net\Request as Request;
 
-interface LoggerInterface {
-
+interface LoggerInterface
+{
     public static function create(Request $request, Config $config, $data, string $type = ''): bool;
 
     public function prepare();

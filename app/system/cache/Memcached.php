@@ -3,15 +3,17 @@
 declare(strict_types=1);
 
 namespace System\Cache;
+
 use System\Cache\Service;
 
-class Memcached implements Service {
-
+class Memcached implements Service
+{
     protected $host;
     protected $port;
     private $connection;
 
-    function __construct(string $host, int $port) {
+    public function __construct(string $host, int $port)
+    {
         $this->host = $host;
         $this->port = $port;
 
@@ -23,21 +25,24 @@ class Memcached implements Service {
     /**
      * Add memcache server connection
      */
-    public function addServer() {
+    public function addServer()
+    {
         $this->connection->addServer($this->host, $this->port);
     }
 
     /**
      * Add new key/value in server
      */
-    public function new(string $key, $value, int $flag = 0, int $expire = 0) {
+    public function new(string $key, $value, int $flag = 0, int $expire = 0)
+    {
         return $this->connection->add($key, $value, $flag, $expire);
     }
 
     /**
      * Increment a cache value
      */
-    public function increment(string $key, int $value) {
+    public function increment(string $key, int $value)
+    {
         return $this->connection->increment($key, $value);
     }
 
@@ -49,7 +54,8 @@ class Memcached implements Service {
      * @param int $expire
      * @return string
      */
-    public function add($value, int $flag = 0, int $expire = 0): string {
+    public function add($value, int $flag = 0, int $expire = 0): string
+    {
         $key = uniqid(rand(1, 99999), true);
         $this->connection->set($key, $value, $flag, $expire);
         return $key;
@@ -61,7 +67,8 @@ class Memcached implements Service {
      * @param string $key
      * @return mixed
      */
-    public function get(string $key, int $flag = 0) {
+    public function get(string $key, int $flag = 0)
+    {
         return $this->connection->get($key, $flag);
     }
 
@@ -74,7 +81,8 @@ class Memcached implements Service {
      * @param int $expire
      * @return bool
      */
-    public function put(string $key, $value, int $flag = 0, int $expire = 0): bool {
+    public function put(string $key, $value, int $flag = 0, int $expire = 0): bool
+    {
         return $this->connection->replace($key, $value, $flag, $expire);
     }
 
@@ -87,7 +95,8 @@ class Memcached implements Service {
      * @param int $expire
      * @return bool
      */
-    public function set(string $key, $value, int $flag = 0, int $expire = 0): bool {
+    public function set(string $key, $value, int $flag = 0, int $expire = 0): bool
+    {
         return $this->connection->set($key, $value, $flag, $expire);
     }
 
@@ -97,17 +106,19 @@ class Memcached implements Service {
      * @param string $key
      * @return bool
      */
-    public function remove(string $key): bool {
+    public function remove(string $key): bool
+    {
         return $this->delete($key);
     }
 
     /**
-     * Delete a key/value pair in cache 
-     * 
+     * Delete a key/value pair in cache
+     *
      * @param string $key
      * @return bool
      */
-    public function delete(string $key): bool {
+    public function delete(string $key): bool
+    {
         return $this->connection->delete($key);
     }
 
@@ -116,29 +127,8 @@ class Memcached implements Service {
      *
      * @return bool
      */
-    public function flush(): bool {
+    public function flush(): bool
+    {
         return $this->connection->flush();
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -13,14 +13,16 @@ use System\Core\Model\Cache as CacheModel;
  * @internal
  * @coversNothing
  */
-class Test extends BaseClass {
+class Test extends BaseClass
+{
 
     /**
      * Processing API script execution.
      */
-    public function action() {
-
-        print_r($this->value); exit;
+    public function action()
+    {
+        print_r($this->value);
+        exit;
 
 
 //        $cache = $this->config->cacheService();
@@ -59,15 +61,4 @@ class Test extends BaseClass {
           'data' => 'found'
         ];
     }
-
 }
-
-
-
-
-
-
-
-
-
-

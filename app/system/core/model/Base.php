@@ -1,6 +1,6 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Abstract Base Model Class
@@ -12,16 +12,17 @@ namespace System\Core\Model;
 
 use Helper\DateUtil;
 
-abstract class Base {
+abstract class Base
+{
 
     // Table name. Be overridden by the implementation class.
     const TABLE_NAME = "";
     // Table name. Be overridden by the implementation class.
     const PRIMARY_KEY = "";
     // Updated_at whether the column exists. Be overridden by the implementation class, if necessary.
-    const HAS_UPDATED_AT = TRUE;
+    const HAS_UPDATED_AT = true;
     // Created_at whether the column exists. Be overridden by the implementation class, if necessary.
-    const HAS_CREATED_AT = TRUE;
+    const HAS_CREATED_AT = true;
     // Memcached Validity period
     const CACHE_EXPIRE = 3600; // 1 hour
 
@@ -30,13 +31,14 @@ abstract class Base {
 
     /**
      * Retrieve records by table ID from the database
-     * 
+     *
      * @param mixed $id Table row ID
      * @param PDO $pdo Database connection object
      * @param boolean $forUpdate Whether to update the query result
      * @return object Search result as an object of called class
      */
-    public static function find($id, \PDO $pdo = null, $forUpdate = FALSE) {
+    public static function find($id, \PDO $pdo = null, $forUpdate = false)
+    {
         if ($pdo == null) {
             $pdo = \Flight::pdo();
         }
@@ -61,7 +63,8 @@ abstract class Base {
      * @param boolean $forUpdate Whether to update the query result
      * @return object Search result as an object of called class
      */
-    public static function findBy($params, \PDO $pdo = null, $forUpdate = FALSE) {
+    public static function findBy($params, \PDO $pdo = null, $forUpdate = false)
+    {
         if ($pdo == null) {
             $pdo = \Flight::pdo();
         }
@@ -87,7 +90,8 @@ abstract class Base {
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function findAllBy($params = array(), $order = null, $limitArgs = null, \PDO $pdo = null, $forUpdate = FALSE) {
+    public static function findAllBy($params = array(), $order = null, $limitArgs = null, \PDO $pdo = null, $forUpdate = false)
+    {
         if ($pdo == null) {
             $pdo = \Flight::pdo();
         }
@@ -109,7 +113,8 @@ abstract class Base {
      * @param bool $flag to count the number of records in table
      * @return int Number of records
      */
-    public static function countBy($params = array(), \PDO $pdo = null, $flag = false) {
+    public static function countBy($params = array(), \PDO $pdo = null, $flag = false)
+    {
         if ($pdo == null) {
             $pdo = \Flight::pdo();
         }
@@ -147,8 +152,8 @@ abstract class Base {
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function query(string $sql = '', \PDO $pdo = null, bool $single = false) {
-
+    public static function query(string $sql = '', \PDO $pdo = null, bool $single = false)
+    {
         if (!empty($sql)) {
             return null;
         } elseif ($pdo == null) {
@@ -169,7 +174,8 @@ abstract class Base {
      * @param boolean $forUpdate Whether to update the query.
      * @return array Constructed Query
      */
-    protected static function constructQuery(array $params, $order = array(), $limitArgs = null, $forUpdate = FALSE) {
+    protected static function constructQuery(array $params, $order = array(), $limitArgs = null, $forUpdate = false)
+    {
         $conditions = array();
         $values = array();
         foreach ($params as $k => $v) {
@@ -211,7 +217,8 @@ abstract class Base {
      * @param array $params $params[][0] for column-name, $params[][1] for value, $params[][1] for condition
      * @return array Constructed Query condition
      */
-    protected static function constructQueryCondition(array $params) {
+    protected static function constructQueryCondition(array $params)
+    {
         $condition = '';
         $values = array();
         foreach ($params as $v) {
@@ -250,7 +257,8 @@ abstract class Base {
      * @param PDO $pdo
      * @return PDO object.
      */
-    public function create(\PDO $pdo = null) {
+    public function create(\PDO $pdo = null)
+    {
         if (is_null($pdo)) {
             $pdo = \Flight::pdo();
         }
@@ -259,11 +267,11 @@ abstract class Base {
 
         $now = DateUtil::getToday();
         $sql = 'INSERT INTO ' . static::TABLE_NAME . ' (' . join(',', $columns);
-        $sql .= (static::HAS_CREATED_AT === TRUE ? ',created_at' : '');
-        $sql .= (static::HAS_UPDATED_AT === TRUE ? ',updated_at' : '');
+        $sql .= (static::HAS_CREATED_AT === true ? ',created_at' : '');
+        $sql .= (static::HAS_UPDATED_AT === true ? ',updated_at' : '');
         $sql .= ') VALUES (' . str_repeat('?,', count($columns) - 1) . '?';
-        $sql .= (static::HAS_CREATED_AT === TRUE ? ",'" . $now . "'" : '');
-        $sql .= (static::HAS_UPDATED_AT === TRUE ? ",'" . $now . "'" : '');
+        $sql .= (static::HAS_CREATED_AT === true ? ",'" . $now . "'" : '');
+        $sql .= (static::HAS_UPDATED_AT === true ? ",'" . $now . "'" : '');
         $sql .= ')';
         // INSERT data
         $stmt = $pdo->prepare($sql);
@@ -278,8 +286,8 @@ abstract class Base {
      * @return type
      * @throws Exception
      */
-    public function update(\PDO $pdo = null) {
-
+    public function update(\PDO $pdo = null)
+    {
         $id = empty(static::PRIMARY_KEY) ? 'id' : static::PRIMARY_KEY;
 
         if (!isset($this->{$id})) {
@@ -296,7 +304,7 @@ abstract class Base {
             $setStmts[] = $column . '=?';
         }
         $sql .= join(',', $setStmts);
-        if (static::HAS_UPDATED_AT === TRUE) {
+        if (static::HAS_UPDATED_AT === true) {
             $sql .= ",updated_at='" . DateUtil::getToday() . "'";
         }
         $sql .= " WHERE {$id} = ?";
@@ -313,7 +321,8 @@ abstract class Base {
      *
      * @param PDO $pdo
      */
-    public function delete($pdo = null) {
+    public function delete($pdo = null)
+    {
         $id = empty(static::PRIMARY_KEY) ? 'id' : static::PRIMARY_KEY;
         if (!isset($this->{$id})) {
             throw new Exception('The ' . get_called_class() . ' is not initiated properly.');
@@ -334,7 +343,8 @@ abstract class Base {
      *
      * @return array An array consisting of an array of columns, an array of values
      */
-    protected function getValues() {
+    protected function getValues()
+    {
         $values = array();
         $columns = array();
         foreach (static::getColumns() as $column) {
@@ -352,7 +362,8 @@ abstract class Base {
      * @param \PDO $pdo
      * @return bool
      */
-    public static function startTransaction(\PDO $pdo): bool {
+    public static function startTransaction(\PDO $pdo): bool
+    {
         return $pdo->beginTransaction();
     }
 
@@ -362,14 +373,16 @@ abstract class Base {
      * @param \PDO $pdo
      * @return bool
      */
-    public static function commit(\PDO $pdo): bool {
+    public static function commit(\PDO $pdo): bool
+    {
         return $pdo->commit();
     }
 
     /**
      * Return the column name list.
      */
-    protected static function getColumns() {
+    protected static function getColumns()
+    {
         if (isset(static::$columnDefs)) {
             return array_keys(static::$columnDefs);
         } else {
@@ -380,7 +393,8 @@ abstract class Base {
     /**
      * To get the column list of the database table
      */
-    protected static function getColumnsOnDB(\PDO $pdo) {
+    protected static function getColumnsOnDB(\PDO $pdo)
+    {
         if (self::$columnsOnDB == null) {
             if ($pdo == null) {
                 $pdo = \Flight::pdo();
@@ -404,7 +418,8 @@ abstract class Base {
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function getColumnSpecificData($columns, $params, $order = null, $limitArgs = null, \PDO $pdo) {
+    public static function getColumnSpecificData($columns, $params, $order = null, $limitArgs = null, \PDO $pdo)
+    {
         if ($pdo == null) {
             $pdo = \Flight::pdo();
         }
@@ -423,8 +438,8 @@ abstract class Base {
     /**
      * To check whether there is a column name both in database and model class definition
      * */
-    public static function hasColumn($name) {
-
+    public static function hasColumn($name)
+    {
         return (in_array($name, static::getColumnsOnDB()) &&
             in_array($name, static::getColumns()));
     }
@@ -432,8 +447,8 @@ abstract class Base {
     /**
      * To check whether there is a column in model class column definition
      * */
-    public static function hasColumnDefined($name) {
-
+    public static function hasColumnDefined($name)
+    {
         return (in_array($name, static::getColumns()));
     }
 
@@ -443,35 +458,38 @@ abstract class Base {
      * @param string $column
      * @return string Type of database table column
      */
-    protected static function getColumnType($column) {
+    protected static function getColumnType($column)
+    {
         return static::$columnDefs[$column]['type'];
     }
 
     /**
      * Return to the specified column whether or not to include in JSON
-     * 
+     *
      * @param String $ column target column name.
      */
-    public static function isColumnIncludedInJson($column) {
+    public static function isColumnIncludedInJson($column)
+    {
         $columnDef = static::$columnDefs[$column];
         if (isset($columnDef['json'])) {
             return $columnDef['json'];
         }
         // The default is TRUE.
-        return TRUE;
+        return true;
     }
 
     /**
      * Return an associative array for JSON.
      */
-    public function toJsonHash() {
+    public function toJsonHash()
+    {
         foreach (static::getColumns() as $column) {
             if (static::isColumnIncludedInJson($column)) {
                 if ('int' === static::getColumnType($column) && !is_null($this->$column)) {
                     $hash[$column] = (int) $this->$column;
-                } else if ('float' === static::getColumnType($column) && !is_null($this->$column)) {
+                } elseif ('float' === static::getColumnType($column) && !is_null($this->$column)) {
                     $hash[$column] = floatval($this->$column);
-                } else if ('bool' === static::getColumnType($column) && !is_null($this->$column)) {
+                } elseif ('bool' === static::getColumnType($column) && !is_null($this->$column)) {
                     $hash[$column] = ("1" === $this->$column);
                 } else {
                     $hash[$column] = (!isset($this->$column) || $this->$column == null) ? "" : $this->$column;
@@ -480,5 +498,4 @@ abstract class Base {
         }
         return $hash;
     }
-
 }

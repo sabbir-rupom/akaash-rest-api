@@ -4,9 +4,9 @@ use Hooks\AppMaintenace;
 use Hooks\Authentication;
 
 /**
- * Initialize middleware login conditions here 
+ * Initialize middleware login conditions here
  */
-Flight::before('start', function() {
+Flight::before('start', function () {
     /**
      * Before the core controller starts execution
      */
@@ -18,7 +18,6 @@ Flight::before('start', function() {
     Authentication::isAuthorized();
 });
 
-Flight::after('start', function() {
+Flight::after('start', function () {
     // after the application process finished
 });
-

@@ -8,8 +8,8 @@ use System\Exception\AppException as AppException;
 use System\Message\ResultCode as ResultCode;
 use System\Config as Config;
 
-class Initiate {
-
+class Initiate
+{
     protected static $apiName;
     protected static $queryValue;
 
@@ -18,7 +18,8 @@ class Initiate {
      *
      * @param array $arrayParams Array parameters for initializing API class
      */
-    public static function makeCall(Request $request, array $properties) {
+    public static function makeCall(Request $request, array $properties)
+    {
         try {
             self::prepare($properties);
 
@@ -40,7 +41,8 @@ class Initiate {
      * @param string $temp
      * @throws AppException
      */
-    public static function prepare(array $properties) {
+    public static function prepare(array $properties)
+    {
 
         // prepare api controller from request url call
         self::$apiName = Common::prepareApiClass($properties['name'], $properties['group']);
@@ -48,7 +50,6 @@ class Initiate {
         // Check if requested API controller exist in app
         if (!class_exists(self::$apiName)) {
             if (!empty($properties['group'])) {
-
                 self::$apiName = Common::prepareApiClass($properties['group']);
 
                 if (!class_exists(self::$apiName)) {
@@ -65,5 +66,4 @@ class Initiate {
             self::$queryValue = $properties['value'];
         }
     }
-
 }

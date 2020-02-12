@@ -1,13 +1,14 @@
 <?php
 
-(defined('APP_NAME')) OR exit('Forbidden 403');
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 namespace Model;
 
 /**
  * User Item model class.
  */
-class UserItem extends BaseModel {
+class UserItem extends BaseModel
+{
 
     /**
      * Table Name
@@ -20,23 +21,23 @@ class UserItem extends BaseModel {
     protected static $columnDefs = array(
         'id' => array(
             'type' => 'int',
-            'json' => TRUE
+            'json' => true
         ),
         'user_id' => array(
             'type' => 'int',
-            'json' => FALSE
+            'json' => false
         ),
         'item_name' => array(
             'type' => 'string',
-            'json' => TRUE
+            'json' => true
         ),
         'created_at' => array(
             'type' => 'string',
-            'json' => FALSE
+            'json' => false
         ),
         'updated_at' => array(
             'type' => 'string',
-            'json' => FALSE
+            'json' => false
         )
     );
 
@@ -49,7 +50,8 @@ class UserItem extends BaseModel {
      * @throws System_ApiException
      * @return obj
      */
-    public static function addUserItem($userId, $itemName, $pdo = null) {
+    public static function addUserItem($userId, $itemName, $pdo = null)
+    {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
@@ -75,7 +77,8 @@ class UserItem extends BaseModel {
      * @param obj $pdo
      * @return array $result Array of item list
      */
-    public static function getAllItems($itemName = '', $userId = null, $pdo = null) {
+    public static function getAllItems($itemName = '', $userId = null, $pdo = null)
+    {
         if (null === $pdo) {
             $pdo = Flight::pdo();
         }
@@ -83,7 +86,7 @@ class UserItem extends BaseModel {
 
         list($condition, $values) = self::constructQueryCondition(
                         array(
-                            array('item_name', $itemName, 'like'), 
+                            array('item_name', $itemName, 'like'),
                             array('user_id', $userId, '=')
                         )
         );
@@ -98,5 +101,4 @@ class UserItem extends BaseModel {
 
         return $result;
     }
-
 }

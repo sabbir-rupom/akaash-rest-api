@@ -1,7 +1,8 @@
 <?php
 
 /**
- *
+ * Setup MySQL database with PDO
+ * Install database connection with flight service
  */
 if (!defined('APP_NAME')) {
     die('Forbidden 403');
@@ -24,16 +25,13 @@ define('DB_SET_TIMEZONE', (int) $configArray['DB_SET_TIMEZONE']);
  */
 Flight::register('pdo', 'PDO', array("mysql:host={$db_host};dbname={$db_name};charset=utf8mb4;"
   . (!empty($db_port) ? "port={$db_port};" : ''), $db_user, $db_pass), function ($pdo) {
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if (DB_SET_TIMEZONE > 0) {
-        $db_timezone = (new DateTime('now', new DateTimeZone(DB_TIMEZONE)))->format('P');
-    } else {
-        $db_timezone = (new DateTime('now', new DateTimeZone(date_default_timezone_get())))->format('P');
-    }
+      if (DB_SET_TIMEZONE > 0) {
+          $db_timezone = (new DateTime('now', new DateTimeZone(DB_TIMEZONE)))->format('P');
+      } else {
+          $db_timezone = (new DateTime('now', new DateTimeZone(date_default_timezone_get())))->format('P');
+      }
 
-    $pdo->exec("SET time_zone='{$db_timezone}';");
-});
-
-
-
+      $pdo->exec("SET time_zone='{$db_timezone}';");
+  });
