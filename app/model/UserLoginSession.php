@@ -2,10 +2,12 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
+namespace Model;
+
 /**
  * User login log model.
  */
-class Model_UserLoginSession extends Model_BaseModel {
+class UserLoginSession extends BaseModel {
 
     const TABLE_NAME = "user_login_sessions";
 
@@ -51,7 +53,7 @@ class Model_UserLoginSession extends Model_BaseModel {
      * @param string $sessionId
      * @param int $loginType
      * @param obj $pdo
-     * @throws Exception
+     * @throws System_ApiException
      * @return bool
      */
     public static function updateSession($userId, $sessionId, $loginType, $pdo = null) {
@@ -59,7 +61,7 @@ class Model_UserLoginSession extends Model_BaseModel {
             $pdo = Flight::pdo();
         }
 
-        $userSession = self::findBy(array('user_id' => $userId, 'DATE(created_at)' => Helper_DateUtil::getToday('Y-m-d')), $pdo, TRUE);
+        $userSession = self::findBy(array('user_id' => $userId, 'DATE(created_at)' => Common_DateUtil::getToday('Y-m-d')), $pdo, TRUE);
 
         if (empty($userSession)) {
             $userSession = new Model_UserLoginSession();

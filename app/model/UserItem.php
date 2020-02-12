@@ -2,10 +2,12 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
+namespace Model;
+
 /**
  * User Item model class.
  */
-class Model_UserItem extends Model_BaseModel {
+class UserItem extends BaseModel {
 
     /**
      * Table Name
@@ -44,7 +46,7 @@ class Model_UserItem extends Model_BaseModel {
      * @param int $userId
      * @param string $itemName
      * @param obj $pdo
-     * @throws AppException
+     * @throws System_ApiException
      * @return obj
      */
     public static function addUserItem($userId, $itemName, $pdo = null) {
@@ -61,7 +63,7 @@ class Model_UserItem extends Model_BaseModel {
 
             $userItemObj->create($pdo);
         } else {
-            throw new AppException(ResultCode::DATABASE_ERROR, 'Item already exist!');
+            throw new System_ApiException(ResultCode::DATABASE_ERROR, 'Item already exist!');
         }
 
         return $userItemObj;
@@ -70,7 +72,6 @@ class Model_UserItem extends Model_BaseModel {
     /**
      * Get all item list available in database
      * @param string $itemName Item name to be searched
-     * @param string $userId User ID to be searched
      * @param obj $pdo
      * @return array $result Array of item list
      */

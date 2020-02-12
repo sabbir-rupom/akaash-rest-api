@@ -2,7 +2,9 @@
 
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
-class Model_User extends Model_BaseModel {
+namespace Model;
+
+class User extends BaseModel {
 
     const MEMCACHED_EXPIRE = 3600; // Time to expire memcache; 1 hour
     const SESSION_DURATION_SEC = 3600; // 1 hour
@@ -82,7 +84,7 @@ class Model_User extends Model_BaseModel {
      * Registration process execution.
      *
      * @return User object.
-     * @throws AppException
+     * @throws System_ApiException
      */
 
     public function createUser($dataArray, $pdo = null) {
@@ -106,7 +108,7 @@ class Model_User extends Model_BaseModel {
             $this->longitude = $dataArray['long'];
             $this->gender = $dataArray['gender'];
 
-            $this->last_api_time = Helper_DateUtil::getToday();
+            $this->last_api_time = Common_DateUtil::getToday();
 
             $this->device_token = $dataArray['d_token'];
             $this->device_model = $dataArray['d_model'];
@@ -114,7 +116,7 @@ class Model_User extends Model_BaseModel {
             $this->create($pdo);
 
         } else {
-            throw new AppException(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
+            throw new System_ApiException(ResultCode::DATA_ALREADY_EXISTS, 'User already exist in database');
         }
         return $user;
     }
@@ -128,7 +130,7 @@ class Model_User extends Model_BaseModel {
             if (null === $pdo) {
                 $pdo = Flight::pdo();
             }
-            $this->last_api_time = Helper_DateUtil::getToday();
+            $this->last_api_time = Common_DateUtil::getToday();
             $this->update($pdo);
         }
     }
@@ -138,7 +140,7 @@ class Model_User extends Model_BaseModel {
      */
 //    public static function retrieveUserIdFromSession($sessionId) {
 //        $sessionKey = Model_CacheKey::getUserSessionKey($sessionId);
-//        $memcache = Config::getMemcachedClient();
+//        $memcache = Config_Config::getMemcachedClient();
 //        $userId = $memcache->get($sessionKey);
 //        return $userId;
 //    }
@@ -148,7 +150,7 @@ class Model_User extends Model_BaseModel {
      */
     public static function retrieveSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $memcache = Config::getMemcachedClient();
+        $memcache = Config_Config::getMemcachedClient();
         $sessionId = $memcache->get($sessionKey);
         return $sessionId;
     }
@@ -169,7 +171,7 @@ class Model_User extends Model_BaseModel {
      */
     public function removeSessionFromUserId($userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $session = Config::getMemcachedClient();
+        $session = Config_Config::getMemcachedClient();
         $session->remove($sessionKey);
     }
 
@@ -178,7 +180,7 @@ class Model_User extends Model_BaseModel {
      */
     public static function cacheSession($sessionId, $userId) {
         $sessionKey = Model_CacheKey::getUserSessionKey($userId);
-        $memcache = Config::getMemcachedClient();
+        $memcache = Config_Config::getMemcachedClient();
         $memcache->set($sessionKey, $sessionId, 0, self::SESSION_DURATION_SEC);
     }
 

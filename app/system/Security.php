@@ -1,25 +1,8 @@
 <?php
 
-/*
- * RESTful API Template
- * 
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
- * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
- */
-
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
-/**
- * Security Class
- *
- */
+namespace System;
 
 class Security {
 
@@ -48,7 +31,7 @@ class Security {
      */
     public function __construct() {
         // get class instance
-        $this->security = new Security();
+        $this->security = new Common_Security();
     }
 
     //put your code here
@@ -64,7 +47,7 @@ class Security {
      * @param	string|string[]	$str		Input data
      * @return	string
      */
-    public static function xssClean($str, $is_image = FALSE) {
+    public static function xss_clean($str, $is_image = FALSE) {
         // Is the string an array?
         if (is_array($str)) {
             foreach ($str as $key => &$value) {

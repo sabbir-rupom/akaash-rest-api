@@ -1,26 +1,14 @@
 <?php
 
-/*
- * RESTful API Template
- * 
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
- * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
- */
-
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
+namespace Helper;
+
 /**
- * A utility class that summarizes the processing related to Date..
+ * Date helper class
  *
  */
-class Helper_DateUtil {
+class DateUtil {
 
     /**
      * Insert the current time with DateTime type when storing it in MySQL.。
@@ -28,7 +16,7 @@ class Helper_DateUtil {
      * @param string $format [optional]
      * @return string Formatted date
      */
-    public static function getToday($format = null) {
+    public static function getToday(string $format = null) {
 
         if (is_null($format)) {
             $format = "Y-m-d H:i:s";
@@ -42,14 +30,14 @@ class Helper_DateUtil {
      *
      * @param unknown_type $day
      */
-    public static function getNowModify($ago, $format = null) {
+    public static function getNowModify(int $day = 0, $format = null) {
 
         if (is_null($format)) {
             $format = "Y-m-d H:i:s";
         }
 
         $dateTime = new DateTime(self::getToday());
-        $dateTime->modify($ago . " day");
+        $dateTime->modify($day . " day");
         return $dateTime->format($format);
     }
 
@@ -415,3 +403,7 @@ class Helper_DateUtil {
     }
 
 }
+
+
+
+

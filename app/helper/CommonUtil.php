@@ -1,46 +1,55 @@
 <?php
 
-/*
- * RESTful API Template
- * 
- * A RESTful API template based on flight-PHP framework
- * This software project is based on my recent REST-API development experiences. 
- * 
- * ANYONE IN THE DEVELOPER COMMUNITY MAY USE THIS PROJECT FREELY
- * FOR THEIR OWN DEVELOPMENT SELF-LEARNING OR DEVELOPMENT or LIVE PROJECT 
- * 
- * @author	Sabbir Hossain Rupom
- * @since	Version 1.0.0
- * @filesource
- */
-
 (defined('APP_NAME')) OR exit('Forbidden 403');
 
+namespace Helper;
+
 /**
- * Utility helper class
+ * Common helper class
  */
-class Helper_CommonUtil {
+class CommonUtil {
+
+    /**
+     * Prepare API class name
+     * @param string $name Api name
+     * @param string $group Api Group name
+     */
+    public static function prepareApiClass($name, $group = '') {
+
+        return empty($group) ? self::camelize($name) : ucfirst($group) . (empty($name) ? '' : "_") . self::camelize($name);
+    }
+
+    /*
+     * utf8 error correction from result array
+     * @param array $mixed array of result from API
+     * Correct all utf-8 related errors for proper JSON output
+     */
+
+    public static function utf8ize($mixed) {
+        if (is_array($mixed)) {
+            foreach ($mixed as $key => $value) {
+                $mixed[$key] = self::utf8ize($value);
+            }
+        } else if (is_string($mixed)) {
+            return utf8_encode($mixed);
+        }
+        return $mixed;
+    }
 
     /**
      * Convert a string to CamelCase
      *
-     * @param string/array $str Text Column
-     * @param boolean $ucfirst 
+     * @param string $str Text Column
+     * @param boolean $ucfirst
      * @return CamelCase of string, underscore is removed
      */
     public static function camelize($str, $ucfirst = TRUE) {
-        $str = ucfirst($str);
-
-        $capitalized = $elements = array();
-
         if (stristr($str, '-')) {
             $elements = explode('-', $str);
-        } else if (stristr($str, '_')) {
-            $elements = explode('_', $str);
         } else {
-            return $str;
+            $elements = explode('_', $str);
         }
-
+        $capitalized = array();
         if (!$ucfirst) {
             $capitalized[] = array_shift($elements);
         }
@@ -129,50 +138,51 @@ class Helper_CommonUtil {
             if (TRUE == array_key_exists('client_type', $_GET)) {
                 $client = intval($_GET['client_type']);
                 if ($client === 2) {
-                    return PLATFORM_TYPE_ANDROID;
+                    return Const_Application::PLATFORM_TYPE_ANDROID;
                 }
             }
-            return PLATFORM_TYPE_NONE;
+            return Const_Application::PLATFORM_TYPE_NONE;
         }
 
         $platformType = $_GET['platform_type'];
         // Not applicable OS type
-        if (PLATFORM_TYPE_IOS != $platformType &&
-                PLATFORM_TYPE_ANDROID != $platformType) {
-            return PLATFORM_TYPE_NONE;
+        if (Const_Application::PLATFORM_TYPE_IOS != $platformType &&
+            Const_Application::PLATFORM_TYPE_ANDROID != $platformType) {
+            return Const_Application::PLATFORM_TYPE_NONE;
         }
 
         return $platformType;
     }
 
-    /**
-     * Get Distance between two latlong co-ordinates
-     *  
-     * @param float $lat1 Starting latitude point
-     * @param float $lon1 Starting longitude point
-     * @param float $lat2 Ending latitude point
-     * @param float $lon2 Ending longitude point
-     * @param string $unit Unit of return(K = Km, M= Miles, N= Nautical)
-     * @return float value as Distance
-     */
-    protected function distanceCoordinates($lat1, $lon1, $lat2, $lon2, $unit = "M") {
-
-        $theta = $lon1 - $lon2;
-        $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-        $dist = acos($dist);
-        $dist = rad2deg($dist);
-        $miles = $dist * 60 * 1.1515;
-        $unit = strtoupper($unit);
-
-        if ($unit == "K") {
-            return ($miles * 1.609344);
-        } else if ($unit == "M") {
-            return ($miles * 1.609344 * 1000);
-        } else if ($unit == "N") {
-            return ($miles * 0.8684);
-        } else {
-            return $miles;
-        }
-    }
-
 }
+
+//
+///**
+// * The default class of JSON of premise object。
+// *
+// * Operational policies and methods of DTO put in here as an interim implementation until the firm.
+// */
+//class Jsonizable {
+//
+//    public function toJsonHash() {
+//        return Utils::objToJsonHash($this);
+//    }
+//
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

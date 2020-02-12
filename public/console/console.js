@@ -1,14 +1,11 @@
 var apiItems = {};
 var apiUrl = 'http://' + window.location.hostname;
-var pathExt = '/api';
+var pathExt = '/v1';
 var tokenHeader = 'X-API-TOKEN';
 
 $(function () {
-    
-    $("input[name=baseUrl]").val(apiUrl);
-    $("input[name=apiPath]").val(pathExt);
 
-    $.getJSON(apiUrl + "/console/api-list.json", function (data) {
+    $.getJSON("api-list.json", function (data) {
 //        console.clear();
         var i = 0;
         $.each(data, function (key, val) {
@@ -55,7 +52,7 @@ $(function () {
 
     $('#submit').on('click', function () {
         $('#jsonOutput').html('');
-        var apiPath = $("input[name=baseUrl]").val() + $("input[name=apiPath]").val();
+        var apiPath = apiUrl + $("input[name=url]").val();
         var queryParameter = $("input[name=queryParams]").val();
         var jsonBody = $("textarea[name=requestBody]").val();
         var checkJson = jsonBody != '' ? isJson(jsonBody) : true;
@@ -126,7 +123,7 @@ function callApi(apiName) {
             $('textarea[name=tokenHash], input[name=sessionToken], input[name=userId]').val('');
         }
 
-        $("input[name=apiPath]").val(pathExt + actionPath);
+        $("input[name=url]").val(pathExt + actionPath);
         $("input[name=method][value=" + api.obj.method + "]").prop('checked', true);
         $("input[name=queryParams]").val(api.obj.query);
         $("textarea[name=requestBody]").val(api.obj.json);
