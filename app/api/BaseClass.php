@@ -80,7 +80,7 @@ class BaseClass
      */
     public function action()
     {
-        throw new ApiException(ResultCode::NOT_FOUND, 'Action script not found');
+        throw new AppException(ResultCode::NOT_FOUND, 'Action script not found');
     }
 
     /**
