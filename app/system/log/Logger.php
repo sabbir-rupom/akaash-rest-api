@@ -14,13 +14,14 @@ final class Logger implements LoggerInterface
     private $logData;
     private $clientIp;
     private $logContent;
+    public $lastLine;
 
     public function __contruct()
     {
         $this->content = [];
     }
 
-    public static function create(Request $request, Config $config, $data, string $type = ''): bool
+    public static function create(Request $request, Config $config, $data, string $type = ''): Logger
     {
         if ($config->isLogEnable() == false || empty($data)) {
             return false;
@@ -37,7 +38,7 @@ final class Logger implements LoggerInterface
         $logger->prepare();
         $logger->write();
 
-        return true;
+        return $logger;
     }
 
     public function prepare()
@@ -73,10 +74,41 @@ final class Logger implements LoggerInterface
             fclose($fp);
         }
 
+        $this->lastLine = $this->logContent;
+
         return true;
     }
 
-    public static function get(array $options): string
+    /**
+     * Fetch log data
+     *
+     * @param array $options | key parameters are
+     *              [ line-break => text line break delimiter ]
+     *              [ line-num => First n number of lines to return  ]
+     *              [ date => date string in php date('Ymd') format  ]
+     * @return string
+     */
+    public function get(array $options): string
     {
+        $this->logContent = '';
+        $this->logFile = (isset($options['type']) && !empty($options['type']) ? $options['type'] : 'api')
+            . '_'
+            . (isset($options['date']) ? $options['date'] : date('Ymd')) . '.log';
+
+        if (file_exists($this->logPath . $this->logFile)) {
+            $fh = fopen($this->logPath . $this->logFile, 'r');
+            $c = 1;
+
+            while ($line = fgets($fh)) {
+                $this->logContent .= $line . (isset($options['line-break']) ? $options['line-break'] : PHP_EOL);
+                if (isset($options['line-num']) && $c >= $options['line-num']) {
+                    break;
+                }
+                $c++;
+            }
+            fclose($fh);
+        }
+
+        return str_replace(array("\n", "\t", "\r", "\r\n"), '', $this->logContent);
     }
 }

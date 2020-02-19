@@ -20,9 +20,9 @@ abstract class Base
     // Table name. Be overridden by the implementation class.
     const PRIMARY_KEY = "";
     // Updated_at whether the column exists. Be overridden by the implementation class, if necessary.
-    const HAS_UPDATED_AT = true;
+    const HAS_UPDATED_AT = false;
     // Created_at whether the column exists. Be overridden by the implementation class, if necessary.
-    const HAS_CREATED_AT = true;
+    const HAS_CREATED_AT = false;
     // Memcached Validity period
     const CACHE_EXPIRE = 3600; // 1 hour
 
@@ -376,6 +376,17 @@ abstract class Base
     public static function commit(\PDO $pdo): bool
     {
         return $pdo->commit();
+    }
+
+    /**
+     * Rollback all query transaction
+     *
+     * @param \PDO $pdo
+     * @return bool
+     */
+    public static function rollback(\PDO $pdo): bool
+    {
+        return $pdo->rollback();
     }
 
     /**

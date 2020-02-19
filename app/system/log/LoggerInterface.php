@@ -7,11 +7,11 @@ use \flight\net\Request as Request;
 
 interface LoggerInterface
 {
-    public static function create(Request $request, Config $config, $data, string $type = ''): bool;
+    public static function create(Request $request, Config $config, $data, string $type = ''): Logger;
 
     public function prepare();
 
     public function write();
 
-    public static function get(array $options): string;
+    public function get(array $options): string;
 }

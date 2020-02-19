@@ -21,9 +21,6 @@ class Test extends BaseClass
      */
     public function action()
     {
-        print_r($this->value);
-        exit;
-
 
 //        $cache = $this->config->cacheService();
 //

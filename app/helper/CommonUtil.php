@@ -121,17 +121,80 @@ class CommonUtil
     }
 
     /**
-     * String parameter sent with HTTP POST
-     * @return string
+     * Check the type of the value
+     *
+     * @param mixed $value value to validate
+     * @param mixed $type expected type of value
+     *
+     * @return bool, TRUE If it is correct type , otherwise FALSE. Value returns TRUE unconditionally if it is NULL.
      */
-    public static function getPostStringParameter()
+    protected static function isValidType($value, $type)
     {
-        $handle = fopen('php://input', 'r');
-        $string = fgets($handle);
+        $result = false;
+        if (is_null($value)) {
+            return true;
+        }
+        switch ($type) {
+            case 'int':
+                $result = self::isInt($value);
 
-        fclose($handle);
+                break;
+            case 'bool':
+                $result = is_bool($value);
 
-        return $string;
+                break;
+            case 'string':
+                $result = is_string($value) || is_numeric($value);
+
+                break;
+            case 'float':
+                $result = is_float($value) || self::isInt($value);
+
+                break;
+            case 'json':
+                $result = self::isJSON($value);
+
+                break;
+            case 'binary':
+                $result = is_binary($value);
+
+                break;
+            case 'array':
+                $result = is_array($value);
+
+                break;
+            default:
+                $result = true;
+                break;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Check if a string is valid json
+     *
+     * @param string $str
+     * @return bool
+     */
+    public static function isJSON($str)
+    {
+        json_decode($str);
+        return json_last_error() == JSON_ERROR_NONE;
+    }
+
+    /**
+     * Check if a value is empty or not
+     *
+     * @param mixed $var
+     * @return boolean
+     */
+    public static function notEmpty(&$var)
+    {
+        if (isset($var) && ($var === '0' || $var === 0 || !empty($var))) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -141,39 +204,26 @@ class CommonUtil
      */
     public static function getHttpRequestPlatformType()
     {
+        preg_match("/iPhone|Android|iPad|iPod|webOS/", $_SERVER['HTTP_USER_AGENT'], $matches);
+        $os = current($matches);
 
-        // Unable to acquire OS type None
-        if (false == array_key_exists('platform_type', $_GET)) {
-            if (true == array_key_exists('client_type', $_GET)) {
-                $client = intval($_GET['client_type']);
-                if ($client === 2) {
-                    return Const_Application::PLATFORM_TYPE_ANDROID;
-                }
-            }
-            return Const_Application::PLATFORM_TYPE_NONE;
-        }
+        $platformType = 0;
 
-        $platformType = $_GET['platform_type'];
-        // Not applicable OS type
-        if (Const_Application::PLATFORM_TYPE_IOS != $platformType &&
-            Const_Application::PLATFORM_TYPE_ANDROID != $platformType) {
-            return Const_Application::PLATFORM_TYPE_NONE;
+        switch ($os) {
+            case 'iPhone':
+            case 'iPad':
+            case 'iPod':
+                $platformType = PLATFORM_TYPE_IOS;
+                break;
+            case 'Android':
+                $platformType = PLATFORM_TYPE_ANDROID;
+                break;
+            case 'webOS':
+            default:
+                $platformType = PLATFORM_TYPE_WEB;
+                break;
         }
 
         return $platformType;
     }
 }
-
-//
-///**
-// * The default class of JSON of premise object。
-// *
-// * Operational policies and methods of DTO put in here as an interim implementation until the firm.
-// */
-//class Jsonizable {
-//
-//    public function toJsonHash() {
-//        return Utils::objToJsonHash($this);
-//    }
-//
-//}

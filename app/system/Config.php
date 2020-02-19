@@ -1,8 +1,8 @@
 <?php
 
-(defined('APP_NAME')) or exit('Forbidden 403');
-
 namespace System;
+
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 class Config
 {
@@ -20,6 +20,9 @@ class Config
     {
         // Load application config file
         $this->_config = \Flight::app()->get('app_config');
+        if (empty($this->_config)) {
+            $this->_config = parse_ini_file(CONFIG_DIR . "/app_config.ini");
+        }
     }
 
     /**

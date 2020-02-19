@@ -7,11 +7,12 @@ use System\Exception\AppException;
 use System\Message\ResultCode;
 use System\Config;
 use View\Output;
+use Helper\CommonUtil;
+use System\Security;
 
 /**
  * Description of BaseClass
  *
- * @property System\Config Config
  * @author sabbir-hossain
  */
 class BaseClass
@@ -98,5 +99,67 @@ class BaseClass
     protected function filter()
     {
         // Write your filter code here
+    }
+
+    /**
+     * Return parameter value from Post call.
+     *
+     * @param string  $name      name of the parameter
+     * @param unknown $type      Type of the variable. "int", "bool", "string".
+     * @param bool    $required  Value required
+     * @param bool    $xss_clean XSS clean
+     *
+     * @return parameter value from POST Request
+     * @throws AppException
+     */
+    protected function getInputPost($name, $type, $required = false, $xss_clean = false)
+    {
+        if (isset($this->data[$name])) {
+            $var = $this->data[$name];
+            if ('string' !== $type && '' === $var) {
+                $var = null;
+            }
+        } else {
+            $var = null;
+        }
+
+        if (true === $required && CommonUtil::notEmpty($var) === false) {
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "{$name} is not set.");
+        } elseif (!CommonUtil::isValidType($var, $type)) {
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of {$name} is not valid.");
+        } else {
+            return (true === $xss_clean) ? Security::xssClean($var) : $var;
+        }
+    }
+
+    /**
+     * Retrieve specific value from get query string
+     *
+     * @param string $name
+     * @param string $type
+     * @param bool $required
+     * @param bool $xss_clean
+     *
+     * @return mixed Value from get query string
+     * @throws AppException
+     */
+    protected function getInputQuery($name, $type, $required = false, $xss_clean = false)
+    {
+        if (isset($this->get[$name])) {
+            $var = $this->get[$name];
+            if ('string' != $type && '' === $var) {
+                $var = null;
+            }
+        } else {
+            $var = null;
+        }
+
+        if (true === $required && CommonUtil::notEmpty($var) === false) {
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "{$name} is not set.");
+        } elseif (!CommonUtil::isValidType($var, $type)) {
+            throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of {$name} is not valid.");
+        } else {
+            return (true === $xss_clean) ? Security::xssClean($var) : $var;
+        }
     }
 }

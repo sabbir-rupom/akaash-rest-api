@@ -11,7 +11,7 @@ class Security
      * List of never allowed strings
      * @var	array
      */
-    protected $_never_allowed_str = array(
+    protected static $never_allowed_str = array(
         'document.cookie' => '[removed]',
         '(document).cookie' => '[removed]',
         'document.write' => '[removed]',
@@ -25,15 +25,29 @@ class Security
         '<comment>' => '&lt;comment&gt;',
         '<%' => '&lt;&#37;'
     );
-    protected $security;
+
+    /**
+     * List of never allowed regex replacements
+     *
+     * @var	array
+     */
+    protected static $never_allowed_regex = array(
+        'javascript\s*:',
+        '(\(?document\)?|\(?window\)?(\.document)?)\.(location|on\w*)',
+        'expression\s*(\(|&\#40;)', // CSS and IE
+        'vbscript\s*:', // IE, surprise!
+        'wscript\s*:', // IE
+        'jscript\s*:', // IE
+        'vbs\s*:', // IE
+        'Redirect\s+30\d',
+        "([\"'])?data\s*:[^\\1]*?base64[^\\1]*?,[^\\1]*?\\1?"
+    );
 
     /**
      * constructor
      */
     public function __construct()
     {
-        // get class instance
-        $this->security = new Common_Security();
     }
 
     //put your code here
@@ -49,19 +63,19 @@ class Security
      * @param	string|string[]	$str		Input data
      * @return	string
      */
-    public static function xss_clean($str, $is_image = false)
+    public static function xssClean($str, $is_image = false)
     {
         // Is the string an array?
         if (is_array($str)) {
             foreach ($str as $key => &$value) {
-                $str[$key] = self::xss_clean($value);
+                $str[$key] = self::xssClean($value);
             }
 
             return $str;
         }
 
         // Remove Invisible Characters
-        $str = $this->security->remove_invisible_characters($str);
+        $str = self::removeInvisibleCharacters($str);
 
         /*
          * URL Decode
@@ -91,7 +105,7 @@ class Security
         $str = preg_replace_callback('/<\w+.*/si', array($this, '_decode_entity'), $str);
 
         // Remove Invisible Characters Again!
-        $str = remove_invisible_characters($str);
+        $str = removeInvisibleCharacters($str);
 
         /*
          * Convert all tabs to spaces
@@ -107,7 +121,7 @@ class Security
         $converted_string = $str;
 
         // Remove Strings that are never allowed
-        $str = $this->security->do_never_allowed($str);
+        $str = self::doNeverAllowed($str);
 
         /*
          * Makes PHP tags safe
@@ -149,7 +163,7 @@ class Security
          * Note: It was reported that not only space characters, but all in
          * the following pattern can be parsed as separators between a tag name
          * and its attributes: [\d\s"\'`;,\/\=\(\x00\x0B\x09\x0C]
-         * ... however, remove_invisible_characters() above already strips the
+         * ... however, removeInvisibleCharacters() above already strips the
          * hex-encoded ones, so we'll skip them below.
          */
         do {
@@ -229,7 +243,7 @@ class Security
         // Final clean up
         // This adds a bit of extra precaution in case
         // something got through the above filters
-        $str = $this->security->do_never_allowed($str);
+        $str = self::doNeverAllowed($str);
 
         return $str;
     }
@@ -244,7 +258,7 @@ class Security
      * @param	bool
      * @return	string
      */
-    protected function remove_invisible_characters($str, $url_encoded = true)
+    protected static function removeInvisibleCharacters($str, $url_encoded = true)
     {
         $non_displayables = array();
 
@@ -271,11 +285,11 @@ class Security
      * @param 	string
      * @return 	string
      */
-    protected function do_never_allowed($str)
+    protected static function doNeverAllowed($str)
     {
-        $str = str_replace(array_keys($this->_never_allowed_str), $this->_never_allowed_str, $str);
+        $str = str_replace(array_keys(self::never_allowed_str), self::never_allowed_str, $str);
 
-        foreach ($this->_never_allowed_regex as $regex) {
+        foreach (self::never_allowed_regex as $regex) {
             $str = preg_replace('#' . $regex . '#is', '[removed]', $str);
         }
 
