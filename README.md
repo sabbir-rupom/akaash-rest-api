@@ -54,7 +54,10 @@ $ composer update
 ```
 127.0.0.1	akaash.test
 ```
-* Restart your apache server [Note: *change your php.ini file if any module is missing. Check the apache logs if you get any unknown error*]
+* Restart your apache server [Note: *update your php.ini file if any module is missing. Check the apache logs if you get any unknown error*]
+* [**NOTE**] If you are having trouble installing memcache in your system, simply follow [ this guide ](https://commaster.net/content/installing-memcached-windows) 
+  * If your windows is 64bit and PHP version 7.2, use the ts version of `php-7.2.x_memcache.dll` as module extension
+  * Use the binary version of `memcached-win64-1.4.*.zip` to install memcache server. Follow the instructions accordingly.
 
 **For linux (Ubuntu)**
 
@@ -62,11 +65,11 @@ $ composer update
 * Install Composer if not installed already
 * Clone the repository to your desired root-directory
 
-If you are using fresh ubuntu server, you may follow *My Project installation Guide* [ [https://pastebin.com/k79QVFRi](https://pastebin.com/k79QVFRi) ]
+If you are using fresh ubuntu server, you may follow *My Project installation Guide* [ [https://pastebin.com/KMpSAhYK](https://pastebin.com/KMpSAhYK) ]
 
 **Web Server Configuration**
 
-Edit your `.htaccess` file in root directory with the following:
+* For *Apache*, add or edit `.htaccess` file in your host root directory with the following:
 ```
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -74,42 +77,9 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 ```
 * Go to the `app/config` directory inside your project folder. Rename the existing `example.*` file to `app_config.ini`. 
-* Open your `app_config.ini` file and **change the configuration** parameters suitable to your machine environment.
+* Open your `app_config.ini` file and **change the configuration** parameters suitable to your host environment.
 
-That's it. You are ready to develop and test your API server. 
-
-## Skeleton Architecture
-
-The Rest-API project's skeleton is driven by the *Flight microframework*
-
-All necessary routing is done in `app/config/route.php`
-
-Write your API classes in `app/api/` directory. I have added a custom base `BaseClass` class, developers may use this to extend their API classes  
-
-The called api path is camelized [*The 1st letter of the string and letter/s next to underscore `_` / Hypen `-` is camelized and underscore / hypen is removed*] 
-before searching the *API Class*
-
-To group more than one API class, keep the files under *Group-Name Folder* inside `app/api/` director [ e.g app/api/User/Login.php ]. 
-The called api path which is related to a group is concatenated with underscore and camelized before searching the *API Class* [ e.g class User_Login ] 
-
-Use namespace to call system and other classes to initialize their respective services.
-
-Write your Model classes in `app/model/` directory 
-
-This project template provides a *Base* model class having some abstract methods as query builder functions. It is useful for the developers to extend their model classes with this abstract *Base* model   
-
-The *Config* Class in `app/system` directory handles most of the major server configurations
-
-For MySQL Database connectivity `PDO Driver` is used
- 
-The *helper* classes are defined in `app/helper` directory. Available helper classes are
-* ArrayUtil : Custom class for various array manipulations 
-* CommonUtil : Custom utility class for frequently used for some common helper functions
-* DateUtil : Custom class for various date/time manipulations
-
-Application system classes are initialized in `app/system` directory. 
-
-To define your application constants, use `app/config/constants.php` to write your app constants
+That's it. You are ready to develop and test your API project. 
 
 ### Why use this?
 
@@ -219,6 +189,34 @@ Table Column Definitions will help you which data to be showed in response and w
 or you can put the PHP library in `app/lib` directory and extend your custom class inside the directory by defining class name with correct namespace
 <!-- If you get any error like `"Class '' not found"` during development, you may need to run the `composer update` command from root directory (*if any new class files not loaded*) -->
 
+## Features
+
+This project does not include much features, but I have tried to add some to make the application more user-friendly. Let's see these features:
+
+* Integration of **flight-microframework** - which is extremely light weight. To learn it's features, simply go to this [ ::learn flight-PHP:: ](http://flightphp.com/learn/)
+
+* A **Model-View-Controller** like system architecture [ ::view doc:: ](usage_guide/system_architecture.rst)
+
+* **Single Configuration** file with Config class [ ::view doc:: ](usage_guide/app_configuration.rst)
+
+* **Base Class** controller for Client Request validation [ ::view doc:: ](usage_guide/request_validation_class.rst)
+
+* MySQL database connection support with **PDO driver** . If you are not familiar with PDO, please visit and learn the basics [ ::pdo tutorial:: ](https://phpdelusions.net/pdo) 
+
+* **Abstract Base Model** class for database **Query Builder Function** support [ ::view doc:: ](usage_guide/query_builder_class.rst)
+
+* **Common Helper** classes: Array, Date, Log, Utils(Utility)
+
+* **System Library** classes: ApiException, FileCacheClient, JwtToken, MemcachedServer, Security [ ::view doc:: ](usage_guide/system_library.rst)
+
+* **Application Constant** class [ ::view doc:: ](usage_guide/application_constant.rst)
+
+* **Result-Code** class for supporting exception handle with necessary status codes [ ::view doc:: ](usage_guide/result_code.rst)
+
+* **Console** testing [ ::view doc:: ](usage_guide/test_console.rst)
+
+* Others [ ::view doc:: ](usage_guide/other_features.rst)
+
 ## Changelog and Updates
 
 You can find a list of all changes for each release/version in the [change log](https://github.com/sabbir-rupom/rest-api-flight-PHP/blob/master/changelog.rst) 
@@ -268,3 +266,4 @@ Following third party libraries are used in Application system
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
+
