@@ -103,7 +103,7 @@ class Config
      *
      * @return string
      */
-    public function getEnv()
+    public function getEnvironment()
     {
         return $this->_config["ENV"];
     }

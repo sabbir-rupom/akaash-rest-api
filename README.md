@@ -209,8 +209,6 @@ This project does not include much features, but I have tried to add some to mak
 
 * **System Library** classes: ApiException, FileCacheClient, JwtToken, MemcachedServer, Security [ ::view doc:: ](usage_guide/system_library.rst)
 
-* **Application Constant** class [ ::view doc:: ](usage_guide/application_constant.rst)
-
 * **Result-Code** class for supporting exception handle with necessary status codes [ ::view doc:: ](usage_guide/result_code.rst)
 
 * **Console** testing [ ::view doc:: ](usage_guide/test_console.rst)
@@ -266,4 +264,5 @@ Following third party libraries are used in Application system
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
+
 

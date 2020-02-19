@@ -2,7 +2,7 @@
 Project Configuration
 #####################
 
-Project application settings is configured through the ``config_app.ini`` location in the ``app/config`` directory. Rename the file from ``example.*.ini``
+Project application settings is configured through the ``app_config.ini`` location in the ``app/config`` directory. Rename the file from ``example.*.ini``
 then **change the configuration parameters** suitable to your machine environment.   
 
 Configuration keys are explained below:
@@ -13,8 +13,8 @@ Configuration keys are explained below:
     - Sample code for retrieving the environment value is given below:
     ::
 
-	$config = new Config_Config();
-        echo $config->getEnv();
+	$config = new System\Config();
+        echo $config->getEnvironment();
 - **BASE_URL**
     - Server application base url 
     - Configure this parameter in case of Host URL complexity, will be added as server constant
@@ -27,8 +27,8 @@ Configuration keys are explained below:
     - Purpose of this parameter is for testing features which are dependent on specific credential key's [ e.g. switch Stripe payment feature as sandbox test or live production etc. ]
     ::
 
-	$config = new Config_Config();
-        if($config->checkProductionEnvironment()) {
+	$config = new System\Config();
+        if($config->isProduction()) {
             // Do your staff
         }
 - **CLIENT_VERSION** 
@@ -37,29 +37,22 @@ Configuration keys are explained below:
     - If there exists multiple version of client software application, based on their client version parameter in API request, server application may decide whether the API request will be redirected to the proper url / directory path or disallow the request call  
     ::
 
-	$config = new Config_Config();
+	$config = new System\Config();
         echo $config->getClientVersion();
-- **CLIENT_UPDATE_LOCATION_ANDROID** 
+- **CLIENT_STORE_LOCATION_ANDROID** 
     - Client application download link for android
     - Add the google play-store path
     ::
 
-        $config = new Config_Config();
-        echo $config->getClientUpdateLocation(Const_Application::PLATFORM_TYPE_ANDROID);
-- **CLIENT_UPDATE_LOCATION_iOS** 
+        $config = new System\Config();
+        echo $config->getClientStoreLocation('android');
+- **CLIENT_STORE_LOCATION_iOS** 
     - Client application download link for iPhone
     - Add the ios app-store path
     ::
 
-        $config = new Config_Config();
-        echo $config->getClientUpdateLocation(Const_Application::PLATFORM_TYPE_IOS);
-- **CLIENT_UPDATE_LOCATION_WINDOWS_APP** 
-    - Client application download link for Windows phone 
-    - Add the microsoft-store path
-    ::
-
-        $config = new Config_Config();
-        echo $config->getClientUpdateLocation(Const_Application::PLATFORM_TYPE_WINDOWS);
+        $config = new System\Config();
+        echo $config->getClientStoreLocation('ios');
 - **ERROR_DUMP** 
     - Set error reporting status ON / OFF [ 0=OFF , 1=ON ] 
     - If ON, specific error message will be added alongside the API JSON response 
@@ -74,22 +67,22 @@ Configuration keys are explained below:
     - Set server maintenance mode ON / OFF [ 0=OFF , 1=ON ] 
     ::
 
-	$config = new Config_Config();
+	$config = new System\Config();
         if($config->checkMaintenance()) {
             // Do your staff
         }
-- **SUPPORT_MAIL_TO** 
+- **SUPPORT_MAIL** 
     - Support mail address, where any project application related issues might be mailed at. 
     ::
 
-	$config = new Config_Config();
+	$config = new System\Config();
         echo $config->getSupportMailAddress();
 - **TEST_USER_ID** 
     - Purpose of *Test User ID* is to bypass all security, login validation, maintenance mode of server
     - Test user feature is useful for testing API server while project environment is on production
     ::
 
-	$config = new Config_Config();
+	$config = new System\Config();
         if($logged_in_user_id == $config->getTestUserID()) {
             // ignore security cross checking
         }
@@ -105,10 +98,10 @@ Configuration keys are explained below:
     - Database connection port number
     ::
 
-        $config = new Config_Config();
+        $config = new System\Config();
         $host = $config->getDatabaseHostName();
         $db = $config->getDatabaseName();
-        $user = $config->getDatabaseUsername();
+        $user = $config->getDatabaseUser();
         $pass = $config->getDatabasePassword();
         $port = $config->getDatabasePort();
 
@@ -119,13 +112,14 @@ Configuration keys are explained below:
 - **DB_SET_TIMEZONE** 
     - Set server timezone set mode ON / OFF [ 0=OFF , 1=ON ] 
     - This flag refers to whether mysql **database timezone** will be set as same as the Server or not
-- **DB_TIMEZONE**
+- **SERVER_TIMEZONE**
     - Server timezone [ e.g Europe/Berlin ]
     ::
 
         $conn = { PDO Connection }
         if ($conn) {
-            if (Config_Config::getInstance()->isDbSetTimezone()) {
+            $config = new System\Config();
+            if ($config->isDbSetTimezone()) {
                 $db_timezone = (new DateTime('now', new DateTimeZone(Config_Config::getInstance()->getServerTimezone())))->format('P');
                 $conn->exec("SET time_zone='{$db_timezone}'");
             }
@@ -135,7 +129,7 @@ Configuration keys are explained below:
     - [ **Note** ] for session related API cache system must be enabled
     ::
     
-        $config = new Config_Config();
+        $config = new System\Config();
 	if ($config->isServerCacheEnable()) {
 
             /**
@@ -150,7 +144,7 @@ Configuration keys are explained below:
     - Server will store cache data in this path if **FILE_CACHE_FLAG** is enabled
     ::
     
-        $config = new Config_Config();
+        $config = new System\Config();
 	if ($config->isLocalFileCacheEnable()) {
 
             $cachePath = $config->getLocalCachePath();
@@ -175,7 +169,7 @@ Configuration keys are explained below:
     - Application log file path in local directory
     ::
     
-        $config = new Config_Config();
+        $config = new System\Config();
 	if ($config->isLogEnable()) {
 
             $logPath = $config->getAppLogPath();
@@ -187,4 +181,12 @@ Configuration keys are explained below:
                  */ 
             }
         }
+- **CHECK_REQUEST_TOKEN**
+    - Token verification flag [ 0=OFF , 1=ON ]
+- **REQUEST_TOKEN_HEADER_KEY**
+    - Request token key which is needed to be passed in HTTP Header
+    - Server try to find request token from header request to check and validate if **CHECK_REQUEST_TOKEN** is enabled 
+- **REQUEST_TOKEN_SECRET**
+    - Secret key for token validation
+
 
