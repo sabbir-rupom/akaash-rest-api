@@ -1,3 +1,4 @@
 vendor/
 app/config/config_app.ini
 /nbproject/
+app/config/app_config.ini
