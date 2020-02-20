@@ -2,7 +2,10 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-class Test_Sabbir extends BaseClass
+/**
+ * Sample API Example: User Registration
+ */
+class Example_UserRegistration extends BaseClass
 {
 
     /**
@@ -11,7 +14,7 @@ class Test_Sabbir extends BaseClass
     public function action()
     {
         return [
-          'hello' => 123
+          
         ];
     }
 }

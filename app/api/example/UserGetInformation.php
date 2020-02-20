@@ -3,9 +3,9 @@
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
- * Sample API Example: Get User List
+ * Sample API Example: Get User Information
  */
-class Example_UserList extends BaseClass
+class Example_UserGetInformation extends BaseClass
 {
 
     /**
