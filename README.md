@@ -2,11 +2,12 @@
 
 [**This version is in testing phase**] 
 
-Akaash is a restful API template built with PHP driven by flight microframework. It is light weighted with some helpful services like logger, caching etc. 
+Akaash [ REST-API-PHP-flight: version 2 ] is a restful API template built with PHP driven by flight microframework. It is light weighted with some helpful services like logger, caching etc. 
+The system architecture is modified with some solid principles and optimized the source code in PSR-2 coding standard. 
 
-NOTE: This template is based on my recent API development experiences. I will not boast that its a very good template. 
-This project may have some design flaws- which I may need to overcome in recent days. But I have tried my best to structure the source code 
-adding some custom / third party PHP library based services to make the template more robust and friendly for the young developers.
+NOTE: This template version is based on my recent web development experiences. I will not boast that its a very good project. 
+This may have some architectural flaws- which I may need to overcome in recent days. But I have tried my best to develop this with appropriate PHP coding standard 
+and good architecture. I am still learning to overcome the flaws and trying to make this rest-template project simple, robust and developer friendly.
 
 ### What is Flight?
 
@@ -14,7 +15,8 @@ Flight is a fast, simple, extensible framework for PHP. Flight enables you to qu
 
 ## Getting Started
 
-This project includes both file cache system and memcache system, along with a custom authentication process with JWT.
+This project includes both file cache system and memcache system. To make the project more simple to handle, I have made the project more scalable 
+than the previous version of this template with appropriate configuration settings.  
 
 For testing purposes and examples, I have added a database sample in `/public/resource` folder; 
 and added some custom API along with a `/public/console` web form to communicate those API and view responses
@@ -65,8 +67,6 @@ $ composer update
 * Install Composer if not installed already
 * Clone the repository to your desired root-directory
 
-If you are using fresh ubuntu server, you may follow *My Project installation Guide* [ [https://pastebin.com/KMpSAhYK](https://pastebin.com/KMpSAhYK) ]
-
 **Web Server Configuration**
 
 * For *Apache*, add or edit `.htaccess` file in your host root directory with the following:
@@ -83,21 +83,24 @@ That's it. You are ready to develop and test your API project.
 
 ### Why use this?
 
-REST or RESTful APIs used in distributed client/server interaction, like mobile application to server communication. If the REST structure in server is light
-and robust, it can generate response fast and authentic client can retrieve the desired data quickly and process accordingly. And user always love to use server 
-dependant application which can show data without much waiting. I have tried my best to implement as much essential feature as possible without making
-the overall structure *complex* to understand. 
+RESTful APIs used in distributed client/server interaction, like the communication system between mobile application and a server. If the REST Application is light
+and robust, server can process and generate response fast and authentic client can retrieve the desired data and process faster. And an user always loves to use those server 
+dependent application which can process data fast. I have tried my best to implement as much essential feature as possible without making the overall structure *complex*. 
 
-And this template is for those developers, who loves PHP. And a microframework is always faster than normal MVC framework like laravel, codeigniter etc.
+And this template is executes faster than traditional MVC framework like laravel, codeigniter etc.
 
 You can follow my presentation slide on '[RESTApi Design & Develop](https://www.slideshare.net/rpm_ruoma/restapi-design-develop)'. 
 I have tried to implement many features in this project mentioned in my slide tutorial, and I will continue working on this more ... 
 
 ## Development Guide
 
-* Write your api class controller in `app/api/` directory
-* Extend your API Controller Class  with *Base Class* 
-* Sample API Controller Class, [**Note**: If your API class name is `GetUserInformation`, your request URL will be `http://akaash.test/api/get_user_information`]
+* Write your api class controllers in `app/api/` directory
+* Yo may either extend your API Controller Class with the *BaseClass* provided with the template, or just write your own codes
+* Sample API Controller Class: 
+  * If endpoint: `http://{base-url}/get_user_information` , write your API class `GetUserInformation` in `app/api/` directory
+  * If endpoint: `http://{base-url}/user/get_information` , write your API class `GetInformation` in `app/api/user` directory
+  * If endpoint: `http://{base-url}/user/get_information/1`, if the API class exists as above, the 3rd segment will be counted a query string
+  * For more information, check the provided API examples
 
 ```php
 class GetUserInformation extends BaseClass {        
@@ -132,7 +135,7 @@ class GetUserInformation extends BaseClass {
 ``` 
  use System\Exception\AppException;
 
- throw new AppException_Exception(ResultCode::NOT_FOUND, "Data not found");
+ throw new AppException(ResultCode::NOT_FOUND, "Data not found");
 ```
 
 * To access system / model / helper / view classes, simply call their resources using namespaces
@@ -148,7 +151,7 @@ class GetUserInformation extends BaseClass {
 
  use System\Core\Model\Base as BaseModel;
 
- class Modelclass extends BaseModel {      
+ class User extends BaseModel {      
     // Define your class variables and constants here
 
     /**
@@ -184,9 +187,10 @@ Try to add separate model classes for each tables in your database to retain int
 
 Table Column Definitions will help you which data to be showed in response and which data to be processed in database through methods of the base model class
 
-* Check the existing API classes for further study
+* Check the API model examples for further study
 * If you wish to add new third party library, you may either add in `composer.json` and run the `composer update` command from root directory for autoload library classes, 
 or you can put the PHP library in `app/lib` directory and extend your custom class inside the directory by defining class name with correct namespace
+
 <!-- If you get any error like `"Class '' not found"` during development, you may need to run the `composer update` command from root directory (*if any new class files not loaded*) -->
 
 ## Features
@@ -195,29 +199,21 @@ This project does not include much features, but I have tried to add some to mak
 
 * Integration of **flight-microframework** - which is extremely light weight. To learn it's features, simply go to this [ ::learn flight-PHP:: ](http://flightphp.com/learn/)
 
-* A **Model-View-Controller** like system architecture [ ::view doc:: ](usage_guide/system_architecture.rst)
+* A **Model-View-Controller** like system architecture
 
-* **Single Configuration** file with Config class [ ::view doc:: ](usage_guide/app_configuration.rst)
-
-* **Base Class** controller for Client Request validation [ ::view doc:: ](usage_guide/request_validation_class.rst)
+* **Single Configuration** file
 
 * MySQL database connection support with **PDO driver** . If you are not familiar with PDO, please visit and learn the basics [ ::pdo tutorial:: ](https://phpdelusions.net/pdo) 
 
-* **Abstract Base Model** class for database **Query Builder Function** support [ ::view doc:: ](usage_guide/query_builder_class.rst)
+* **Helper** Utility classes: Array, Date, Common
 
-* **Common Helper** classes: Array, Date, Log, Utils(Utility)
-
-* **System Library** classes: ApiException, FileCacheClient, JwtToken, MemcachedServer, Security [ ::view doc:: ](usage_guide/system_library.rst)
-
-* **Result-Code** class for supporting exception handle with necessary status codes [ ::view doc:: ](usage_guide/result_code.rst)
+* **System Library** : core, exception, log, message, security
 
 * **Console** testing [ ::view doc:: ](usage_guide/test_console.rst)
 
-* Others [ ::view doc:: ](usage_guide/other_features.rst)
-
 ## Changelog and Updates
 
-You can find a list of all changes for each release/version in the [change log](https://github.com/sabbir-rupom/rest-api-flight-PHP/blob/master/changelog.rst) 
+You can find a list of all changes for each release/version in the [change log](https://github.com/sabbir-rupom/akaash-rest-api/blob/master/changelog.rst) 
 
 ## Running the tests
 
@@ -263,6 +259,7 @@ Following third party libraries are used in Application system
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
+
 
 
