@@ -1,0 +1,107 @@
+{
+    "groups": [
+        {
+            "name": "User Related",
+            "contents": [
+                "/user_sign_up",
+                "/user_login",
+                "/get_user_info",
+                "/save_user_info",
+                "/get_other_users",
+                "/user_logout"
+            ]
+        },
+        {
+            "name": "Item Related",
+            "contents": [
+                "/get_item_list",
+                "/user_item_add",
+                "/user_item_update",
+                "/user_item_delete"
+            ]
+        },
+        {
+            "name": "Test API",
+            "contents": [
+                "/test"
+            ]
+        }
+    ],
+    "/user_login": {
+        "title": "User Login",
+        "action": "/user_login",
+        "query": "client_type=1&client_version=1",
+        "method": "POST",
+        "json": "{\"email\": \"user@email.com\",\"password\": \"\",\"device_model\": \"Windows 10 Laptop\"}"
+    },
+    "/user_sign_up": {
+        "title": "User Registration",
+        "action": "/user_sign_up",
+        "query": "client_type=1&client_version=1",
+        "method": "POST",
+        "json": "{\"user_name\":\"\",\"email\":\"\", \"longitude\":\"\", \"latitude\":\"\", \"gender\":\"male\", \"profile_image\":\"\", \"last_name\":\"\",\"first_name\":\"\",\"password\":\"12345\"}"
+    },
+    "/save_user_info": {
+        "title": "Save User Information",
+        "action": "/save_user_info",
+        "query": "client_type=1&client_version=1",
+        "method": "PUT",
+        "json": "{\"user_name\":\"\",\"email\":\"\", \"longitude\":\"\", \"latitude\":\"\", \"gender\":\"male\", \"profile_image\":\"\", \"last_name\":\"\",\"first_name\":\"\",\"old_password\":\"\", \"new_password\":\"\"}"
+    },
+    "/get_user_info": {
+        "title": "Get User Information",
+        "action": "/get_user_info",
+        "query": "client_type=1&client_version=1&user_id=",
+        "method": "GET",
+        "json": ""
+    },
+    "/get_other_users": {
+        "title": "Get All Other User List",
+        "action": "/get_other_users",
+        "query": "client_type=1&client_version=1",
+        "method": "POST",
+        "json": "{\"sort_order\":\"DESC\", \"offset\":0, \"limit\":10}"
+    },
+    "/get_item_list": {
+        "title": "Get Item List",
+        "action": "/get_item_list",
+        "query": "client_type=1&client_version=1&user_id=",
+        "method": "POST",
+        "json": "{ \"item_name\":\"\"}"
+    },
+    "/user_item_add": {
+        "title": "Add an Item to Session User",
+        "action": "/user_item_add",
+        "query": "client_type=1&client_version=1",
+        "method": "POST",
+        "json": "{\"item_name\":\"xxx\"}"
+    },
+    "/user_item_update": {
+        "title": "Update an Item of Session User",
+        "action": "/user_item_update",
+        "query": "client_type=1&client_version=1",
+        "method": "PUT",
+        "json": "{\"item_name\":\"xxx\", \"item_id\":0}"
+    },
+    "/user_item_delete": {
+        "title": "Delete an Item from Session User",
+        "action": "/user_item_delete",
+        "query": "client_type=1&client_version=1",
+        "method": "DELETE",
+        "json": "{ \"item_id\":0}"
+    },
+    "/user_logout": {
+        "title": "User Logout",
+        "action": "/user_logout",
+        "query": "client_type=1&client_version=1",
+        "method": "GET",
+        "json": ""
+    },
+    "/test": {
+        "title": "Test API Server",
+        "action": "/test",
+        "query": "",
+        "method": "GET",
+        "json": ""
+    }
+}
