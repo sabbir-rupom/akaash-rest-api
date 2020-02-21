@@ -47,7 +47,7 @@ class Test extends BaseClass
 
         // check URI segment values if provided
         if (!empty($this->value)) {
-            $this->response['value'] = $this->value;
+            $this->response['Value'] = $this->value;
         }
 
         return [
