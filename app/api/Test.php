@@ -8,7 +8,7 @@ use flight\net\Request;
 use System\Message\ResultCode;
 
 /**
- * Description of Test.
+ * This API performs minimal REST application system check
  *
  * @author sabbir-hossain
  *
@@ -17,123 +17,172 @@ use System\Message\ResultCode;
  */
 class Test extends BaseClass
 {
+    public $response;
+
     public function __construct(Request $request, $value, $apiName)
     {
         parent::__construct($request, $value, $apiName);
+
+        $this->response = [];
     }
 
     /**
-     * Processing API script execution.
+     * Process API script
      */
     public function action()
     {
 
-        /**
-         *  Check database connection with PDO driver
-         */
-        if ($this->pdo instanceof PDO) {
-            $responseArray['DB'] = 'Database is properly connected';
-        } else {
-            $responseArray['DB'] = 'Database is not connected properly. Please check config_app.ini';
+        //  Check database connection with PDO driver
+        $this->_checkDatabaseConnectivity();
+
+        // Check application logger is functional or not
+        $this->_checkApplicationLoggerService();
+
+        // Check cache system is functional or not
+        $this->_checkCacheService();
+
+
+        // Check file upload path access permission
+        $this->_checkFileUploadService();
+
+        // check URI segment values if provided
+        if (!empty($this->value)) {
+            $this->response['value'] = $this->value;
         }
 
-        /**
-         * Check application logger is functional or not
-         */
+        return [
+          'result_code' => ResultCode::SUCCESS,
+          'time' => DateUtil::getToday(),
+          'data' => $this->response,
+          'error' => []
+        ];
+    }
+
+    /**
+     * Check file upload functionality
+     *
+     * @return
+     */
+    private function _checkFileUploadService()
+    {
+        if (!file_exists(UPLOAD_PATH) && !is_dir(UPLOAD_PATH) && !mkdir(UPLOAD_PATH, 0644, true)) {
+            $this->response['Upload'] = 'Upload folder cannnot be created. '
+                . 'Please change folder permission for apache access : ' . UPLOAD_PATH;
+        } elseif (!is_writable(UPLOAD_PATH)) {
+            $this->response['Upload'] = 'Upload folder is not writable. '
+                . 'Please change folder permission for apache access : ' . UPLOAD_PATH;
+        } else {
+            $this->response['Upload'] = 'File upload directory permission is set properly';
+        }
+
+        return;
+    }
+
+    /**
+     * Check application logger service functionality
+     *
+     * @return
+     */
+    private function _checkApplicationLoggerService()
+    {
         $checkLoggerStatus = true;
         if ($this->config->isLogEnable()) {
             $logPath = $this->config->getAppLogPath();
             if (!file_exists($logPath) && !is_dir($logPath)) {
                 if (!mkdir($logPath, 0755, true)) {
-                    $responseArray['Log'] = 'Log folder cannnot be created. Please change folder permission for apache access : ' . $logPath;
+                    $this->response['Log'] = 'Log folder cannnot be created. '
+                        . 'Please change folder permission for apache access : ' . $logPath;
                     $checkLoggerStatus = false;
                 }
             } else {
                 if (!is_writable($logPath)) {
-                    $responseArray['Log'] = 'Log folder is not writable. Please change file permission for apache access : ' . $logPath;
+                    $this->response['Log'] = 'Log folder is not writable. '
+                        . 'Please change file permission for apache access : ' . $logPath;
                     $checkLoggerStatus = false;
                 }
             }
 
             if ($checkLoggerStatus) {
-                $responseArray['Log'] = 'System application log is functional';
+                $this->response['Log'] = 'System application log is functional';
             }
         } else {
-            $responseArray['Log'] = 'System application log is disabled from config_app.ini';
+            $this->response['Log'] = 'System application log is disabled from config_app.ini';
         }
 
-        /**
-         * Check cache system is functional or not
-         */
-        if ($this->config->isServerCacheEnable()) {
-            $message1 = 'Local filecache system is functional';
-            if ($this->config->isLocalFileCacheEnable()) {
-                /**
-                 * Check local cache path access permission
-                 */
-                $cachePath = $this->config->getLocalCachePath();
-                if (!file_exists($cachePath) && !is_dir($cachePath)) {
-                    if (!mkdir($cachePath, 0755, true)) {
-                        $message1 = 'Cache folder cannnot be created. Please change folder permission for apache access : ' . $cachePath;
-                    }
-                } else {
-                    if (!is_writable($cachePath)) {
-                        $message1 = 'Cache folder is not writable. Please change file permission for apache access : ' . $cachePath;
-                    }
-                }
-            } else {
-                $message1 = 'Local filecache system is disabled from config_app.ini';
-            }
+        return;
+    }
 
-            // Memcache system test case
-            $key = 'akaash_test';
-            $msgValue = 'Memcache system is functional';
-
-            if (!extension_loaded('memcache')) {
-                $message2 = 'Memcache module is not installed';
-            } else {
-                $cache = new \System\Cache\Memcached($this->config->getMemcacheHost(), $this->config->getMemcachePort());
-
-                // clear all existing cache data
-                CacheModel::clearCache($cache);
-
-                // set sample cache data
-                CacheModel::addCache($cache, $key, $msgValue, 120);
-
-                $message2 = !empty(CacheModel::getCache($cache, $key)) ? $msgValue : 'Memcache system is not functional. Please check memcache settings.';
-            }
-            $responseArray['Cache'] = array(
-                'filecache' => $message1,
-                'memcache' => $message2,
-            );
+    /**
+     * Check database connectivity
+     *
+     * @return
+     */
+    private function _checkDatabaseConnectivity()
+    {
+        if ($this->pdo instanceof PDO) {
+            $this->response['DB'] = 'Database is properly connected';
         } else {
-            $responseArray['Cache'] = 'Server cache feature is disabled from config';
+            $this->response['DB'] = 'Database is not connected properly. Please check config_app.ini';
         }
 
-        // Check file upload path access permission
+        return;
+    }
 
-        if (!file_exists(UPLOAD_PATH) && !is_dir(UPLOAD_PATH)) {
-            if (!mkdir(UPLOAD_PATH, 0644, true)) {
-                $responseArray['Upload'] = 'Upload folder cannnot be created. Please change folder permission for apache access : ' . UPLOAD_PATH;
+    /**
+     * Check cache service functionality
+     *
+     * @return
+     */
+    private function _checkCacheService()
+    {
+        if ($this->config->isServerCacheEnable() == false) {
+            $this->response['Cache'] = 'Server cache feature is disabled from config';
+            return;
+        }
+
+        $message1 = 'Local filecache system is functional';
+        if ($this->config->isLocalFileCacheEnable()) {
+            /**
+             * Check local cache path access permission
+             */
+            $cachePath = $this->config->getLocalCachePath();
+            if (!file_exists($cachePath) && !is_dir($cachePath) && !mkdir($cachePath, 0755, true)) {
+                $message1 = 'Cache folder cannnot be created. '
+                    . 'Please change folder permission for apache access : ' . $cachePath;
+            }
+            if (!is_writable($cachePath)) {
+                $message1 = 'Cache folder is not writable. '
+                    . 'Please change file permission for apache access : ' . $cachePath;
             }
         } else {
-            if (!is_writable(UPLOAD_PATH)) {
-                $responseArray['Upload'] = 'Upload folder is not writable. Please change folder permission for apache access : ' . UPLOAD_PATH;
-            } else {
-                $responseArray['Upload'] = 'File upload directory permission is set properly';
-            }
+            $message1 = 'Local filecache system is disabled from config_app.ini';
         }
 
-        if (!empty($this->value)) {
-            $responseArray['value'] = $this->value;
-        }
+        // Memcache system test case
+        $key = 'akaash_test';
+        $msgValue = 'Memcache system is functional';
 
-        return [
-            'result_code' => ResultCode::SUCCESS,
-            'time' => DateUtil::getToday(),
-            'data' => $responseArray,
-            'error' => []
-        ];
+        if (!extension_loaded('memcache')) {
+            $message2 = 'Memcache module is not installed';
+        } else {
+            $cache = new \System\Cache\Memcached($this->config->getMemcacheHost(), $this->config->getMemcachePort());
+
+            // clear all existing cache data
+            CacheModel::clearCache($cache);
+
+            // set sample cache data
+            CacheModel::addCache($cache, $key, $msgValue, 120);
+
+            $message2 = !empty(CacheModel::getCache($cache, $key)) ? $msgValue : 'Memcache system is not functional. '
+                . 'Please check memcache settings.';
+        }
+        $this->response['Cache'] = array(
+          'filecache' => $message1,
+          'memcache' => $message2,
+        );
+        return;
+    }
+}
 
 //        Model\LogAPI::startTransaction($this->pdo);
 //
@@ -157,5 +206,3 @@ class Test extends BaseClass
 //        if (!empty($result)) {
 //            $result = Model\LogAPI::findAllBy([Model\LogAPI::PRIMARY_KEY => $id], $this->pdo);
 //        }
-    }
-}
