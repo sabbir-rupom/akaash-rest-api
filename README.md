@@ -238,10 +238,10 @@ Akaash REST-API template, it will show the following results as success:
       "memcache": "Memcache system is functional"
     },
     "Upload": "File upload directory permission is set properly",
-    "Value": {
-      "filecache": "2020-02-20",
-      "memcache": "1"
-    }
+    "Value": [
+      "2020-02-20",
+      "1"
+    ]
   },
   "error": [],
   "execution_time": 0.03506016731262207
@@ -263,6 +263,8 @@ Following third party libraries are used in Application system
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+
 
 
 
