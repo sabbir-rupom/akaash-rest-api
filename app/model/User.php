@@ -10,10 +10,11 @@ use System\Config;
 
 class User extends BaseModel
 {
-    /* Table Name */
+    /* Table Definition */
     const TABLE_NAME = "users";
-
-    public static $cache = null;
+    const PRIMARY_KEY = 'user_id';
+    const HAS_CREATED_AT = true;
+    
     protected static $columnDefs = array(
       'user_id' => array(
         'type' => 'int',
@@ -60,6 +61,8 @@ class User extends BaseModel
         'json' => false
       )
     );
+
+    public static $cache = null;
 
     /**
      * Registration process execution.

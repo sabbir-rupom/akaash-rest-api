@@ -4,7 +4,6 @@
 
 namespace View;
 
-use Helper\CommonUtil as CommonUtil;
 use View\Response\Format as ResponseFormat;
 
 /**

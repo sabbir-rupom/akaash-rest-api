@@ -17,7 +17,7 @@ class Format
 {
     public static function formatJson(array $data): string
     {
-        if ('PRODUCTION' != strtoupper(Config::getInstance()->getEnv())) {
+        if ('PRODUCTION' != strtoupper(Config::getInstance()->getEnvironment())) {
             /*
              * Calculate server execution time for running API script [ For developers only ]
              * And add to output result
