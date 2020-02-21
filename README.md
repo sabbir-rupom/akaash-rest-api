@@ -226,19 +226,22 @@ you may need change the *Base URL* path in the form / console.js - whatever is s
 from the right form section. The results and header parameters will be available in Response/ Header tabs under the form page. If your server is fully coped with 
 Akaash REST-API template, it will show the following results as success:
 ```javascript
+// For endpoint like: http://akaash.test/test/2020-02-20/1
 {
   "result_code": 0,
-  "time": "2019-03-31 00:10:20",
+  "time": "2020-02-20 00:10:20",
   "data": {
-    "DB": "Database to user table connection is functional",
-    "JWT": "JWT verification system is functional",
+    "DB": "Database is properly connected",
     "Log": "System application log is functional",
     "Cache": {
       "filecache": "Local filecache system is functional",
       "memcache": "Memcache system is functional"
     },
-    "Upload": "File upload system is functional",
-    "TestImagUrl": "http://akaash.test/uploads/profile_images/profiletest_1553974673.png"
+    "Upload": "File upload directory permission is set properly",
+    "Value": {
+      "filecache": "2020-02-20",
+      "memcache": "1"
+    }
   },
   "error": [],
   "execution_time": 0.03506016731262207
@@ -260,6 +263,7 @@ Following third party libraries are used in Application system
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
 
 
 
