@@ -49,6 +49,10 @@ class Test extends BaseClass
         if (!empty($this->value)) {
             $this->response['Value'] = $this->value;
         }
+//        if (!empty($this->get)) {
+//            echo $this->getInputQuery('client');
+//            echo $this->getInputQuery('type', 'string');
+//        }
 
         return [
           'result_code' => ResultCode::SUCCESS,

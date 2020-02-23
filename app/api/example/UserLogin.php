@@ -83,11 +83,12 @@ class Example_UserLogin extends BaseClass
             throw $e;
         }
 
+        
+
         return array(
             'result_code' => ResultCode::SUCCESS,
             'time' => DateUtil::getToday(),
             'data' => array(
-                'session_id' => $encodeUserSession,
                 'user_info' => $user->toJsonHash(),
             ),
             'error' => []

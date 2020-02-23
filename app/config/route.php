@@ -2,7 +2,8 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-use System\Message\ResultCode as ResultCode;
+use System\Message\ResultCode;
+use Helper\DateUtil;
 
 if (!isset($argv)) {
     // Set root / index page response view
@@ -13,9 +14,11 @@ if (!isset($argv)) {
         Flight::json(array(
           'data' => array(
             'title' => 'Welcome',
+            'time' => DateUtil::getToday(),
             'message' => 'Akaash is a REST-API template is built in PHP, with flight micro-framework as engine',
           ),
           'result_code' => ResultCode::SUCCESS,
+          'error' => []
         ));
     });
 
@@ -30,12 +33,14 @@ if (!isset($argv)) {
 
     // Set error page page response
     Flight::map('notFound', function () {
-        Flight::json(array(
-          'error' => array(
-            'title' => 'Data Not Found',
-            'message' => 'Requested data not found',
-          ),
+        Flight::json([
           'result_code' => ResultCode::NOT_FOUND,
-        ));
+          'time' => DateUtil::getToday(),
+          'data' => [],
+          'error' => [
+            'title' => 'Data Not Found: ' . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ''),
+            'message' => 'Requested data not found',
+          ]
+        ], ResultCode::getHTTPstatusCode(ResultCode::NOT_FOUND));
     });
 }

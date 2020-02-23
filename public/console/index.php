@@ -1,27 +1,30 @@
+<?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST');
+header("Access-Control-Allow-Headers: X-Requested-With");
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="description" content="The Quiz">
+        <meta name="description" content="REST-API console">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>API Console</title>
+        <title>Akaash: API Testing Console</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <link rel="stylesheet" href="styles.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha256.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64-min.js"></script>
-        <script src="console.js"></script>
-
+        <script src="console.js?v=<?= time(); ?>"></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <!-- Brand -->
-            <a class="navbar-brand" href="#">API Console</a>
+            <a class="navbar-brand" href="#">Akaash</a>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="https://github.com/sabbir-rupom/rest-api-flight#readme">Documentation</a>
+                    <a class="nav-link" href="#">Documentation</a>
                 </li>
             </ul>
         </nav>
@@ -33,7 +36,7 @@
                     </div> 
                 </div>
                 <div class="col-sm-8">
-                    <form id="apiForm">
+                    <div id="apiForm">
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Method</label>
                             <div class="col-sm-10">
@@ -44,7 +47,7 @@
                                 </div>
                                 <div class="form-check-inline">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="method" value="POST">POST
+                                        <input type="radio" class="form-check-input" name="method" value="POST" checked>POST
                                     </label>
                                 </div>
                                 <div class="form-check-inline">
@@ -60,37 +63,41 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">URL</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="url" placeholder="api/">
+                            <label class="col-sm-2 col-form-label">Base URL</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="baseUrl" placeholder="site url">
+                                <small class="form-text text-muted">
+                                    check base url before submitting API request
+                                </small>
+                            </div>
+                            <label class="col-sm-2 col-form-label text-right">API Path</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="apiPath" placeholder="api endpoint here">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Query Params</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="queryParams" placeholder="">
+                                <input type="text" class="form-control" name="queryParams" placeholder="e.g; param1=abc&param2=123">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Token Secret</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" name="tokenSecret" placeholder="Enter Secret Key" value="0123456789">
-                            </div>
-                            <label class="col-sm-2 offset-sm-2 col-form-label">User ID</label>
+                            <label class="col-sm-2 col-form-label">User ID</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="userId" readonly>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Session ID</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="sessionToken" placeholder="">
+                            <label class="col-sm-2 offset-sm-2 col-form-label text-right">User Level</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="userLevel" readonly>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">JSON Body</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" name="requestBody">Enter raw JSON requests</textarea>
+                        <div class="form-group row form-border">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <form id="api_form">
+
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -99,9 +106,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Token Hash</label>
+                            <label class="col-sm-2 col-form-label">Authorization Token</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" name="tokenHash">Enter JWT Token</textarea>
+                                <textarea class="form-control" name="authorization" placeholder="put authorization token here"></textarea>
                             </div>
                         </div>
 
@@ -137,9 +144,27 @@
 
                             </div>
                         </div>
-                    </form>  
+                    </div>  
                 </div>
             </div>
         </div>
     </body>
 </html> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
