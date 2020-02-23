@@ -128,7 +128,7 @@ class CommonUtil
      *
      * @return bool, TRUE If it is correct type , otherwise FALSE. Value returns TRUE unconditionally if it is NULL.
      */
-    protected static function isValidType($value, $type)
+    public static function isValidType($value, $type)
     {
         $result = false;
         if (is_null($value)) {

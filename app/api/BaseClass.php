@@ -143,7 +143,7 @@ class BaseClass
      * @return mixed Value from get query string
      * @throws AppException
      */
-    protected function getInputQuery($name, $type, $required = false, $xss_clean = false)
+    protected function getInputQuery($name, $type = '', $required = false, $xss_clean = false)
     {
         if (isset($this->get[$name])) {
             $var = $this->get[$name];
