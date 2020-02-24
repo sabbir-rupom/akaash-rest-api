@@ -2,9 +2,8 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-use System\Config;
 use System\Message\ResultCode;
-use System\Core\Model\Cache;
+use Library\JwtToken;
 use Model\User as UserModel;
 use Helper\DateUtil;
 
@@ -66,32 +65,33 @@ class Example_UserLogin extends BaseClass
 
             $user->update($this->pdo);
 
+            // Prepare session data for client
             $sessionId = UserModel::cacheUserSession($user);
-
-
-
-            $this->pdo->commit();
-
-            // Encode session data for client
             $encodeUserSession = base64_encode(serialize(array(
               'session_id' => $sessionId,
               'user_id' => $user->user_id,
             )));
+
+            $this->pdo->commit();
         } catch (PDOException $e) {
             $this->pdo->rollback();
 
             throw $e;
         }
 
-        
+        $authAccessToken = JwtToken::createToken(
+                ['session' => $encodeUserSession],
+                $this->config->getRequestTokenSecret()
+            )['data'];
+        header($this->config->getRequestTokenHeaderKey() . ": " . $authAccessToken);
 
-        return array(
-            'result_code' => ResultCode::SUCCESS,
-            'time' => DateUtil::getToday(),
-            'data' => array(
-                'user_info' => $user->toJsonHash(),
-            ),
-            'error' => []
-        );
+        return [
+          'result_code' => ResultCode::SUCCESS,
+          'time' => DateUtil::getToday(),
+          'data' => array(
+            'user_info' => $user->toJsonHash(),
+          ),
+          'error' => []
+        ];
     }
 }

@@ -75,6 +75,8 @@ $(function () {
             beforeSend: function (xhr) {
                 if (authToken === '' || typeof authToken !== 'undefined') {
                     xhr.setRequestHeader(tokenHeader, authToken);
+                } else {
+                    xhr.setRequestHeader(tokenHeader, 'REQUEST AUTHORIZATION');
                 }
             },
             success: function (obj, textStatus, request) {
@@ -85,14 +87,15 @@ $(function () {
                         $("input[name=userLevel]").val(data.user_level);
                     }
                 }
-                if (apiPath.includes('login')) {
-                    let headers = getResponseHeaders(request);
-                    if (typeof headers[tokenHeader] !== 'undefined') {
-                        // color is undefined
-                        $("textarea[name=authorization]").val(headers[tokenHeader]);
-                        jwtAuth = headers[tokenHeader];
-                    }
 
+                let headers = getResponseHeaders(request);
+
+                console.log(headers['cache-control']);
+
+                if (typeof headers[tokenHeader.toLowerCase()] !== 'undefined') {
+                    // color is undefined
+                    $("textarea[name=authorization]").val(headers[tokenHeader.toLowerCase()]);
+                    jwtAuth = headers[tokenHeader.toLowerCase()];
                 }
 
                 if (textStatus == 'success') {
@@ -111,7 +114,7 @@ $(function () {
             } else if (obj.hasOwnProperty('responseText')) {
                 obj = obj.responseText;
             }
-            
+
             var str = JSON.stringify(obj, null, 2);
             $("#jsonOutput").css("background-color", "rgb(251, 205, 183)");
             $('#jsonOutput').text(syntaxHighlight(str));
@@ -154,7 +157,7 @@ function callApi(apiName) {
                     if (i % 2 == 0 && i != 0) {
                         inputHtml += '</div><div class="form-group row">'
                     }
-                    inputHtml += '<label class="col-sm-2 col-form-label">' + ucFirst(formInputs[i]) + '</label>';
+                    inputHtml += '<label class="col-sm-2 col-form-label text-right">' + ucFirst(formInputs[i]) + '</label>';
                     inputHtml += '<div class="col-sm-4">';
                     inputHtml += '<input type="text" class="form-control" name="' + formInputs[i] + '">';
                     inputHtml += '</div>';
@@ -209,25 +212,7 @@ function getResponseHeaders(jqXHR) {
         // chrome60+ force lowercase, other browsers can be different
         key = key.toLowerCase();
         responseHeaders[key] = value.replace(/(\r\n|\n|\r)/gm, "");
-        ;
     });
 
     return responseHeaders;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

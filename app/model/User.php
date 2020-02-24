@@ -11,10 +11,11 @@ use System\Config;
 class User extends BaseModel
 {
     /* Table Definition */
+
     const TABLE_NAME = "users";
     const PRIMARY_KEY = 'user_id';
     const HAS_CREATED_AT = true;
-    
+
     protected static $columnDefs = array(
       'user_id' => array(
         'type' => 'int',
@@ -61,8 +62,30 @@ class User extends BaseModel
         'json' => false
       )
     );
-
     public static $cache = null;
+
+    public function __construct()
+    {
+        self::$cache = Config::getInstance()->cacheService();
+    }
+
+    /**
+     * Initialize cache instance for any valid static method call
+     * @param type $method
+     */
+    public static function __callStatic($method, $args)
+    {
+        if (method_exists(__CLASS__, $method)) {
+            if (empty(static::$cache)) {
+                static::$cache = Config::getInstance()->cacheService();
+            }
+        }
+
+        return call_user_func_array(
+            array(__CLASS__, $method),
+            $args
+        );
+    }
 
     /**
      * Registration process execution.
@@ -103,7 +126,7 @@ class User extends BaseModel
     public function update($pdo = null, $cacheDelete = true)
     {
         if ($cacheDelete) {
-            Cache::deleteCache(Config::getInstance()->getMemcachePrefix() . 'user_' . $this->user_id);
+            Cache::deleteCache(self::$cache, Config::getInstance()->getMemcachePrefix() . 'user_' . $this->user_id);
         }
         parent::update($pdo);
     }
@@ -130,13 +153,10 @@ class User extends BaseModel
     {
         session_regenerate_id();
         $sessionId = session_id();
-        if (empty(self::$cache)) {
-            self::$cache = $this->config->cacheService();
-        }
-        $sessionKey = Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
+        $sessionKey = Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userObj->user_id;
         Cache::addCache(self::$cache, $sessionKey, $sessionId);
 
-        $userKey = Config::getInstance()->getMemcachePrefix() . 'user_' . $userId;
+        $userKey = Config::getInstance()->getMemcachePrefix() . 'user_' . $userObj->user_id;
         Cache::setCache(self::$cache, $userKey, $userObj);
 
         return $sessionId;
@@ -147,9 +167,6 @@ class User extends BaseModel
      */
     public static function removeSessionFromUserId($userId)
     {
-        if (empty(self::$cache)) {
-            self::$cache = $this->config->cacheService();
-        }
         $sessionKey = Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
         Cache::deleteCache(self::$cache, $sessionKey);
     }
@@ -159,13 +176,10 @@ class User extends BaseModel
      */
     public static function retrieveSessionFromUserId($userId)
     {
-        if (empty(self::$cache)) {
-            self::$cache = $this->config->cacheService();
-        }
         $sessionKey = Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
         return Cache::getCache(self::$cache, $sessionKey);
     }
-    
+
     /**
      * Find User form cache
      * @param int $userId
@@ -174,7 +188,7 @@ class User extends BaseModel
      */
     public static function cache_or_find($userId, $pdo = null)
     {
-        $user = Cache::getCache($cache, Config::getInstance()->getMemcachePrefix() . 'user_' . $userId);
+        $user = Cache::getCache(self::$cache, Config::getInstance()->getMemcachePrefix() . 'user_' . $userId);
 
         if ($user == false) {
             //user not in cache, refreshing cache
@@ -192,7 +206,7 @@ class User extends BaseModel
     public static function refreshCache($userId, $pdo)
     {
         $user = self::find($userId, $pdo);
-        Cache::setCache(Config::getInstance()->getMemcachePrefix() . 'user_' . $userId, $user);
+        Cache::setCache(self::$cache, Config::getInstance()->getMemcachePrefix() . 'user_' . $userId, $user);
         return $user;
     }
 }
