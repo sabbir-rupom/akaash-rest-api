@@ -12,7 +12,7 @@ namespace System\Core\Model;
 
 use System\Cache\Service;
 
-abstract class Cache
+abstract class Cache implements Service
 {
 
     /**

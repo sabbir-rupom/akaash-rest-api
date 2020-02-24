@@ -107,12 +107,12 @@ class BaseClass
      * @param string  $name      name of the parameter
      * @param unknown $type      Type of the variable. "int", "bool", "string".
      * @param bool    $required  Value required
-     * @param bool    $xss_clean XSS clean
+     * @param bool    $xssClean XSS clean
      *
      * @return parameter value from POST Request
      * @throws AppException
      */
-    protected function getInputPost($name, $type, $required = false, $xss_clean = false)
+    protected function getInputPost($name, $type, $required = false, $xssClean = false)
     {
         if (isset($this->data[$name])) {
             $var = $this->data[$name];
@@ -128,7 +128,7 @@ class BaseClass
         } elseif (!CommonUtil::isValidType($var, $type)) {
             throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of {$name} is not valid.");
         } else {
-            return (true === $xss_clean) ? Security::xssClean($var) : $var;
+            return (true === $xssClean) ? Security::xssClean($var) : $var;
         }
     }
 
@@ -138,12 +138,12 @@ class BaseClass
      * @param string $name
      * @param string $type
      * @param bool $required
-     * @param bool $xss_clean
+     * @param bool $xssClean
      *
      * @return mixed Value from get query string
      * @throws AppException
      */
-    protected function getInputQuery($name, $type = '', $required = false, $xss_clean = false)
+    protected function getInputQuery($name, $type = '', $required = false, $xssClean = false)
     {
         if (isset($this->get[$name])) {
             $var = $this->get[$name];
@@ -159,7 +159,7 @@ class BaseClass
         } elseif (!CommonUtil::isValidType($var, $type)) {
             throw new AppException(ResultCode::INVALID_REQUEST_PARAMETER, "The type of {$name} is not valid.");
         } else {
-            return (true === $xss_clean) ? Security::xssClean($var) : $var;
+            return (true === $xssClean) ? Security::xssClean($var) : $var;
         }
     }
 }

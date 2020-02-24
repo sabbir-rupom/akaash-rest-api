@@ -1,10 +1,10 @@
 {
     "groups": [
         {
-            "name": "User Related",
+            "name": "REST API Examples",
             "contents": [
-                "/registration",
-                "/login"
+                "user-registration",
+                "user-login"
             ]
         },
         {
@@ -14,14 +14,14 @@
             ]
         }
     ],
-    "/login": {
+    "user-login": {
         "title": "User Login",
         "action": "example/user-login",
         "query": "",
         "method": "POST",
         "params": "email,password"
     },
-    "/registration": {
+    "user-registration": {
         "title": "User Registration",
         "action": "example/user_registration",
         "query": "",
@@ -36,5 +36,6 @@
         "params": ""
     }
 }
+
 
 
