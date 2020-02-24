@@ -22,7 +22,7 @@ class Format
              * Calculate server execution time for running API script [ For developers only ]
              * And add to output result
              */
-            $data['execution_time'] = (microtime(true) - \Flight::app()->get('start_time')) . ' seconds ';
+            $data['execution_time'] = round(microtime(true) - \Flight::app()->get('start_time'), 4) . ' seconds';
         }
         $jsonResult = Validate::safeJsonEncode($data);
         /*

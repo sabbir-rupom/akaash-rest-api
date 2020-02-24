@@ -3,6 +3,7 @@ var apiUrl = 'http://' + window.location.hostname;
 var pathExt = '/';
 var tokenHeader = 'X-AUTH-TOKEN';
 var jwtAuth = '';
+
 //var sessionHeader = 'X-USER-SESSION-ID';
 
 $(function () {
@@ -65,7 +66,7 @@ $(function () {
         $.ajax({
             type: apiMethod,
             url: apiUrl,
-            data: $('#api_form').serialize(),
+            data: $('#apiForm form').serialize(),
             crossDomain: true,
             xhrFields: {
                 withCredentials: true
@@ -131,7 +132,7 @@ $(function () {
 function callApi(apiName) {
     console.clear();
     if (apiItems.hasOwnProperty(apiName)) {
-        $("form#api_form").html('');
+        $("#apiForm form").html('');
 
         $('input[name="method"]').prop('checked', false);
         var api = apiItems[apiName];
@@ -158,7 +159,7 @@ function callApi(apiName) {
                     inputHtml += '<input type="text" class="form-control" name="' + formInputs[i] + '">';
                     inputHtml += '</div>';
                 }
-                $(inputHtml).appendTo("form#api_form");
+                $(inputHtml).appendTo("#apiForm form");
             }
 
         }
@@ -213,6 +214,8 @@ function getResponseHeaders(jqXHR) {
 
     return responseHeaders;
 }
+
+
 
 
 

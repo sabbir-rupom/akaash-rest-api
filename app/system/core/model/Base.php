@@ -30,9 +30,9 @@ abstract class Base
     private static $columnsOnDB = null;
 
     /**
-     * Retrieve records by table ID from the database
+     * Retrieve records by table Primary Key/ID from the database
      *
-     * @param mixed $id Table row ID
+     * @param mixed $id Table Primary Key/ID
      * @param PDO $pdo Database connection object
      * @param boolean $forUpdate Whether to update the query result
      * @return object Search result as an object of called class
@@ -267,10 +267,10 @@ abstract class Base
 
         $now = DateUtil::getToday();
         $sql = 'INSERT INTO ' . static::TABLE_NAME . ' (' . join(',', $columns);
-        $sql .= (static::HAS_CREATED_AT === true ? ',created_at' : '');
+        $sql .= (static::HAS_CREATED_AT === true && !in_array('created_at', $columns) ? ',created_at' : '');
         $sql .= (static::HAS_UPDATED_AT === true ? ',updated_at' : '');
         $sql .= ') VALUES (' . str_repeat('?,', count($columns) - 1) . '?';
-        $sql .= (static::HAS_CREATED_AT === true ? ",'" . $now . "'" : '');
+        $sql .= (static::HAS_CREATED_AT === true && !in_array('created_at', $columns) ? ",'" . $now . "'" : '');
         $sql .= (static::HAS_UPDATED_AT === true ? ",'" . $now . "'" : '');
         $sql .= ')';
         // INSERT data

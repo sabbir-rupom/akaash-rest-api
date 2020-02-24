@@ -6,6 +6,10 @@
 #apiExample, #apiForm {
     margin-top: 15px;
 }
+#apiForm form {
+    margin-top: 25px;
+    width: 100%;
+}
 #apiExample .card {
     margin-bottom: 2px;
 }

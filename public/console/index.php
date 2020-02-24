@@ -94,7 +94,7 @@ header("Access-Control-Allow-Headers: X-Requested-With");
                         <div class="form-group row form-border">
                             <div class="container-fluid">
                                 <div class="row">
-                                    <form id="api_form">
+                                    <form>
 
                                     </form>
                                 </div>
@@ -150,6 +150,8 @@ header("Access-Control-Allow-Headers: X-Requested-With");
         </div>
     </body>
 </html> 
+
+
 
 
 
