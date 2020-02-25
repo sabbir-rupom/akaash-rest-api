@@ -4,7 +4,7 @@ define('ROOT_DIR', realpath(__DIR__ . '/../public'));
 define('APP_DIR', ROOT_DIR . '/../app');
 define('API_DIR', APP_DIR . '/api');
 define('CONFIG_DIR', APP_DIR . '/config');
-define('SYSTEM_DIR', APP_DIR . '/system');
+define('SYSTEM_DIR', APP_DIR . '/akaash/system');
 
 
 /*

@@ -2,10 +2,10 @@
 
 namespace Hooks;
 
-use API\Filter\Authorization;
-use System\Config;
 use flight\net\Request;
-use System\Exception\AppException;
+use API\Filter\Authorization;
+use Akaash\Config;
+use Akaash\System\Exception\AppException;
 
 class Authentication
 {

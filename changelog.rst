@@ -16,21 +16,22 @@ Release Date: Not Released
 
 -  System Changes
 
-   - ``Controller`` class is modified to core controller class under ``app/system/core`` directory
-   - Core Controller initiates API with ``Initiate`` class under ``app/system/core`` directory
-   - ``BaseModel`` class moved to ``app/system/core/model`` directory and modified as ``Base`` Model class
-   - ``CacheModel`` class moved to ``app/system/core/model`` directory as ``Cache`` Model class
-   - Cache service handler classes are created / modified under ``app/system/cache`` directory
-   - Logger service handler class is moved from ``Helper`` section and moved under ``app/system/log`` directory
-   - ``ApiException`` class is changed and modified to ``AppException`` class under ``app/system/exception`` directory
+   - All system classes are defined under ``namespace Akaash``
+   - ``Controller`` class is modified to core controller class under ``app/akaash/system/core`` directory
+   - Core Controller initiates API with ``Initiate`` class under ``app/akaash/system/core`` directory
+   - ``BaseModel`` class moved to ``app/akaash/system/core/model`` directory and modified as ``Base`` Model class
+   - ``CacheModel`` class moved to ``app/akaash/system/core/model`` directory as ``Cache`` Model class
+   - Cache service handler classes are created / modified under ``app/akaash/system/cache`` directory
+   - Logger service handler class is moved from ``Helper`` section and moved under ``app/akaash/system/log`` directory
+   - ``ApiException`` class is changed and modified to ``AppException`` class under ``app/akaash/system/exception`` directory
    - Following system library classes are removed: ``FileCacheClient.php``, ``JwtToken.php``, ``MemcachedServer.php``
    - ``Security`` class is modified 
-   - ``Config`` class is modified and moved from ``app/config`` to ``app/system`` directory
+   - ``Config`` class is modified and moved from ``app/config`` to ``app/akaash`` directory
    - ``app\route`` directory is removed
    - ``route.php`` is moved to ``app/config`` directory
    - Added new API config module ``hooks``
    - Added `constants.php` under ``app/config`` directory
-   - ``ResultCode`` class has been split into ``ResultCode`` class and ``Constant`` class under ``app/system/message`` directory
+   - ``ResultCode`` class has been split into ``ResultCode`` class and ``Constant`` class under ``app/akaash/system/message`` directory
 
 -  Structural changes
 
@@ -133,4 +134,5 @@ Version 1.0.0
 Release Date: March 08, 2019
 
 First publicly released version.
+
 

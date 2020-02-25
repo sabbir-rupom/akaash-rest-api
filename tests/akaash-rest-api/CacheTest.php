@@ -2,8 +2,8 @@
 
 use PHPUnit\Framework\TestCase;
 use flight\net\Request;
-use System\Config;
-use System\Core\Model\Cache as CacheModel;
+use Akaash\Config;
+use Akaash\Core\Model\Cache as CacheModel;
 
 class CacheTest extends TestCase
 {

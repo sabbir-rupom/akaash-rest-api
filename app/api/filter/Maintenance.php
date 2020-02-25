@@ -2,11 +2,12 @@
 
 namespace API\Filter;
 
-use System\Exception\AppException;
-use System\Message\ResultCode;
-use System\Config;
+use API\Filter\FilterInterface;
+use Akaash\System\Exception\AppException;
+use Akaash\System\Message\ResultCode;
+use Akaash\Config;
 
-class Maintenance implements MethodTemplate
+class Maintenance implements FilterInterface
 {
     /**
      * false = not in maintenance , true = in maintenance
