@@ -1,7 +1,6 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use flight\net\Request;
 use Akaash\Config;
 use Akaash\Core\Model\Cache as CacheModel;
 
@@ -10,7 +9,7 @@ class CacheTest extends TestCase
     protected function setUp(): void
     {
         $this->configParams = [];
-        defined('APP_NAME') or define('APP_NAME', 'TEST-rpm-REST-flight-PHP');
+        defined('APP_NAME') or define('APP_NAME', 'TEST: Akaash - RESTful API Template');
     }
 
     public function test_cache_configuration_params()

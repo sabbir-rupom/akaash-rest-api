@@ -8,7 +8,7 @@ class ExceptionTest extends TestCase
     protected function setUp(): void
     {
         $this->configParams = [];
-        defined('APP_NAME') or define('APP_NAME', 'TEST-rpm-REST-flight-PHP');
+        defined('APP_NAME') or define('APP_NAME', 'TEST: Akaash - RESTful API Template');
     }
 
     public function test_app_exception_class()

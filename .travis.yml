@@ -12,6 +12,5 @@ script:
 - sudo apt-get install php-{memcache,memcached} && sudo apt-get install libapache2-mod-php memcached curl
 - composer update
 - pwd
-- mv ./app/config/example.app_config.ini ./app/config/app_config.ini
-
-
+- sudo mv app/config/example.app_config.ini /home/travis/build/sabbir-rupom/akaash-rest-api/app/config/app_config.ini
+- phpunit --exclude-group FITS --bootstrap tests/bootstrap.php tests
