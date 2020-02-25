@@ -10,11 +10,8 @@ matrix:
   - php: nightly
 
 before_script:
-- composer install -n
+- composer install
 
 script:
 - echo "build travis"    
-- if [[ "$ANALYSIS" != 'true' ]]; then vendor/bin/phpunit ; fi
-- if [[ "$ANALYSIS" == 'true' ]]; then vendor/bin/phpcs ; fi
-
-
+- phpunit --exclude-group FITS --bootstrap vendor/autoload.php tests
