@@ -52,7 +52,6 @@ CREATE TABLE `user_login_sessions` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB;
 
--- Dumping structure for table akaash-rest-api.items
 DROP TABLE IF EXISTS `items`;
 CREATE TABLE IF NOT EXISTS `items` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -69,3 +68,4 @@ INSERT INTO `items` (`item_id`, `item_name`, `created_at`, `updated_at`) VALUES
 	(3, 'Stamp', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),
 	(4, 'T-shirt', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),
 	(5, 'Trowsar', '2020-02-25 13:26:05', '2020-02-25 13:29:44');
+
