@@ -178,7 +178,7 @@ class Test
             return;
         }
 
-        $message1 = 'Local filecache system is functional';
+        $message1 = 'Local filecache service is functional';
         if ($this->config->isLocalFileCacheEnable()) {
             /**
              * Check local cache path access permission
@@ -193,12 +193,12 @@ class Test
                     . 'Please change file permission for apache access : ' . $cachePath;
             }
         } else {
-            $message1 = 'Local filecache system is disabled from app_config.ini';
+            $message1 = 'Local filecache service is disabled from app_config.ini';
         }
 
         // Memcache system test case
         $key = 'akaash_test';
-        $msgValue = 'Memcache system is functional';
+        $msgValue = 'Memcache service is functional';
 
         if (!extension_loaded('memcache')) {
             $message2 = 'Memcache module is not installed';
@@ -222,25 +222,17 @@ class Test
     }
 }
 
-//        Model\LogAPI::startTransaction($this->pdo);
+//        Model\Item::startTransaction($this->pdo);
 //
-//        $apiLogObj = new Model\LogAPI();
-//
-//        $apiLogObj->api_name = 'Test';
-//        $apiLogObj->request_data = !empty($this->data) ? json_encode($this->data) : json_encode($this->get);
-//        $apiLogObj->response = 123;
-//        $apiLogObj->method = $this->method;
-//        $id = $apiLogObj->create($this->pdo);
+//        $itemObj = new Model\Item();
+//        $itemObj->item_name = 'Test';
+//        $itemObj->created_at = Helper\DateUtil::getToday();
+//        $itemId = $itemObj->create($this->pdo);
 //
 //        $result = [];
-//        if ($id > 0) {
-//            $result = Model\LogAPI::find($id, $this->pdo, true);
-//
+//        if ($itemId > 0) {
+//            $result = Model\Item::find($itemId, $this->pdo);
 //            $result->delete($this->pdo);
 //        }
 //
-//        Model\LogAPI::commit($this->pdo);
-
-//        if (!empty($result)) {
-//            $result = Model\LogAPI::findAllBy([Model\LogAPI::PRIMARY_KEY => $id], $this->pdo);
-//        }
+//        Model\Item::commit($this->pdo);
