@@ -2,14 +2,16 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-use System\Core\Model\Cache as CacheModel;
-use Helper\DateUtil;
-use System\Config;
+namespace API;
+
 use flight\net\Request;
-use Library\JwtToken;
-use System\Message\ResultCode;
-use View\Output;
-use System\Cache\Memcached;
+use Akaash\Config;
+use Akaash\System\Message\ResultCode;
+use Akaash\Core\Model\Cache as CacheModel;
+use Akaash\System\Cache\Memcached;
+use Akaash\System\JwtToken;
+use Akaash\View\Output;
+use Akaash\Helper\DateUtil;
 
 /**
  * This API performs minimal REST application system check
@@ -82,12 +84,14 @@ class Test
     private function _checkTokenAuthenticationService()
     {
         if (false === $this->config->checkRequestTokenFlag()) {
-            $this->response['AUTH'] = 'AUTH token verification service is disabled. To enable, please check app_config.ini';
+            $this->response['AUTH'] = 'AUTH token verification service is disabled. '
+                . 'To enable, please check app_config.ini';
             return;
         }
         $tokenSecret = $this->config->getRequestTokenSecret();
         if (empty($tokenSecret)) {
-            $this->response['AUTH'] = 'AUTH token secret key is not set. Please check app_config.ini';
+            $this->response['AUTH'] = 'AUTH token secret key is not set. '
+                . 'Please check app_config.ini';
             return;
         }
 
@@ -221,18 +225,3 @@ class Test
         return;
     }
 }
-
-//        Model\Item::startTransaction($this->pdo);
-//
-//        $itemObj = new Model\Item();
-//        $itemObj->item_name = 'Test';
-//        $itemObj->created_at = Helper\DateUtil::getToday();
-//        $itemId = $itemObj->create($this->pdo);
-//
-//        $result = [];
-//        if ($itemId > 0) {
-//            $result = Model\Item::find($itemId, $this->pdo);
-//            $result->delete($this->pdo);
-//        }
-//
-//        Model\Item::commit($this->pdo);

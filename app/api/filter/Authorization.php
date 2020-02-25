@@ -2,12 +2,13 @@
 
 namespace API\Filter;
 
-use System\Exception\AppException;
-use System\Config;
-use \Library\JwtToken;
-use System\Message\ResultCode;
+use API\Filter\FilterInterface;
+use Akaash\Config;
+use Akaash\System\JwtToken;
+use Akaash\System\Message\ResultCode;
+use Akaash\System\Exception\AppException;
 
-class Authorization implements MethodTemplate
+class Authorization implements FilterInterface
 {
 
     /**
@@ -50,7 +51,10 @@ class Authorization implements MethodTemplate
             if ($this->result['success']) {
                 \Flight::app()->set('token_payload', $this->result['data']);
             } else {
-                throw new AppException(ResultCode::INVALID_REQUEST_TOKEN, empty($this->result['msg']) ? 'Invalid token' : $this->result['msg']);
+                throw new AppException(
+                    ResultCode::INVALID_REQUEST_TOKEN,
+                    empty($this->result['msg']) ? 'Invalid token' : $this->result['msg']
+                );
             }
         }
         return;

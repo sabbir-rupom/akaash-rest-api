@@ -23,13 +23,22 @@ if (!isset($argv)) {
     });
 
     // Set route for GET|POST|PUT|PATCH|DELETE query request from client
-    Flight::route('GET|POST|PUT|PATCH|DELETE ' . $apiUriPrefix . '/@name', array('Core\Controller', 'initAPI'));
+    Flight::route(
+        'GET|POST|PUT|PATCH|DELETE ' . $apiUriPrefix . '/@name',
+        array('Akaash\Core\Controller', 'initAPI')
+    );
 
     // Set group route for GET|POST|PUT|PATCH|DELETE query request from client
-    Flight::route('GET|POST|PUT|PATCH|DELETE ' . $apiUriPrefix . '/@group/@name', array('Core\Controller', 'initGroupAPI'));
+    Flight::route(
+        'GET|POST|PUT|PATCH|DELETE ' . $apiUriPrefix . '/@group/@name',
+        array('Akaash\Core\Controller', 'initGroupAPI')
+    );
 
     // Set group route for GET|POST|PUT|PATCH|DELETE query request from client
-    Flight::route('GET|POST|PUT|PATCH|DELETE ' . $apiUriPrefix . '/@group/@name/@value', array('Core\Controller', 'initGroupAPIwithParam'));
+    Flight::route(
+        'GET|POST|PUT|PATCH|DELETE ' . $apiUriPrefix . '/@group/@name/@value',
+        array('Akaash\Core\Controller', 'initGroupAPIwithParam')
+    );
 
     // Set error page page response
     Flight::map('notFound', function () {

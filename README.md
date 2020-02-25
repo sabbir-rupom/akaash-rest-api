@@ -1,9 +1,9 @@
-# Akaash - RESTful API template
-
-[**This version is in testing phase**] 
+# Akaash - RESTful API Template
 
 **Akaash**[ REST-API-PHP-flight: version 2 ] is a restful API template built with PHP driven by flight microframework. It is light weighted with some helpful services like logger, caching etc. 
 The system architecture is modified with some solid principles and optimized the source code in PSR-2 coding standard. 
+
+[**This version is in testing phase**] 
 
 NOTE: This template version is based on my recent web development experiences. I will not boast that its a very good project. 
 This may have some architectural flaws- which I may need to overcome in recent days. But I have tried my best to develop this with appropriate PHP coding standard 
@@ -114,7 +114,7 @@ class GetUserInformation {
          * Add Your PHP code here
          */
         
-        View\Output::response([
+        Akaash\View\Output::response([
             /*
             * Put successful array of response here
             */
@@ -125,7 +125,7 @@ class GetUserInformation {
 
 * For exception handle inside your backend code, use the following code sample [**NOTE**: Check the `ResultCode` class for status-code definitions]
 ``` 
- use System\Exception\AppException;
+ use Akaash\System\Exception\AppException;
 
  throw new AppException(ResultCode::NOT_FOUND, "Data not found");
 ```
@@ -141,7 +141,7 @@ class GetUserInformation {
 
  namespace Model;
 
- use System\Core\Model\Base as BaseModel;
+ use Akaash\Core\Model\Base as BaseModel;
 
  class User extends BaseModel {      
     // Define your class variables and constants here
@@ -256,5 +256,3 @@ Following third party libraries are used in Application system
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
-

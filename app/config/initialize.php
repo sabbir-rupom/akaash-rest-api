@@ -46,7 +46,9 @@ if (empty($configArray['ENV'])) {
 /**
  * Set server timezone according to Configuration
  */
-if (!empty($configArray['SERVER_TIMEZONE']) && !empty($configArray['DB_SET_TIMEZONE']) && intval($configArray['DB_SET_TIMEZONE']) > 0) {
+if (!empty($configArray['SERVER_TIMEZONE'])
+    && !empty($configArray['DB_SET_TIMEZONE'])
+    && intval($configArray['DB_SET_TIMEZONE']) > 0) {
     if (!date_default_timezone_set($configArray['SERVER_TIMEZONE'])) {
         /*
          * Set error condition if server timezone is set wrongly
@@ -100,6 +102,7 @@ if (file_exists(CONFIG_DIR . '/route.php')) {
 /*
  * Initialize required class directories for autoload register
  */
+
 Flight::path(array(APP_DIR, API_DIR, SYSTEM_DIR));
 
 spl_autoload_register('directoryClassLoader');

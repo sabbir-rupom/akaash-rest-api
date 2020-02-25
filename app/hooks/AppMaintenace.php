@@ -2,10 +2,10 @@
 
 namespace Hooks;
 
-use API\Filter\Maintenance as Maintenance;
-use System\Config as Config;
-use flight\net\Request as Request;
-use System\Exception\AppException as AppException;
+use flight\net\Request;
+use API\Filter\Maintenance;
+use Akaash\Config;
+use Akaash\System\Exception\AppException;
 
 class AppMaintenace
 {

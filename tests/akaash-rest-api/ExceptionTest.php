@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use System\Exception\AppException;
+use Akaash\System\Exception\AppException;
 
 class ExceptionTest extends TestCase
 {
