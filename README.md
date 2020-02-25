@@ -103,30 +103,22 @@ I have tried to implement many features in this project mentioned in my slide tu
   * For more information, check the provided API examples
 
 ```php
-class GetUserInformation extends BaseClass {        
+class API {        
     /*
     * Define your class variables and constants here
     */
 
-    public function validate() {
-        parent::validate();
-        /*
-         * Add your code here
-         * to retrieve your request parameters
-         */
-    }
-
-    public function action() {
+    public function process() {
 
         /*
-         * Add API code here
+         * Add Your PHP code here
          */
         
-        return array(
+        View\Output::response([
             /*
-            * Put successful response in array here
+            * Put successful array of response here
             */
-        );
+        ]);
     }
 }
 ```
@@ -263,11 +255,3 @@ Following third party libraries are used in Application system
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
-
-
-
-
-
-
-

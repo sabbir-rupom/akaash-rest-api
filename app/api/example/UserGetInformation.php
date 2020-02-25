@@ -4,9 +4,9 @@
 
 use System\Exception\AppException;
 use System\Message\ResultCode;
-use System\Config;
-use View\Output;
+use Model\User as UserModel;
 use Helper\CommonUtil;
+use Helper\DateUtil;
 
 /**
  * Sample API Example: Get User Information
@@ -30,10 +30,12 @@ class Example_UserGetInformation extends BaseClass
 
         // If a user ID is specified through GET / Query string
         if (!empty($this->value) && CommonUtil::isInt($this->value)) {
-            $this->_userId = $this->_userId;
+            $this->_userId = $this->value;
         } else {
-            $this->_userId = $this->getInputPost('user_id', 'int', true);
+            $this->_userId = $this->getInputPost('user_id', 'int');
         }
+
+        $this->_userId = empty($this->_userId) ? $this->userId : $this->_userId; // Default session user ID
     }
 
     /**
@@ -41,17 +43,17 @@ class Example_UserGetInformation extends BaseClass
      */
     public function action()
     {
-        $user = UserModel::findBy(array('email' => $this->_email), $this->pdo);
-        if (empty($user)) {
+        $userInfo = UserModel::cacheOrFind($this->_userId, $this->pdo);
+        if (empty($userInfo)) {
             throw new AppException(ResultCode::USER_NOT_FOUND);
         }
 
         return [
           'result_code' => ResultCode::SUCCESS,
           'time' => DateUtil::getToday(),
-          'data' => array(
-            'user_info' => $user->toJsonHash(),
-          ),
+          'data' => [
+            'user_info' => $userInfo->toJsonHash(),
+          ],
           'error' => []
         ];
     }

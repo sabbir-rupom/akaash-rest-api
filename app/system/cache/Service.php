@@ -10,9 +10,9 @@ interface Service
 
     public function get(string $key, int $flag = 0);
 
-    public function put(string $key, $value, int $flag = 0, int $expire = 0): bool;
+    public function put(string $key, $value, int $flag = 0, $expire = null): bool;
 
-    public function set(string $key, $value, int $flag = 0, int $expire = 0): bool;
+    public function set(string $key, $value, int $flag = 0, $expire = null): bool;
 
     public function remove(string $key): bool;
 

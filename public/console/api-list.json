@@ -5,7 +5,9 @@
             "contents": [
                 "user-registration",
                 "user-login",
-                "user-information"
+                "user-information",
+                "user-logout",
+                "get-items"
             ]
         },
         {
@@ -35,6 +37,20 @@
         "query": "",
         "method": "POST",
         "params": "user_id"
+    },
+    "user-logout": {
+        "title": "Logout User Session",
+        "action": "example/user-logout",
+        "query": "",
+        "method": "GET",
+        "params": ""
+    },
+    "get-items": {
+        "title": "Get Items",
+        "action": "example/items",
+        "query": "",
+        "method": "POST",
+        "params": "item_id, item_name"
     },
     "server-test": {
         "title": "Test API Server",

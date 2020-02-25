@@ -90,7 +90,7 @@ abstract class Base
      * @param boolean $forUpdate Whether to update the query result
      * @return PDO PDO fetch class object
      */
-    public static function findAllBy($params = array(), $order = null, $limitArgs = null, \PDO $pdo = null, $forUpdate = false)
+    public static function findAllBy($params = [], $order = [], $limitArgs = null, \PDO $pdo = null, $forUpdate = false)
     {
         if ($pdo == null) {
             $pdo = \Flight::pdo();
@@ -174,19 +174,10 @@ abstract class Base
      * @param boolean $forUpdate Whether to update the query.
      * @return array Constructed Query
      */
-    protected static function constructQuery(array $params, $order = array(), $limitArgs = null, $forUpdate = false)
+    protected static function constructQuery(array $params, $order = [], $limitArgs = null, $forUpdate = false)
     {
-        $conditions = array();
-        $values = array();
-        foreach ($params as $k => $v) {
-            if (is_array($v)) {
-                $conditions[] = $k . ' IN (' . implode(',', array_fill(0, count($v), '?')) . ')';
-                $values = array_merge($values, $v);
-            } else {
-                $conditions[] = $k . '=?';
-                $values[] = $v;
-            }
-        }
+        list($conditions, $values) = self::constructQueryCondition($params);
+
         $sql = "";
         if (!empty($conditions)) {
             $sql .= " WHERE " . join(' AND ', $conditions);
@@ -219,36 +210,46 @@ abstract class Base
      */
     protected static function constructQueryCondition(array $params)
     {
-        $condition = '';
-        $values = array();
-        foreach ($params as $v) {
-            if (empty($v[1])) {
-                continue;
+        $condition = $values = [];
+        $operator = '=';
+        if (empty($params)) {
+            return [$condition, $values];
+        } else {
+            foreach ($params as $k => $v) {
+                if (empty($v)) {
+                    continue;
+                } elseif (is_array($v)) {
+                    $conditions[] = $k . ' IN (' . implode(',', array_fill(0, count($v), '?')) . ')';
+                    $values = array_merge($values, $v);
+                } else {
+                    $k = explode(' ', trim($k));
+                    $operator = isset($k[1]) ? $k[1] : $operator;
+
+                    switch ($operator) {
+                        case '=':
+                        case '<>':
+                        case '!=':
+                        case '>=':
+                        case '<=':
+                        case '>':
+                        case '<':
+                            $conditions[] = $k[0] . " $operator ?";
+                            $values[] = $v;
+                            break;
+                        case 'like':
+                            $conditions[] = $k[0] . " $operator ?";
+                            $values[] = ("%" . $v . "%");
+                            break;
+                        default:
+                            $conditions[] = $k[0] . " = ?";
+                            $values[] = $v;
+                            break;
+                    }
+                }
             }
-            $condition .= $condition != '' ? 'AND ' : '';
-            $operator = isset($v[2]) ? $v[2] : '=';
-            $value = $v[1];
-            switch ($operator) {
-                case '=':
-                case '<>':
-                case '!=':
-                case '>=':
-                case '<=':
-                case '>':
-                case '<':
-                    $condition .= $v[0] . " $operator ?";
-                    break;
-                case 'like':
-                    $condition .= $v[0] . " $operator ?";
-                    $value = ("%" . $value . "%");
-                    break;
-            }
-            $values[] = $value;
         }
-        if (empty($condition)) {
-            $condition = '1';
-        }
-        return array($condition, $values);
+        
+        return [$conditions, $values];
     }
 
     /**

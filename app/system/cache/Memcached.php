@@ -33,9 +33,9 @@ class Memcached implements Service
     /**
      * Add new key/value in server
      */
-    public function new(string $key, $value, int $flag = 0, int $expire = 0)
+    public function new(string $key, $value, int $flag = 0, $expire = null)
     {
-        return $this->connection->add($key, $value, $flag, $expire);
+        return $this->connection->add($key, $value, $flag, intval($expire));
     }
 
     /**
@@ -54,10 +54,10 @@ class Memcached implements Service
      * @param int $expire
      * @return string
      */
-    public function add($value, int $flag = 0, int $expire = 0): string
+    public function add($value, int $flag = 0, $expire = null): string
     {
         $key = uniqid(rand(1, 99999), true);
-        $this->connection->set($key, $value, $flag, $expire);
+        $this->connection->set($key, $value, $flag, intval($expire));
         return $key;
     }
 
@@ -81,9 +81,9 @@ class Memcached implements Service
      * @param int $expire
      * @return bool
      */
-    public function put(string $key, $value, int $flag = 0, int $expire = 0): bool
+    public function put(string $key, $value, int $flag = 0, $expire = null): bool
     {
-        return $this->connection->replace($key, $value, $flag, $expire);
+        return $this->connection->replace($key, $value, $flag, intval($expire));
     }
 
     /**
@@ -95,9 +95,9 @@ class Memcached implements Service
      * @param int $expire
      * @return bool
      */
-    public function set(string $key, $value, int $flag = 0, int $expire = 0): bool
+    public function set(string $key, $value, int $flag = 0, $expire = null): bool
     {
-        return $this->connection->set($key, $value, $flag, $expire);
+        return $this->connection->set($key, $value, $flag, intval($expire));
     }
 
     /**

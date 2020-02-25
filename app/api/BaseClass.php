@@ -5,10 +5,10 @@
 use flight\net\Request;
 use System\Exception\AppException;
 use System\Message\ResultCode;
+use System\Security;
 use System\Config;
 use View\Output;
 use Helper\CommonUtil;
-use System\Security;
 use Model\User as UserModel;
 
 /**
@@ -120,6 +120,9 @@ class BaseClass
      */
     protected function isLoggedIn()
     {
+        /**
+         * Check session payload from request token
+         */
         if (empty($this->tokenPayload) || isset($this->tokenPayload->session) === false) {
             throw new AppException(ResultCode::INVALID_REQUEST_TOKEN, 'User token data not found');
         }
@@ -143,6 +146,13 @@ class BaseClass
 
                 return true;
             }
+        }
+
+        /**
+         * Throw error if user session is empty
+         */
+        if (empty($this->userId)) {
+            throw new AppException(ResultCode::SESSION_ERROR, 'User session not found');
         }
 
         return false;
