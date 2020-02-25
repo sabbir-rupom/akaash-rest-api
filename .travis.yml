@@ -4,7 +4,6 @@ matrix:
   include:
   - php: 7.2
     env: ANALYSIS='true'
-  - php: nightly
 
   allow_failures:
   - php: nightly
@@ -14,5 +13,8 @@ before_script:
 
 script:
 - echo "build travis"    
-- phpcs --standard=PSR2 .\app\
+- ls -all
+- phpcs --version
+
+
 
