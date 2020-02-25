@@ -7,6 +7,7 @@ if (!defined('APP_NAME')) {
 // Register some basic information with flight
 Flight::set('start_time', microtime(true));
 Flight::set('headers', getallheaders());
+Flight::set('token_payload', []);
 
 session_start();
 

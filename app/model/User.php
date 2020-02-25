@@ -181,6 +181,18 @@ class User extends BaseModel
     }
 
     /**
+     * Save the user ID in Cache with session ID as key
+     *
+     * @param mixed $sessionId
+     * @param mixed $userId
+     */
+    public static function cacheSession($sessionId, $userId)
+    {
+        $sessionKey = Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
+        parent::setCache($sessionKey, $sessionId);
+    }
+
+    /**
      * Find User form cache
      * @param int $userId
      * @param PDO $pdo

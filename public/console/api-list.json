@@ -4,7 +4,8 @@
             "name": "REST API Examples",
             "contents": [
                 "user-registration",
-                "user-login"
+                "user-login",
+                "user-information"
             ]
         },
         {
@@ -28,6 +29,13 @@
         "method": "POST",
         "params": "email,password,gender,first_name,last_name"
     },
+    "user-information": {
+        "title": "Get User Information",
+        "action": "example/get-user-information",
+        "query": "",
+        "method": "POST",
+        "params": "user_id"
+    },
     "server-test": {
         "title": "Test API Server",
         "action": "test",
@@ -36,6 +44,4 @@
         "params": ""
     }
 }
-
-
 

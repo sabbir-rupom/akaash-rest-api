@@ -5,6 +5,7 @@
 use System\Core\Model\Cache as CacheModel;
 use Helper\DateUtil;
 use flight\net\Request;
+use Library\JwtToken;
 use System\Message\ResultCode;
 
 /**
@@ -41,6 +42,8 @@ class Test extends BaseClass
         // Check cache system is functional or not
         $this->_checkCacheService();
 
+        // Check token verification servide is functional or not
+        $this->_checkTokenAuthenticationService();
 
         // Check file upload path access permission
         $this->_checkFileUploadService();
@@ -63,9 +66,41 @@ class Test extends BaseClass
     }
 
     /**
-     * Check file upload functionality
+     * Authentication token verification functionality check
      *
      * @return
+     */
+    private function _checkTokenAuthenticationService()
+    {
+        if (false === $this->config->checkRequestTokenFlag()) {
+            $this->response['AUTH'] = 'AUTH token verification service is disabled. To enable, please check app_config.ini';
+            return;
+        }
+        $tokenSecret = $this->config->getRequestTokenSecret();
+        if (empty($tokenSecret)) {
+            $this->response['AUTH'] = 'AUTH token secret key is not set. Please check app_config.ini';
+            return;
+        }
+
+        $testData = ['test' => 1, 'iat' => time()];
+        $cResult = JwtToken::createToken($testData, $tokenSecret);
+        if (!$cResult['success']) {
+            $this->response['AUTH'] = 'AUTH token verification service is not functional. ' . $cResult['msg'];
+            return;
+        }
+
+        $vResult = JwtToken::verifyToken($cResult['data'], $tokenSecret);
+        if ($vResult['success'] && (array)$vResult['data'] == $testData) {
+            $this->response['AUTH'] = 'JWT verification service is functional';
+        } else {
+            $this->response['AUTH'] = 'AUTH token verification service is not functional. ' . $vResult['msg'];
+        }
+
+        return;
+    }
+
+    /**
+     * Check file upload functionality
      */
     private function _checkFileUploadService()
     {
@@ -78,14 +113,10 @@ class Test extends BaseClass
         } else {
             $this->response['Upload'] = 'File upload directory permission is set properly';
         }
-
-        return;
     }
 
     /**
      * Check application logger service functionality
-     *
-     * @return
      */
     private function _checkApplicationLoggerService()
     {
@@ -110,26 +141,20 @@ class Test extends BaseClass
                 $this->response['Log'] = 'System application log is functional';
             }
         } else {
-            $this->response['Log'] = 'System application log is disabled from config_app.ini';
+            $this->response['Log'] = 'System application log is disabled from app_config.ini';
         }
-
-        return;
     }
 
     /**
      * Check database connectivity
-     *
-     * @return
      */
     private function _checkDatabaseConnectivity()
     {
         if ($this->pdo instanceof PDO) {
             $this->response['DB'] = 'Database is properly connected';
         } else {
-            $this->response['DB'] = 'Database is not connected properly. Please check config_app.ini';
+            $this->response['DB'] = 'Database is not connected properly. Please check app_config.ini';
         }
-
-        return;
     }
 
     /**
@@ -159,7 +184,7 @@ class Test extends BaseClass
                     . 'Please change file permission for apache access : ' . $cachePath;
             }
         } else {
-            $message1 = 'Local filecache system is disabled from config_app.ini';
+            $message1 = 'Local filecache system is disabled from app_config.ini';
         }
 
         // Memcache system test case
