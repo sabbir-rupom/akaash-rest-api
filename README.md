@@ -1,9 +1,9 @@
 # Akaash - RESTful API template
 
-[**This version is in testing phase**] 
-
 **Akaash**[ REST-API-PHP-flight: version 2 ] is a restful API template built with PHP driven by flight microframework. It is light weighted with some helpful services like logger, caching etc. 
 The system architecture is modified with some solid principles and optimized the source code in PSR-2 coding standard. 
+
+[**This version is in testing phase**] 
 
 NOTE: This template version is based on my recent web development experiences. I will not boast that its a very good project. 
 This may have some architectural flaws- which I may need to overcome in recent days. But I have tried my best to develop this with appropriate PHP coding standard 
@@ -256,5 +256,6 @@ Following third party libraries are used in Application system
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
 
 
