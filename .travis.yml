@@ -3,21 +3,13 @@ language: php
 matrix:
   include:
   - php: 7.2
-    env: ANALYSIS='true'
-
-  allow_failures:
-  - php: nightly
 
 before_script:
-- composer install
+- composer install -y
 
 script:
 - echo "build travis" 
+- sudo apt-get install -y php7.2-{memcache,memcached} && sudo apt-get install libapache2-mod-php memcached curl  -y
 - composer update
-- sudo apt-get install php-codesniffer
-- phpcs --version
-
-
-
-
-
+- pwd
+- mv ./app/config/example.app_config.ini ./app/config/app_config.ini
