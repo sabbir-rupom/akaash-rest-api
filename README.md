@@ -1,5 +1,8 @@
 # Akaash - RESTful API Template
 
+[![Build Status](https://travis-ci.org/sabbir-rupom/akaash-rest-api.png?branch=dev)](https://travis-ci.org/sabbir-rupom/akaash-rest-api)
+[![License](https://img.shields.io/github/license/sabbir-rupom/akaash-rest-api)](https://github.com/sabbir-rupom/akaash-rest-api/blob/master/LICENSE)
+
 **Akaash**[ REST-API-PHP-flight: version 2 ] is a restful API template built with PHP driven by flight microframework. It is light weighted with some helpful services like logger, caching etc. 
 The system architecture is modified with some solid principles and optimized the source code in PSR-2 coding standard. 
 
@@ -256,3 +259,5 @@ Following third party libraries are used in Application system
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+
