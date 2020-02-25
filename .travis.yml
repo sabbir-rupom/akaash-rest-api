@@ -12,9 +12,12 @@ before_script:
 - composer install
 
 script:
-- echo "build travis"    
-- ls -all
+- echo "build travis" 
+- composer update
+- sudo apt-get install php-codesniffer
 - phpcs --version
+
+
 
 
 
