@@ -103,7 +103,7 @@ I have tried to implement many features in this project mentioned in my slide tu
   * For more information, check the provided API examples
 
 ```php
-class API {        
+class GetUserInformation {        
     /*
     * Define your class variables and constants here
     */
@@ -255,3 +255,4 @@ Following third party libraries are used in Application system
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
