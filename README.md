@@ -221,14 +221,15 @@ Akaash REST-API template, it will show the following results as success:
 // For endpoint like: http://akaash.test/test/2020-02-20/1
 {
   "result_code": 0,
-  "time": "2020-02-20 00:10:20",
+  "time": "2020-02-25 09:43:48",
   "data": {
     "DB": "Database is properly connected",
     "Log": "System application log is functional",
     "Cache": {
-      "filecache": "Local filecache system is functional",
-      "memcache": "Memcache system is functional"
+      "filecache": "Local filecache service is functional",
+      "memcache": "Memcache service is functional"
     },
+    "AUTH": "JWT verification service is functional",
     "Upload": "File upload directory permission is set properly",
     "Value": [
       "2020-02-20",
@@ -236,7 +237,7 @@ Akaash REST-API template, it will show the following results as success:
     ]
   },
   "error": [],
-  "execution_time": 0.03506016731262207
+  "execution_time": "0.0303 seconds"
 }
 ```
 * To populate your console page with you own API, edit `api-list.json` page with appropriate API information
@@ -255,4 +256,5 @@ Following third party libraries are used in Application system
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
 

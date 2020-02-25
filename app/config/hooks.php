@@ -10,7 +10,6 @@ Flight::before('start', function () {
     /**
      * Before the core controller starts execution
      */
-    
     // check for server maintenance mode
     AppMaintenace::isRunning();
 
@@ -19,5 +18,7 @@ Flight::before('start', function () {
 });
 
 Flight::after('start', function () {
-    // after the application process finished
+    /**
+     * after the API process finished
+     */
 });

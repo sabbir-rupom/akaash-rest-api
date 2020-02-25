@@ -4,10 +4,11 @@ if (!defined('APP_NAME')) {
     die('Forbidden');
 }
 
-// Register some basic information with flight
+// Register some config variable information with flight
 Flight::set('start_time', microtime(true));
 Flight::set('headers', getallheaders());
 Flight::set('token_payload', []);
+Flight::set('exit_on_response', []);
 
 session_start();
 

@@ -4,7 +4,6 @@
 
 namespace View\Response;
 
-use System\Config as Config;
 use View\Response\Validate as Validate;
 
 /**
@@ -17,13 +16,6 @@ class Format
 {
     public static function formatJson(array $data): string
     {
-        if ('PRODUCTION' != strtoupper(Config::getInstance()->getEnvironment())) {
-            /*
-             * Calculate server execution time for running API script [ For developers only ]
-             * And add to output result
-             */
-            $data['execution_time'] = round(microtime(true) - \Flight::app()->get('start_time'), 4) . ' seconds';
-        }
         $jsonResult = Validate::safeJsonEncode($data);
         /*
          * Flight JSON encode feature is not used
