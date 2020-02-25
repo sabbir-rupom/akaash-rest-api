@@ -221,18 +221,3 @@ class Test
         return;
     }
 }
-
-//        Model\Item::startTransaction($this->pdo);
-//
-//        $itemObj = new Model\Item();
-//        $itemObj->item_name = 'Test';
-//        $itemObj->created_at = Helper\DateUtil::getToday();
-//        $itemId = $itemObj->create($this->pdo);
-//
-//        $result = [];
-//        if ($itemId > 0) {
-//            $result = Model\Item::find($itemId, $this->pdo);
-//            $result->delete($this->pdo);
-//        }
-//
-//        Model\Item::commit($this->pdo);

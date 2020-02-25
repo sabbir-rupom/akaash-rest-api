@@ -52,13 +52,20 @@ CREATE TABLE `user_login_sessions` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `user_items`;
-CREATE TABLE `user_items` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`user_id` INT(11) NULL DEFAULT NULL,
-	`item_name` VARCHAR(100) NULL DEFAULT NULL,
-	`created_at` DATETIME NULL DEFAULT NULL,
-	`updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`)
-)
-ENGINE=InnoDB;
+-- Dumping structure for table akaash-rest-api.items
+DROP TABLE IF EXISTS `items`;
+CREATE TABLE IF NOT EXISTS `items` (
+  `item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_name` varchar(100) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`item_id`),
+  UNIQUE KEY `item_name` (`item_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `items` (`item_id`, `item_name`, `created_at`, `updated_at`) VALUES
+	(1, 'Bat', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),
+	(2, 'Ball', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),
+	(3, 'Stamp', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),
+	(4, 'T-shirt', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),
+	(5, 'Trowsar', '2020-02-25 13:26:05', '2020-02-25 13:29:44');
