@@ -9,8 +9,9 @@ before_script:
 
 script:
 - echo "build travis" 
-- sudo apt-get install php7.2-{memcache,memcached} && sudo apt-get install libapache2-mod-php memcached curl
+- sudo apt-get install php-{memcache,memcached} && sudo apt-get install libapache2-mod-php memcached curl
 - composer update
 - pwd
 - mv ./app/config/example.app_config.ini ./app/config/app_config.ini
+
 
