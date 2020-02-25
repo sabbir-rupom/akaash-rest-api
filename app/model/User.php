@@ -62,7 +62,7 @@ class User extends BaseModel
         'json' => false
       )
     );
-    public static $cache = null;
+    protected static $cache = null;
 
     public function __construct()
     {
@@ -149,11 +149,12 @@ class User extends BaseModel
     /**
      * Update the session ID, save the session to Memcached.
      */
-    public static function cacheUserSession($userObj)
+    protected static function cacheUserSession($userObj)
     {
         session_regenerate_id();
         $sessionId = session_id();
         $sessionKey = Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userObj->user_id;
+
         Cache::addCache(self::$cache, $sessionKey, $sessionId);
 
         $userKey = Config::getInstance()->getMemcachePrefix() . 'user_' . $userObj->user_id;
@@ -165,28 +166,45 @@ class User extends BaseModel
     /**
      * Delete old session.
      */
-    public static function removeSessionFromUserId($userId)
+    protected static function removeUserSession($userId)
     {
         $sessionKey = Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
         Cache::deleteCache(self::$cache, $sessionKey);
+
+        $userKey = Config::getInstance()->getMemcachePrefix() . 'user_' . $userId;
+        Cache::deleteCache(self::$cache, $userKey);
     }
 
     /**
      * Return from the session to get a user ID.
      */
-    public static function retrieveSessionFromUserId($userId)
+    protected static function retrieveSessionFromUserId($userId)
     {
         $sessionKey = Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
         return Cache::getCache(self::$cache, $sessionKey);
     }
 
     /**
+     * Save the user ID in Cache with session ID as key
+     *
+     * @param mixed $sessionId
+     * @param mixed $userId
+     */
+    protected static function cacheSession($sessionId, $userId)
+    {
+        $sessionKey = Config::getInstance()->getMemcachePrefix() . 'user_ses_' . $userId;
+        Cache::setCache(self::$cache, $sessionKey, $sessionId);
+    }
+
+    /**
      * Find User form cache
+     *
      * @param int $userId
      * @param PDO $pdo
+     *
      * @return Model_User
      */
-    public static function cache_or_find($userId, $pdo = null)
+    protected static function cacheOrFind($userId, $pdo = null)
     {
         $user = Cache::getCache(self::$cache, Config::getInstance()->getMemcachePrefix() . 'user_' . $userId);
 
@@ -203,7 +221,7 @@ class User extends BaseModel
      * @param type $pdo
      * @return type
      */
-    public static function refreshCache($userId, $pdo)
+    protected static function refreshCache($userId, $pdo)
     {
         $user = self::find($userId, $pdo);
         Cache::setCache(self::$cache, Config::getInstance()->getMemcachePrefix() . 'user_' . $userId, $user);

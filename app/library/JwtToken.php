@@ -11,7 +11,7 @@ use Firebase\JWT\JWT;
  */
 class JwtToken
 {
-    const JWT_ENCODE_ALGORITHM = 'HS256';
+    const JWT_ENCODE_ALGORITHM = ['HS256'];
 
     private static $result = [
       'success' => false,
@@ -51,7 +51,7 @@ class JwtToken
      * @param array  $payload sensitive data as payload
      * @param string $key     secret key to sign the JWT token
      *
-     * @return array Token creation result
+     * @return array Result of token creation [ data => array, success => bool, msg => string ]
      */
     public static function createToken(array $payload = array(), string $key):array
     {

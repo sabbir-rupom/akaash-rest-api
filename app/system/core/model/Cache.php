@@ -16,8 +16,11 @@ abstract class Cache implements Service
 {
 
     /**
-     * Get the cache data.
-     * @param unknown_type $key
+     * Get cached data if exist
+     *
+     * @param Service $cache
+     * @param string $key
+     * @return mixed
      */
     public static function getCache(Service $cache, $key)
     {
@@ -25,13 +28,18 @@ abstract class Cache implements Service
     }
 
     /**
-     * Save the cache data.
-     * @param unknown_type $key
-     * @param unknown_type $value
+     * Save data in cache
+     *
+     * @param Service $cache
+     * @param string $key
+     * @param mixed $value
+     * @param int $flag
+     * @param int $expire
+     * @return mixed
      */
-    public static function setCache(Service $cache, $key, $value, $flag = 0, $expire = 0)
+    public static function setCache(Service $cache, $key, $value, $flag = 0, $expire = null)
     {
-        return $cache->put($key, $value, $flag, $expire);
+        return $cache->put($key, $value, $flag, is_null($expire) ? self::DEFAULT_EXPIRATION : $expire);
     }
 
     /**
@@ -39,24 +47,28 @@ abstract class Cache implements Service
      * @param unknown_type $key
      * @param unknown_type $value
      */
-    public static function addCache(Service $cache, $key, $value, $expire = 0, $flag = 0)
+    public static function addCache(Service $cache, $key, $value, $expire = null, $flag = 0)
     {
-        return $cache->set($key, $value, $flag, $expire);
+        return $cache->set($key, $value, $flag, is_null($expire) ? self::DEFAULT_EXPIRATION : $expire);
     }
 
     /**
-     * Delete the cache.
-     * @param unknown_type $key
+     * Delete data from cache
+     *
+     * @param Service $cache
+     * @param string $key
+     * @return bool
      */
     public static function deleteCache(Service $cache, $key)
     {
         return $cache->delete($key);
     }
 
-
     /**
-     * Delete the cache.
-     * @param unknown_type $key
+     * Flush all cache data
+     *
+     * @param Service $cache
+     * @return bool
      */
     public static function clearCache(Service $cache)
     {

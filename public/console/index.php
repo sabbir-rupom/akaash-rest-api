@@ -81,16 +81,12 @@ header("Access-Control-Allow-Headers: X-Requested-With");
                                 <input type="text" class="form-control" name="queryParams" placeholder="e.g; param1=abc&param2=123">
                             </div>
                         </div>
-                        <div class="form-group row">
+<!--                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label">User ID</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="userId" readonly>
                             </div>
-                            <label class="col-sm-2 offset-sm-2 col-form-label text-right">User Level</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" name="userLevel" readonly>
-                            </div>
-                        </div>
+                        </div>-->
                         <div class="form-group row form-border">
                             <div class="container-fluid">
                                 <div class="row">
@@ -150,6 +146,7 @@ header("Access-Control-Allow-Headers: X-Requested-With");
         </div>
     </body>
 </html> 
+
 
 
 

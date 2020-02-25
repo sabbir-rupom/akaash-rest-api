@@ -5,10 +5,11 @@
 use flight\net\Request;
 use System\Exception\AppException;
 use System\Message\ResultCode;
+use System\Security;
 use System\Config;
 use View\Output;
 use Helper\CommonUtil;
-use System\Security;
+use Model\User as UserModel;
 
 /**
  * Description of BaseClass
@@ -32,10 +33,10 @@ class BaseClass
     protected $data;
     protected $method;
     protected $value;
-    protected $response;
+    protected $tokenPayload;
     protected $apiName;
+    protected $userId;
     protected $pdo;
-    protected $requestToken = null;
     protected $config = null;
 
 //    protected $sessionId = NULL;
@@ -47,9 +48,11 @@ class BaseClass
         $this->get = $request->query;
         $this->data = $request->data;
         $this->value = $value;
+        $this->userId = null;
         $this->method = $request->method;
-        $this->apiName = $apiName;
         $this->config = Config::getInstance();
+        $this->apiName = $apiName;
+        $this->tokenPayload = \Flight::app()->get('token_payload');
 
         // Get DB Connection Object
         $this->pdo = \Flight::pdo();
@@ -89,6 +92,14 @@ class BaseClass
     protected function validate()
     {
         // Write your validation code here
+
+        if (static::LOGIN_REQUIRED) {
+            $this->isLoggedIn();
+
+            if (false === $this->userId) {
+                throw new AppException(ResultCode::SESSION_ERROR, 'User session not found');
+            }
+        }
     }
 
     /**
@@ -99,6 +110,52 @@ class BaseClass
     protected function filter()
     {
         // Write your filter code here
+    }
+
+    /**
+     * Check whether request-auth-token includes user session data
+     *
+     * @return boolean
+     * @throws AppException
+     */
+    protected function isLoggedIn()
+    {
+        /**
+         * Check session payload from request token
+         */
+        if (empty($this->tokenPayload) || isset($this->tokenPayload->session) === false) {
+            throw new AppException(ResultCode::INVALID_REQUEST_TOKEN, 'User token data not found');
+        }
+
+        if ($this->tokenPayload->session) {
+            $sessionArray = unserialize(
+                base64_decode($this->tokenPayload->session)
+            );
+
+            if (!count(array_intersect(['session_id', 'user_id'], array_keys($sessionArray)))) {
+                throw new AppException(ResultCode::INVALID_REQUEST_TOKEN, 'Invalid user token');
+            }
+
+            $cacheSessionId = UserModel::retrieveSessionFromUserId($sessionArray['user_id']);
+
+            if ($cacheSessionId == $sessionArray['session_id']) {
+                $this->userId = (int) $sessionArray['user_id'];
+
+                // Re-set of the session time limit
+                UserModel::cacheSession($cacheSessionId, $this->userId);
+
+                return true;
+            }
+        }
+
+        /**
+         * Throw error if user session is empty
+         */
+        if (empty($this->userId)) {
+            throw new AppException(ResultCode::SESSION_ERROR, 'User session not found');
+        }
+
+        return false;
     }
 
     /**

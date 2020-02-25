@@ -3,6 +3,7 @@
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 use System\Message\ResultCode;
+use System\Exception\AppException;
 use Library\JwtToken;
 use Model\User as UserModel;
 use Helper\DateUtil;
@@ -43,6 +44,7 @@ class Example_UserLogin extends BaseClass
 
         try {
             $user = UserModel::findBy(array('email' => $this->_email), $this->pdo, true);
+
             if (empty($user)) {
                 throw new AppException(ResultCode::USER_NOT_FOUND);
             }
@@ -51,7 +53,7 @@ class Example_UserLogin extends BaseClass
             }
 
             // Delete previous user session from cache
-            UserModel::removeSessionFromUserId($user->user_id);
+            UserModel::removeUserSession($user->user_id);
 
             // Update device token and model update if provided
             $deviceToken = $this->getInputPost('device_token', 'string');

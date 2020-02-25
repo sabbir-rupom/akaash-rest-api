@@ -4,6 +4,8 @@
 
 namespace Model;
 
+use System\Core\Model\Base as BaseModel;
+
 /**
  * Item model class.
  */

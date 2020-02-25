@@ -22,9 +22,12 @@ class LocalCache implements Service
      * @param int $expire
      * @return string
      */
-    public function add($value, int $flag = 0, int $expire = 0): string
+    public function add($value, int $flag = 0, $expire = null): string
     {
         $key = uniqid(rand(1, 99999), true);
+        if (empty($expire)) {
+            $expire = self::DEFAULT_EXPIRATION;
+        }
         $this->connection->store($key, $value, $expire, boolval($flag));
         return $key;
     }
@@ -52,10 +55,10 @@ class LocalCache implements Service
      * @param int $expire
      * @return bool
      */
-    public function put(string $key, $value, int $flag = 0, int $expire = 0): bool
+    public function put(string $key, $value, int $flag = 0, $expire = null): bool
     {
         if ($this->connection->isExpired($key)) {
-            if ($expire === 1) {
+            if (empty($expire)) {
                 $expire = self::DEFAULT_EXPIRATION;
             }
             $this->set($key, $value, $expire, boolval($flag));
@@ -74,9 +77,9 @@ class LocalCache implements Service
      * @param int $expire
      * @return bool
      */
-    public function set(string $key, $value, int $flag = 0, $expire = 0): bool
+    public function set(string $key, $value, int $flag = 0, $expire = null): bool
     {
-        if ($expire === 1) {
+        if (empty($expire)) {
             $expire = self::DEFAULT_EXPIRATION;
         }
         $this->connection->store($key, $value, $expire, boolval($flag));
