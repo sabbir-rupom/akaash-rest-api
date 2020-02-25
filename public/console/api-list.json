@@ -31,7 +31,7 @@
     },
     "user-information": {
         "title": "Get User Information",
-        "action": "example/get-user-information",
+        "action": "example/user-get-information",
         "query": "",
         "method": "POST",
         "params": "user_id"
@@ -44,4 +44,3 @@
         "params": ""
     }
 }
-

@@ -112,18 +112,24 @@ class BaseClass
         // Write your filter code here
     }
 
+    /**
+     * Check whether request-auth-token includes user session data
+     *
+     * @return boolean
+     * @throws AppException
+     */
     protected function isLoggedIn()
     {
-        if (empty($this->tokenPayload) || isset($this->tokenPayload['session']) === false) {
+        if (empty($this->tokenPayload) || isset($this->tokenPayload->session) === false) {
             throw new AppException(ResultCode::INVALID_REQUEST_TOKEN, 'User token data not found');
         }
 
-        if ($this->tokenPayload['session']) {
+        if ($this->tokenPayload->session) {
             $sessionArray = unserialize(
-                base64_decode($this->tokenPayload['session'])
+                base64_decode($this->tokenPayload->session)
             );
-            
-            if (!in_array(['session_id', 'user_id'], array_keys($sessionArray))) {
+
+            if (!count(array_intersect(['session_id', 'user_id'], array_keys($sessionArray)))) {
                 throw new AppException(ResultCode::INVALID_REQUEST_TOKEN, 'Invalid user token');
             }
 

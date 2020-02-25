@@ -19,30 +19,13 @@ class Authentication
     public static $config;
 
     /**
-     * Initialize class properties for any valid static method call
-     * @param type $method
-     * @param type $args
-     */
-    public static function __callStatic($method, $args)
-    {
-        if (!isset(self::$request)) {
-            self::$request = new Request();
-        }
-        if (!isset(self::$config)) {
-            self::$config = new Config();
-        }
-
-        return call_user_func_array(
-            array(__CLASS__, $method),
-            $args
-        );
-    }
-
-    /**
      * Check client authorization
      */
     public static function isAuthorized()
     {
+        self::$request = new Request();
+        self::$config = new Config();
+
         try {
             if (self::notInExcludedList()) {
                 //Check Server Maintenance Status
@@ -53,7 +36,7 @@ class Authentication
             /*
              * Handle all error / exception messages
              */
-            $e->generate($request, self::$config, 'hooks');
+            $e->generate(self::$request, self::$config, 'hooks');
         }
         return true;
     }
@@ -63,11 +46,12 @@ class Authentication
      *
      * @return bool
      */
-    private function notInExcludedList()
+    private static function notInExcludedList()
     {
         if (!empty(self::$excludedApiList)) {
             foreach (self::$excludedApiList as $excluded) {
-                if (preg_match('#^' . $excluded . '$#iu', self::$request->url)) {
+                if (stripos(strtolower(self::$request->url), $excluded) !== false) {
+                    // 'see details' is in the $line
                     self::$result = false;
                     break;
                 }

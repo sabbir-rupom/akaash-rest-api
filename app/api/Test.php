@@ -4,9 +4,12 @@
 
 use System\Core\Model\Cache as CacheModel;
 use Helper\DateUtil;
+use System\Config;
 use flight\net\Request;
 use Library\JwtToken;
 use System\Message\ResultCode;
+use View\Output;
+use System\Cache\Memcached;
 
 /**
  * This API performs minimal REST application system check
@@ -16,21 +19,25 @@ use System\Message\ResultCode;
  * @internal
  * @coversNothing
  */
-class Test extends BaseClass
+class Test
 {
     public $response;
+    public $value;
+    public $pdo;
+    public $config;
 
     public function __construct(Request $request, $value, $apiName)
     {
-        parent::__construct($request, $value, $apiName);
-
         $this->response = [];
+        $this->value = $value;
+        $this->config = new Config;
+        $this->pdo = \Flight::pdo();
     }
 
     /**
      * Process API script
      */
-    public function action()
+    public function process()
     {
 
         //  Check database connection with PDO driver
@@ -52,17 +59,19 @@ class Test extends BaseClass
         if (!empty($this->value)) {
             $this->response['Value'] = $this->value;
         }
-//        if (!empty($this->get)) {
-//            echo $this->getInputQuery('client');
-//            echo $this->getInputQuery('type', 'string');
-//        }
 
-        return [
+        /**
+         * if (!empty($this->get))
+         *    echo $this->getInputQuery('client');
+         *    echo $this->getInputQuery('type', 'string');
+         */
+
+        Output::response([
           'result_code' => ResultCode::SUCCESS,
           'time' => DateUtil::getToday(),
           'data' => $this->response,
           'error' => []
-        ];
+        ]);
     }
 
     /**
@@ -90,7 +99,7 @@ class Test extends BaseClass
         }
 
         $vResult = JwtToken::verifyToken($cResult['data'], $tokenSecret);
-        if ($vResult['success'] && (array)$vResult['data'] == $testData) {
+        if ($vResult['success'] && (array) $vResult['data'] == $testData) {
             $this->response['AUTH'] = 'JWT verification service is functional';
         } else {
             $this->response['AUTH'] = 'AUTH token verification service is not functional. ' . $vResult['msg'];
@@ -194,7 +203,7 @@ class Test extends BaseClass
         if (!extension_loaded('memcache')) {
             $message2 = 'Memcache module is not installed';
         } else {
-            $cache = new \System\Cache\Memcached($this->config->getMemcacheHost(), $this->config->getMemcachePort());
+            $cache = new Memcached($this->config->getMemcacheHost(), $this->config->getMemcachePort());
 
             // clear all existing cache data
             CacheModel::clearCache($cache);
