@@ -13,4 +13,5 @@ script:
 - composer update
 - pwd
 - sudo mv app/config/example.app_config.ini /home/travis/build/sabbir-rupom/akaash-rest-api/app/config/app_config.ini
-- phpunit --exclude-group FITS --bootstrap tests/bootstrap.php tests
+- phpunit
+
