@@ -1,9 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use flight\net\Request as Request;
-use Akaash\Config as Config;
-use Akaash\System\Log\Logger as Logger;
+use flight\net\Request;
+use Akaash\Config;
+use Akaash\System\Log\Logger;
 
 class LoggerTest extends TestCase
 {
