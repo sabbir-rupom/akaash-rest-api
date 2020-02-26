@@ -1,6 +1,5 @@
-
-CREATE DATABASE IF NOT EXISTS `rest-api` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `rest-api`;
+CREATE DATABASE IF NOT EXISTS `akaash_test`;
+USE `akaash_test`;
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -68,4 +67,5 @@ INSERT INTO `items` (`item_id`, `item_name`, `created_at`, `updated_at`) VALUES
 	(3, 'Stamp', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),
 	(4, 'T-shirt', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),
 	(5, 'Trowsar', '2020-02-25 13:26:05', '2020-02-25 13:29:44');
+
 
