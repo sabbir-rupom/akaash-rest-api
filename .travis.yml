@@ -3,9 +3,17 @@ language: php
 matrix:
   include:
   - php: 7.2
+  
+services:
+  - mysql
 
 before_script:
 - composer install
+
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS akaash_test;'
+  - mysql -e 'USE akaash_test;'
+  - mysql -e "/home/travis/build/sabbir-rupom/akaash-rest-api/public/resource/db-data.sql"
 
 script:
 - echo "build travis" 
@@ -14,4 +22,3 @@ script:
 - pwd
 - sudo mv app/config/example.app_config.ini /home/travis/build/sabbir-rupom/akaash-rest-api/app/config/app_config.ini
 - phpunit
-
