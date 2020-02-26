@@ -11,7 +11,11 @@ before_script:
 - composer install
 
 before_install:
-  - mysql -e "/home/travis/build/sabbir-rupom/akaash-rest-api/public/resource/db-data.sql"
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS akaash_test;'
+  - mysql -e 'USE akaash_test;'
+  - mysql -e 'DROP TABLE IF EXISTS items;'
+  - mysql -e 'CREATE TABLE IF NOT EXISTS items (item_id int(11) NOT NULL AUTO_INCREMENT,item_name varchar(100) DEFAULT NULL,created_at datetime DEFAULT NULL,updated_at timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),PRIMARY KEY (item_id),UNIQUE KEY item_name (item_name)) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+  - mysql -e 'INSERT INTO items (item_id, item_name, created_at, updated_at) VALUES(1, 'Bat', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),(2, 'Ball', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),(3, 'Stamp', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),(4, 'T-shirt', '2020-02-25 13:26:05', '2020-02-25 13:26:06'),(5, 'Trowsar', '2020-02-25 13:26:05', '2020-02-25 13:29:44');
 
 script:
 - echo "build travis" 
@@ -19,5 +23,4 @@ script:
 - composer update
 - pwd
 - sudo mv app/config/example.app_config.ini /home/travis/build/sabbir-rupom/akaash-rest-api/app/config/app_config.ini
-- phpunit
 
