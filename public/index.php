@@ -10,7 +10,7 @@
  * @category    Rest API Template
  * @author      Sabbir Hossain Rupom <sabbir.hossain.rupom@hotmail.com>
  * @license     http://www.opensource.org/licenses/mit-license.php ( MIT License )
- * @version     2.0.0
+ * @version     2.0
  */
 
 define('APP_NAME', 'Akaash - RESTful API Template');

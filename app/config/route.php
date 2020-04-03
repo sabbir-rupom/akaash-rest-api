@@ -2,8 +2,8 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-use System\Message\ResultCode;
-use Helper\DateUtil;
+use Akaash\System\Message\ResultCode;
+use Akaash\Helper\DateUtil;
 
 if (!isset($argv)) {
     // Set root / index page response view
