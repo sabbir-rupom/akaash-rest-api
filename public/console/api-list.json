@@ -1,0 +1,62 @@
+{
+    "groups": [
+        {
+            "name": "REST API Examples",
+            "contents": [
+                "user-registration",
+                "user-login",
+                "user-information",
+                "user-logout",
+                "get-items"
+            ]
+        },
+        {
+            "name": "Test API Server",
+            "contents": [
+                "server-test"
+            ]
+        }
+    ],
+    "user-login": {
+        "title": "User Login",
+        "action": "example/user-login",
+        "query": "",
+        "method": "POST",
+        "params": "email,password"
+    },
+    "user-registration": {
+        "title": "User Registration",
+        "action": "example/user_registration",
+        "query": "",
+        "method": "POST",
+        "params": "email,password,gender,first_name,last_name"
+    },
+    "user-information": {
+        "title": "Get User Information",
+        "action": "example/user-get-information",
+        "query": "",
+        "method": "POST",
+        "params": "user_id"
+    },
+    "user-logout": {
+        "title": "Logout User Session",
+        "action": "example/user-logout",
+        "query": "",
+        "method": "GET",
+        "params": ""
+    },
+    "get-items": {
+        "title": "Get Items",
+        "action": "example/items",
+        "query": "",
+        "method": "POST",
+        "params": "item_id, item_name"
+    },
+    "server-test": {
+        "title": "Test API Server",
+        "action": "test",
+        "query": "client=web_console&pl=javascript",
+        "method": "GET",
+        "params": ""
+    }
+}

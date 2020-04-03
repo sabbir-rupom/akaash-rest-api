@@ -2,8 +2,6 @@
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
-namespace API;
-
 use flight\net\Request;
 use Akaash\Config;
 use Akaash\System\Message\ResultCode;

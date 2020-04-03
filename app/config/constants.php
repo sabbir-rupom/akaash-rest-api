@@ -3,7 +3,6 @@
 /**
  * Write all your application constants in here
  */
-
 /**
  *  Set numeric value for client end platforms
  */
@@ -27,3 +26,9 @@ defined('EMPTY_TOKEN') or define('EMPTY_TOKEN', 5);
  * File upload path(s)
  */
 defined('UPLOAD_PATH') or define('UPLOAD_PATH', ROOT_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR);
+
+defined('EXCLUDE_API_VERIFICATION') or define('EXCLUDE_API_VERIFICATION', [
+      'example/user-login',
+      'example/user_registration',
+      'test'
+    ]);

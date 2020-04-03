@@ -9,11 +9,7 @@ use Akaash\System\Exception\AppException;
 
 class Authentication
 {
-    public static $excludedApiList = [
-      'example/user-login',
-      'example/user_registration',
-      'test'
-    ];
+    public static $excludedApiList;
     private static $result = true;
     public static $request;
     public static $config;
@@ -48,9 +44,12 @@ class Authentication
      */
     private static function notInExcludedList()
     {
+        self::$excludedApiList = defined('EXCLUDE_API_VERIFICATION') ? EXCLUDE_API_VERIFICATION : [];
+
         if (!empty(self::$excludedApiList)) {
             foreach (self::$excludedApiList as $excluded) {
-                if (stripos(strtolower(self::$request->url), $excluded) !== false) {
+                if (stripos(strtolower(self::$request->url), $excluded) !== false ||
+                    in_array(self::$request->url, ['', '/'])) {
                     // 'see details' is in the $line
                     self::$result = false;
                     break;
