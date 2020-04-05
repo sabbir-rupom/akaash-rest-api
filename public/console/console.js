@@ -1,7 +1,7 @@
 var apiItems = {};
 var apiUrl = 'http://' + window.location.hostname;
 var pathExt = '/';
-var tokenHeader = 'X-AUTH-TOKEN';
+var tokenHeader = 'X-API-TOKEN';
 var jwtAuth = '';
 
 //var sessionHeader = 'X-USER-SESSION-ID';
@@ -216,3 +216,4 @@ function getResponseHeaders(jqXHR) {
 
     return responseHeaders;
 }
+

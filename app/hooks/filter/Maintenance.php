@@ -1,8 +1,8 @@
 <?php
 
-namespace API\Filter;
+namespace Hooks\Filter;
 
-use API\Filter\FilterInterface;
+use Hooks\Filter\FilterInterface;
 use Akaash\System\Exception\AppException;
 use Akaash\System\Message\ResultCode;
 use Akaash\Config;

@@ -3,7 +3,7 @@
 namespace Hooks;
 
 use flight\net\Request;
-use API\Filter\Authorization;
+use Hooks\Filter\Authorization;
 use Akaash\Config;
 use Akaash\System\Exception\AppException;
 
