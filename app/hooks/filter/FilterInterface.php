@@ -1,5 +1,5 @@
 <?php
-namespace API\Filter;
+namespace Hooks\Filter;
 
 interface FilterInterface
 {

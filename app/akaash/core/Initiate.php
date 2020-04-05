@@ -22,7 +22,7 @@ class Initiate
     {
         try {
             self::prepare($properties);
-            
+          
             // Call Base Controller to Retrieve Instance of API Controller
             $action = new self::$apiName($request, self::$queryValue, self::$apiName);
             $action->process();
@@ -43,7 +43,6 @@ class Initiate
      */
     public static function prepare(array $properties)
     {
-
         // prepare api controller from request url call
         self::$apiName = Common::prepareApiClass($properties['name'], $properties['group']);
 
@@ -53,7 +52,7 @@ class Initiate
                 self::$apiName = Common::prepareApiClass($properties['group']);
 
                 if (!class_exists(self::$apiName)) {
-                    throw new AppException(ResultCode::NOT_FOUND, "No such api: " . self::$apiName);
+                    throw new AppException(ResultCode::NOT_FOUND, "No such api: " . $properties['group'] . '/' . $properties['name']);
                 } else {
                     self::$queryValue = empty($properties['value']) ? $properties['name'] : [
                       $properties['name'], $properties['value']

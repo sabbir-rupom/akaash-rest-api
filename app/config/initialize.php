@@ -6,8 +6,11 @@ if (!defined('APP_NAME')) {
 
 // Register some config variable information with flight
 Flight::set('start_time', microtime(true));
+
 Flight::set('headers', getallheaders());
+
 Flight::set('token_payload', []);
+
 Flight::set('exit_on_response', []);
 
 session_start();
@@ -46,9 +49,7 @@ if (empty($configArray['ENV'])) {
 /**
  * Set server timezone according to Configuration
  */
-if (!empty($configArray['SERVER_TIMEZONE'])
-    && !empty($configArray['DB_SET_TIMEZONE'])
-    && intval($configArray['DB_SET_TIMEZONE']) > 0) {
+if (!empty($configArray['SERVER_TIMEZONE']) && !empty($configArray['DB_SET_TIMEZONE']) && intval($configArray['DB_SET_TIMEZONE']) > 0) {
     if (!date_default_timezone_set($configArray['SERVER_TIMEZONE'])) {
         /*
          * Set error condition if server timezone is set wrongly
@@ -117,16 +118,21 @@ function directoryClassLoader($class)
 {
     if (strpos($class, '_') || strpos($class, '-')) {
         $class_file = explode('/', str_replace(['_', '-'], ['/', '/'], $class) . '.php');
-        for ($i = 0; $i < count($class_file) - 1; $i++) {
-            $class_file[$i] = strtolower($class_file[$i]);
-        }
-        $filePath = implode('/', $class_file);
-        foreach (array(APP_DIR, API_DIR) as $dir) {
-            $file = $dir . '/' . $filePath;
-            if (file_exists($file)) {
-                require_once $file;
-                break;
-            }
+    } elseif (strpos($class, '\\')) {
+        $class_file = explode('\\', $class . '.php');
+    } else {
+        $class_file = [$class . '.php'];
+    }
+
+    for ($i = 0; $i < count($class_file) - 1; $i++) {
+        $class_file[$i] = strtolower($class_file[$i]);
+    }
+    $filePath = implode('/', $class_file);
+    foreach (array(APP_DIR, API_DIR) as $dir) {
+        $file = $dir . '/' . $filePath;
+        if (file_exists($file)) {
+            require_once $file;
+            break;
         }
     }
 }

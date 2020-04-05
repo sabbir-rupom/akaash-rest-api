@@ -1,8 +1,8 @@
 <?php
 
-namespace API\Filter;
+namespace Hooks\Filter;
 
-use API\Filter\FilterInterface;
+use Hooks\Filter\FilterInterface;
 use Akaash\Config;
 use Akaash\System\JwtToken;
 use Akaash\System\Message\ResultCode;

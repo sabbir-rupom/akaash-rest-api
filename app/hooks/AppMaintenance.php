@@ -3,11 +3,11 @@
 namespace Hooks;
 
 use flight\net\Request;
-use API\Filter\Maintenance;
+use Hooks\Filter\Maintenance;
 use Akaash\Config;
 use Akaash\System\Exception\AppException;
 
-class AppMaintenace
+class AppMaintenance
 {
 
     /**

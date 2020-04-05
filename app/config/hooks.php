@@ -1,6 +1,6 @@
 <?php
 
-use Hooks\AppMaintenace;
+use Hooks\AppMaintenance;
 use Hooks\Authentication;
 
 /**
@@ -11,7 +11,7 @@ Flight::before('start', function () {
      * Before the core controller starts execution
      */
     // check for server maintenance mode
-    AppMaintenace::isRunning();
+    AppMaintenance::isRunning();
 
     // check if client request authorized or not
     Authentication::isAuthorized();
