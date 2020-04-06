@@ -1,8 +1,7 @@
 <?php
+namespace Akaash\Helper;
 
 (defined('APP_NAME')) or exit('Forbidden 403');
-
-namespace Akaash\Helper;
 
 /**
  * Date helper class

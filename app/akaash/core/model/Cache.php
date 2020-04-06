@@ -1,4 +1,7 @@
 <?php
+namespace Akaash\Core\Model;
+
+use Akaash\System\Cache\Service;
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 
@@ -7,10 +10,6 @@
  *
  * @author sabbir-hossain
  */
-
-namespace Akaash\Core\Model;
-
-use Akaash\System\Cache\Service;
 
 abstract class Cache implements Service
 {

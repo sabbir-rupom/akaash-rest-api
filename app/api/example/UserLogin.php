@@ -3,7 +3,7 @@
 (defined('APP_NAME')) or exit('Forbidden 403');
 
 use Akaash\System\Message\ResultCode;
-use System\Exception\AppException;
+use Akaash\System\Exception\AppException;
 use Akaash\System\JwtToken;
 use Model\User as UserModel;
 use Akaash\Helper\DateUtil;

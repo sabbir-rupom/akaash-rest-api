@@ -1,8 +1,7 @@
 <?php
+namespace Akaash\View\Response;
 
 (defined('APP_NAME')) or exit('Forbidden 403');
-
-namespace Akaash\View\Response;
 
 use Akaash\View\Response\Validate as Validate;
 

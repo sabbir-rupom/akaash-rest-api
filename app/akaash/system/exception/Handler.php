@@ -1,5 +1,4 @@
 <?php
-
 namespace Akaash\System\Exception;
 
 use flight\net\Request;

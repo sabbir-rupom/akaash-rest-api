@@ -1,5 +1,4 @@
 <?php
-
 namespace Akaash;
 
 (defined('APP_NAME')) or exit('Forbidden 403');

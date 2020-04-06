@@ -1,10 +1,8 @@
 <?php
-
 declare(strict_types = 1);
+namespace Akaash\System\Message;
 
 (defined('APP_NAME')) or exit('Forbidden 403');
-
-namespace Akaash\System\Message;
 
 use Akaash\System\Message\Constant as Constant;
 use Akaash\System\Message\MethodTemplate as Template;

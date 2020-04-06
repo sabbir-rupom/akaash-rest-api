@@ -1,5 +1,4 @@
 <?php
-
 namespace Akaash\System\Cache;
 
 use Wruczek\PhpFileCache\PhpFileCache;

@@ -1,8 +1,7 @@
 <?php
+namespace Akaash\System;
 
 (defined('APP_NAME')) or exit('Forbidden 403');
-
-namespace Akaash\System;
 
 /**
  * Security class for Akaash REST-template

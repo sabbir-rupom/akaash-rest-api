@@ -1,5 +1,4 @@
 <?php
-
 namespace Akaash\Core;
 
 use flight\net\Request;

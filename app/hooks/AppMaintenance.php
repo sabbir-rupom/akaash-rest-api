@@ -1,5 +1,4 @@
 <?php
-
 namespace Hooks;
 
 use flight\net\Request;

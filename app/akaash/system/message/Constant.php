@@ -1,5 +1,4 @@
 <?php
-
 namespace Akaash\System\Message;
 
 interface Constant

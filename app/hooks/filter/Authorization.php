@@ -1,5 +1,4 @@
 <?php
-
 namespace Hooks\Filter;
 
 use Hooks\Filter\FilterInterface;

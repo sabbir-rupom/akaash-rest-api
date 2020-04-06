@@ -1,8 +1,7 @@
 <?php
+namespace Model;
 
 (defined('APP_NAME')) or exit('Forbidden 403');
-
-namespace Model;
 
 use Akaash\Core\Model\Base as BaseModel;
 
