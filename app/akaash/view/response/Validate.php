@@ -1,8 +1,7 @@
 <?php
+namespace Akaash\View\Response;
 
 (defined('APP_NAME')) or exit('Forbidden 403');
-
-namespace Akaash\View\Response;
 
 use Akaash\System\Message\ResultCode as ResultCode;
 use Akaash\System\Exception\AppException as AppException;

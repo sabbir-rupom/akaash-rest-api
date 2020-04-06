@@ -1,10 +1,9 @@
 <?php declare(strict_types=1);
-
-(defined('APP_NAME')) or exit('Forbidden 403');
-
 namespace Akaash\System;
 
 use Firebase\JWT\JWT;
+
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * PHP library on JWT Token

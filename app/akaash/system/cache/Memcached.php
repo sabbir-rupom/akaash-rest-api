@@ -1,7 +1,5 @@
-<?php
-
+<?php 
 declare(strict_types=1);
-
 namespace Akaash\System\Cache;
 
 use Akaash\System\Cache\Service;

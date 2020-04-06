@@ -1,8 +1,8 @@
 <?php
 
-(defined('APP_NAME')) or exit('Forbidden 403');
-
 namespace Akaash\View;
+
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 use Akaash\View\Response\Format as ResponseFormat;
 use Akaash\Config as Config;

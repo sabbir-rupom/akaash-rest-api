@@ -1,6 +1,7 @@
 <?php
+namespace Akaash\Core;
 
-(defined('APP_NAME')) or exit('Forbidden 403');
+use \flight\net\Request;
 
 /**
  * Akaash - RESTful API Template
@@ -14,10 +15,7 @@
  * @license     http://www.opensource.org/licenses/mit-license.php ( MIT License )
  * @version     2.0.0
  */
-
-namespace Akaash\Core;
-
-use \flight\net\Request;
+(defined('APP_NAME')) or exit('Forbidden 403');
 
 /**
  * Controller for application

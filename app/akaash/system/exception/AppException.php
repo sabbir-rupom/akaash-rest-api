@@ -1,20 +1,18 @@
 <?php
+namespace Akaash\System\Exception;
 
 (defined('APP_NAME')) or exit('Forbidden 403');
-
-/**
- * API Exception Class
- *
- * @author sabbir-hossain
- */
-
-namespace Akaash\System\Exception;
 
 use flight\net\Request;
 use Akaash\Config;
 use Akaash\System\Message\ResultCode;
 use Akaash\System\Exception\Handler;
 
+/**
+ * API Exception Class
+ *
+ * @author sabbir-hossain
+ */
 class AppException extends \Exception
 {
     public $resultCode;

@@ -1,4 +1,5 @@
 <?php
+namespace Model;
 
 (defined('APP_NAME')) or exit('Forbidden 403');
 

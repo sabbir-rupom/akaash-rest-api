@@ -1,5 +1,4 @@
 <?php
-
 namespace Akaash\System\Log;
 
 use \flight\net\Request;
