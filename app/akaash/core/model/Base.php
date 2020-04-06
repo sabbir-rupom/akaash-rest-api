@@ -295,7 +295,7 @@ abstract class Base
         $id = empty(static::PRIMARY_KEY) ? 'id' : static::PRIMARY_KEY;
 
         if (!isset($this->{$id})) {
-            throw new Exception('The ' . get_called_class() . ' model is not set');
+            throw new \PDOException('The ' . get_called_class() . ' model is not set');
         }
         if (is_null($pdo)) {
             $pdo = \Flight::pdo();
@@ -329,7 +329,7 @@ abstract class Base
     {
         $id = empty(static::PRIMARY_KEY) ? 'id' : static::PRIMARY_KEY;
         if (!isset($this->{$id})) {
-            throw new Exception('The ' . get_called_class() . ' is not initiated properly.');
+            throw new \PDOException('The ' . get_called_class() . ' is not initiated properly.');
         }
         if (is_null($pdo)) {
             $pdo = \Flight::pdo();
